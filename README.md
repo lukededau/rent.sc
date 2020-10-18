@@ -62,6 +62,7 @@ Note: When running this make sure that you are in the right directory where mana
 # Frontend
 ```
 sudo npm install -g npx 
+npm install react
 npm start
 ```
 From here, a page should pop up in your browser that looks like this:
@@ -71,6 +72,7 @@ From here, a page should pop up in your browser that looks like this:
 # Notes
 
 You may need to replace pip with pip3 with some commands and python with python3 so don't panick if they don't work at first! 
+
 
 
 

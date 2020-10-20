@@ -1,4 +1,11 @@
 import React from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+import firebaseConfig from '../firebase/firebase.js';
+
+// Initialize Firebase and Firestore
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 class ListingFields extends React.Component {
     constructor(props) {
@@ -16,7 +23,7 @@ class ListingFields extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('Address: ' + this.state.address + ", Price: " + this.state.price);
+        db.collection('listing').doc().set(this.state);
         event.preventDefault();
     }
 
@@ -33,7 +40,7 @@ class ListingFields extends React.Component {
                     <input type="text" name="price" value={this.state.price} onChange={this.handleChange} />
                 </label>
                 <br></br>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Create Listing" />
             </form>
         );
     }

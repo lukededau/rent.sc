@@ -6,6 +6,7 @@ import './App.css';
 import Home from './views/Home';
 import Login from './views/Login';
 import PageNotFound from './views/PageNotFound';
+import createListing from './views/createListing';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/create-listing" component={createListing} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

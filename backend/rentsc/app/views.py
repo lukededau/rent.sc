@@ -4,10 +4,12 @@ from django.http import HttpResponse
 from firebase_admin import auth
 from firebase_admin import firestore
 from django.http import JsonResponse
-
-
+from django.views.decorators.csrf import csrf_exempt
+import json
 # Backend code belongs here
-default_app = firebase_admin.initialize_app()
+if not firebase_admin._apps:
+    default_app = firebase_admin.initialize_app()
+
 db = firestore.client()
 
 def index(request):
@@ -21,3 +23,20 @@ def index(request):
         res.append((f'{doc.id} => {doc.to_dict()}'))
     return JsonResponse(res, safe=False)    
 # Create your views here.
+
+# Creates a basic user profile
+# A basic user profile contains the following:
+#    0. Password
+#    1. First Name
+#    2. Last Name
+#    3. email
+@csrf_exempt
+def createUser(request):
+    body = json.loads(request.body.decode('utf-8'))
+    print(body)
+    print(request.body)
+    print(body.keys())
+    fullName = "{} {}".format(body['firstName'], body['lastName']) 
+    auth.create_user(email=body['email'], display_name=fullName, 
+        password=body['password'], uid=body['email'])
+    return HttpResponse("WOoHoO")

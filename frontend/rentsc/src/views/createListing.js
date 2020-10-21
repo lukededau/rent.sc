@@ -1,11 +1,5 @@
 import React from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
-import firebaseConfig from '../firebase/firebase.js';
-
-// Initialize Firebase and Firestore
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+import firebase from '../firebase/firebase.js';
 
 class ListingFields extends React.Component {
     constructor(props) {
@@ -22,9 +16,10 @@ class ListingFields extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    handleSubmit(event) {
-        db.collection('listing').doc().set(this.state);
+    async handleSubmit(event) {
         event.preventDefault();
+        const db = firebase.firestore();
+        await db.collection('listing').doc().set(this.state);
     }
 
     render() {

@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-function PageNotFound() {
-  return (
-    <div>
-      <h1>404 Not Found</h1>
-    </div>
-  );
+const textStyle = {
+  textAlign: "center"
+}
+
+export class PageNotFound extends Component {
+  render(){
+    return (
+      <div>
+        <h1 style={textStyle}>404 Not Found</h1>
+      </div>
+    );
+  }
 }
 
 export default PageNotFound;

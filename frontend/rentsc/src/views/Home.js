@@ -5,12 +5,21 @@ import { Map, GoogleApiWrapper } from 'google-maps-react';
 const mapStyles = {
     width: '100%',
     height: '100%'
-  };
+};
+
+const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
   
 export class Home extends Component {
-    state = {
-        google: this.props.google
+    constructor(props) {
+        super(props);
+        this.state = {google: this.props.google};
     }
+    // state = {
+    //     google: this.props.google
+    // }
+    // static getDerivedStateFromProps(props, state) {
+    //     return null;
+    // }
     render() {
         return (
             <div>
@@ -32,5 +41,5 @@ export class Home extends Component {
 }
   
 export default GoogleApiWrapper({
-    apiKey: process.env.GOOGLE_MAP_API_KEY
+    apiKey: API_KEY
 })(Home);

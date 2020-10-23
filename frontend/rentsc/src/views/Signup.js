@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import firebaseObj from '../firebase.js';
+import firebaseObj from '../firebase/firebase.js';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';

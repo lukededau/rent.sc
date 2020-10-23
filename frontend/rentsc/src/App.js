@@ -5,6 +5,7 @@ import './App.css';
 //All views
 import Home from './views/Home';
 import Login from './views/Login';
+import Signup from './views/Signup'
 import PageNotFound from './views/PageNotFound';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/signUp" component={Signup} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

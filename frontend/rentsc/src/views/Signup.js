@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import firebaseObj from '../firebase/firebase.js';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'firebase/auth';
 
@@ -37,8 +38,11 @@ class Signup extends React.Component {
     render(){
    
         return (
+
             <div>
-            <Form onSubmit={(event) => this.handleSubmit(event)}>
+            <NavigationBar></NavigationBar>
+            
+            <Form onSubmit={(event) => this.handleSubmit(event)} style={{paddingTop:'100px', paddingLeft:'50px', width:'25%'}}>
             <Form.Group controlId="formFirstName">
                 <Form.Label>
                     First Name

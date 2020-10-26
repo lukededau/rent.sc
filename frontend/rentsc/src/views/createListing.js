@@ -24,7 +24,6 @@ class ListingFields extends React.Component {
 
     storeTag(event) {
         this.tags[event.target.name] = !this.tags[event.target.name];
-        console.log(this.tags);
     }
 
     handleChange(event) {
@@ -44,7 +43,7 @@ class ListingFields extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit} ref={(listingForm) => this.listingForm = listingForm}>
+            <form onSubmit={this.handleSubmit}>
                 {/* Text fields */}
                 <label>
                     Address:

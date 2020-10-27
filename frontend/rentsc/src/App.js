@@ -8,6 +8,7 @@ import PageNotFound from './views/PageNotFound';
 import createListing from './views/createListing';
 import SignupLogin from './views/SignupLogin';
 //import Signup from './views/Signup';
+import Signup from './views/SignupB';
 
 function App() {
   return (

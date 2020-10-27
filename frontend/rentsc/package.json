@@ -12,7 +12,9 @@
     "google-maps-react": "2.0.6",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.0",
+    "react-composer": "^5.0.1",
     "react-dom": "^16.14.0",
+    "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4"
   },

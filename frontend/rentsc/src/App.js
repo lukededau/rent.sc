@@ -7,7 +7,7 @@ import Home from './views/Home';
 import Login from './views/Login';
 import PageNotFound from './views/PageNotFound';
 import createListing from './views/createListing';
-import Signup from './views/Signup';
+import Signup from './views/SignupB';
 
 function App() {
   return (

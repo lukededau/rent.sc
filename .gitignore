@@ -1,2 +1,13 @@
 
 frontend/rentsc/src/firebase.js
+.DS_Store
+frontend/rentsc/package-lock.json
+backend/rentsc/app/__pycache__/__init__.cpython-37.pyc
+backend/rentsc/app/__pycache__/urls.cpython-37.pyc
+backend/rentsc/app/__pycache__/views.cpython-37.pyc
+backend/rentsc/rentsc/__pycache__/__init__.cpython-37.pyc
+backend/rentsc/rentsc/__pycache__/settings.cpython-37.pyc
+backend/rentsc/rentsc/__pycache__/urls.cpython-37.pyc
+frontend/rentsc/package-lock.json
+frontend/rentsc/package-lock.json
+frontend/rentsc/package-lock.json

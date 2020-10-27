@@ -17,6 +17,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignupLogin} />
         <Route exact path="/create-listing" component={createListing} />
+        <Route exact path="/signUp1" component={Signup} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

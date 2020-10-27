@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from '../firebase/firebase.js';
+import firebase from '../firebase';
 
 class ListingFields extends React.Component {
     constructor(props) {

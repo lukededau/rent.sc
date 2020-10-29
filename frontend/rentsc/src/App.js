@@ -9,6 +9,7 @@ import createListing from './views/createListing';
 import SignupLogin from './views/SignupLogin';
 //import Signup from './views/Signup';
 import Signup from './views/SignupB';
+import Temp from './views/Signup'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/signup" component={SignupLogin} />
         <Route exact path="/create-listing" component={createListing} />
         <Route exact path="/signUp1" component={Signup} />
+        <Route exact path="/temp" component={Temp} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

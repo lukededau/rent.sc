@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import firebase from '../firebase/firebase.js';
+import firebase from '../firebase.js';
 
 class ListingFields extends React.Component {
     constructor(props) {

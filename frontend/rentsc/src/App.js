@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 
+import { AuthProvider } from './Contexts/AuthContext';
+
 //All views
 import Home from './views/Home';
 import PageNotFound from './views/PageNotFound';
@@ -19,7 +21,9 @@ function App() {
         <Route exact path="/signup" component={SignupLogin} />
         <Route exact path="/create-listing" component={createListing} />
         <Route exact path="/signUp1" component={Signup} />
-        <Route exact path="/temp" component={Temp} />
+        <AuthProvider>
+          <Route exact path="/temp" component={Temp} />
+        </AuthProvider>
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

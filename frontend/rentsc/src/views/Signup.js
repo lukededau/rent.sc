@@ -1,16 +1,24 @@
-import React, { useRef } from 'react';
-import {Form, Card, Button} from 'react-bootstrap';
+import React, { useRef, useState } from 'react'
+import {Form, Card, Button} from 'react-bootstrap'
+import { useAuth } from '../Contexts/AuthContext'
 
 export default function Signup() {
-    const emailRef = useRef();
-    const passwordRef = useRef();
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const { signup } = useAuth()
+
+    function handleSubmit(e) {
+        e.preventDefault()
+
+        signup(emailRef.current.value, passwordRef.current.value)
+    }
 
     return (
         <>
             <Card>
                 <Card.Body>
                     <h2 className="text-center mb-3">Signup</h2>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" ref={emailRef} required></Form.Control>

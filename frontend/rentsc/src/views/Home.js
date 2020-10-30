@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import firebase from '../firebase';
 import { withProps, compose } from 'recompose'
 import NavBar from '../common/NavBar';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
@@ -67,21 +68,22 @@ export class Home extends Component {
         };
     }
 
-    // query firebase with this function
-    // componentDidMount() {
-    //     let list = { restaurants : []}
-    //     database.ref('..').on('value', restaurants => {
-    //             restaurants.forEach( restaurant => {
-    //                     list.restaurants.push({'name': restaurant.key,
-    //                             'longitude': restaurant.val().lng,
-    //                             'latitude': restaurant.val().lat}
+    static getDerivedStateFromProps(props, state) {
+        let list = { listings : []};
+        const db = firebase.firestore();
+        db.collection('listings').get().then('value', listings => {
+                listings.forEach( listing => {
+                        list.listings.push({'name': listing.key,
+                                'longitude': listing.val().lng,
+                                'latitude': listing.val().lat}
     
-    //                         )
-    //             })
-    //             this.setState({ markers:  list.restaurants });
-    //         })
-    
-    // }
+                            )
+                })
+                this.setState({ markers:  list.listings });
+            })
+
+        return null
+    }
 
     onMarkerClick = (markerID) => {
         if(this.state.selectedMarker === markerID) {

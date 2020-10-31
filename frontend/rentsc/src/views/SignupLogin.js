@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 //import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import firebase from '../firebase';
+import firebase from '../firebase.js';
 import Login from './Login';
 import Hero from './Hero'
 

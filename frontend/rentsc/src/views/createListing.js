@@ -1,5 +1,9 @@
 import React from 'react';
-import firebase from '../firebase';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import NavigationBar from '../components/navbar.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from '../firebase.js';
 
 class ListingFields extends React.Component {
     constructor(props) {
@@ -16,7 +20,6 @@ class ListingFields extends React.Component {
             'dog friendly': false,
             'cat friendly': false
         };
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
@@ -26,12 +29,17 @@ class ListingFields extends React.Component {
         this.tags[event.target.name] = !this.tags[event.target.name];
     }
 
-    handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
-    }
-
     async handleSubmit(event) {
         event.preventDefault();
+        const form = event.currentTarget;
+        for (var i = 0; i < form.elements.length; i++) {
+            var element = form.elements[i];
+            console.log(element.id + " " + element.value);
+            if (element.if !== "" && element.value !== "") {
+                this.state[element.id] = element.value
+            }
+            console.log(this.state)
+        }
         this.state["tags"] = this.tags;
         await this.makeListing();
     }
@@ -43,52 +51,59 @@ class ListingFields extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                {/* Text fields */}
-                <label>
-                    Address:
-                    <input type="text" name="address" value={this.state.address} onChange={this.handleChange} />
-                </label> <br></br>
-                <label>
-                    Price:
-                    <input type="text" name="price" value={this.state.price} onChange={this.handleChange} />
-                </label> <br></br>
-                <label>
-                    Maximum Tenents:
-                    <input type="text" name="size" value={this.state.size} onChange={this.handleChange} />
-                </label> <br></br>
-                <label>
-                    Number of Bedrooms:
-                    <input type="text" name="numBedrooms" value={this.state.numBedrooms} onChange={this.handleChange} />
-                </label> <br></br>
-                <label>
-                    Number of Bathrooms:
-                    <input type="text" name="numBaths" value={this.state.numBaths} onChange={this.handleChange} />
-                </label> <br></br>
-                <label>
-                    Description:
-                    <input type="text" name="description" value={this.state.description} onChange={this.handleChange} />
-                </label> <br></br>
+            <Form onSubmit={this.handleSubmit} style={{paddingTop:'100px', paddingLeft:'50px', width:'25%'}}>
 
-                {/* Tags */}
-                <label> Tags: </label>
-                <button type="button" name="dog friendly" onClick={this.storeTag}> 
+            {/* Text Fields */}
+            <Form.Group controlId="address">
+                <Form.Label> Address </Form.Label>
+                <Form.Control type="text" placeholder="Address"/>
+            </Form.Group>
+            <Form.Group controlId="price">
+                <Form.Label> Price per Month </Form.Label>
+                <Form.Control type="text" placeholder="Price"/>
+            </Form.Group>
+            <Form.Group controlId="size">
+                <Form.Label> Maximum No. of Tenents </Form.Label>
+                <Form.Control type="text" placeholder="Max # Tenents"/>
+            </Form.Group>
+            <Form.Group controlId="numBedrooms">
+                <Form.Label> Number of Bedrooms </Form.Label>
+                <Form.Control type="text" placeholder="# of Bedrooms"/>
+            </Form.Group>
+            <Form.Group controlId="numBaths">
+                <Form.Label> Number of Baths </Form.Label>
+                <Form.Control type="text" placeholder="# of Bathrooms"/>
+            </Form.Group>
+            <Form.Group controlId="description">
+                <Form.Label> Description </Form.Label>
+                <Form.Control type="text" placeholder="Description"/>
+            </Form.Group>
+
+            {/* Tags */}
+            <label> Tags </label> <br></br>
+            <div className="btn-toolbar">
+                <Button type="button" name="dog friendly" onClick={this.storeTag}>
                     dog friendly
-                </button> 
-                <button type="button" name="cat friendly" onClick={this.storeTag}> 
+                </Button>
+                <Button type="button" name="cat friendly" onClick={this.storeTag}>
                     cat friendly
-                </button><br></br>
+                </Button>
+            </div> <br></br>
 
-                {/* Submit */}
-                <input type="submit" value="Create Listing" />
-            </form>
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
+            </Form>
         );
     }
 }
 
 function createListing() {  
     return(
+        <div>
+        <NavigationBar></NavigationBar>
         <ListingFields />
+        </div>
     );
 }
 

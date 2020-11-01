@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Navbar from 'react-bootstrap/Navbar'
 import Image from 'react-bootstrap/Image'
-import defaultProfileImage from '../images/Default_profile_image.jpg'
+import defaultProfileImage from '../Images/Default_profile_image.jpg'
 
 class NavigationBar extends React.Component{
     render(){

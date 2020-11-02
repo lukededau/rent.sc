@@ -1,16 +1,28 @@
 import React, { useRef, useState } from 'react'
-import {Form, Card, Button} from 'react-bootstrap'
+import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
+import { Link, useHistory } from 'react-router-dom'
 
 export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const { signup } = useAuth()
+    const history = useHistory()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
 
-        signup(emailRef.current.value, passwordRef.current.value)
+        try {
+            setError("")
+            setLoading(true)
+            await signup(emailRef.current.value, passwordRef.current.value)
+            history.push("/")
+        } catch {
+            setError("Failed to signup")
+        }
+        setLoading(false)
     }
 
     return (
@@ -18,6 +30,7 @@ export default function Signup() {
             <Card>
                 <Card.Body>
                     <h2 className="text-center mb-3">Signup</h2>
+                    {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
@@ -27,12 +40,12 @@ export default function Signup() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" ref={passwordRef} required></Form.Control>
                         </Form.Group>
-                        <Button className="w-100" type="submit">Signup</Button>
+                        <Button disabled={loading} className="w-100" type="submit">Signup</Button>
                     </Form>
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                Already have an account? Login
+                Already have an account? <Link to="/login">Login</Link>
             </div>
         </>
     )

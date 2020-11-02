@@ -1,58 +1,52 @@
-import React from 'react';
+import React, { useRef, useState } from 'react'
+import { Form, Card, Button, Alert } from 'react-bootstrap'
+import { useAuth } from '../Contexts/AuthContext'
+import { Link, useHistory } from 'react-router-dom'
 
-function Login(props) {  
-    const {
-        email, 
-        setEmail, 
-        password, 
-        setPassword,
-        handleLogin,
-        handleSignUp,
-        hasAccount,
-        setHasAccount,
-        emailError,
-        passwordError
-    } = props;
+export default function Login() {
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const { login } = useAuth()
+    const history = useHistory()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
 
-    return(
-        <section className="login">
-            <div className="loginContainer">
-                 <label>Email </label>
-                 <input 
-                 type="text" 
-                 autoFocus 
-                 required 
-                 value={email}
-                 onChange={e => setEmail(e.target.value)}
-                 />
-                 <p className="errorMsg">{emailError}</p>
-                 
-                 <label>Password </label>
-                 <input
-                 type="password"
-                 autoFocus
-                 required
-                 value={password}
-                 onChange = {e => setPassword(e.target.value)}
-                 />
-                 <p className="errorMsg">{passwordError}</p>
+    async function handleSubmit(e) {
+        e.preventDefault()
 
-                 <div className="btnContainer">
-                     {hasAccount ? (
-                         <>
-                            <button onClick={handleLogin}>Sign in</button>
-                            <p>Don't have an account? <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
-                         </>
-                     ):(
-                        <>
-                            <button onClick={handleSignUp}>Sign up</button>
-                            <p>Already have an account? <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
-                         </>
-                     )}
-                 </div>
+        try {
+            setError("")
+            setLoading(true)
+            await login(emailRef.current.value, passwordRef.current.value)
+            history.push("/")
+        } catch {
+            setError("Failed to login")
+        }
+        setLoading(false)
+    }
+
+    return (
+        <>
+            <Card>
+                <Card.Body>
+                    <h2 className="text-center mb-3">Login</h2>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group id="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" ref={emailRef} required></Form.Control>
+                        </Form.Group>
+                        <Form.Group id="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" ref={passwordRef} required></Form.Control>
+                        </Form.Group>
+                        <Button disabled={loading} className="w-100" type="submit">Login</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+            <div className="w-100 text-center mt-2">
+                Need an account? <Link to="/signup">Sign up</Link>
             </div>
-        </section>
-    );
+        </>
+    )
 }
-
-export default Login;

@@ -8,21 +8,20 @@ import { AuthProvider } from './Contexts/AuthContext';
 import Home from './views/Home';
 import PageNotFound from './views/PageNotFound';
 import createListing from './views/createListing';
-import SignupLogin from './views/SignupLogin';
-//import Signup from './views/Signup';
-import Signup from './views/SignupB';
-import Temp from './views/Signup'
+import Login from './views/Login';
+import Signup1 from './views/SignupB';
+import Signup from './views/Signup'
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/signup" component={SignupLogin} />
         <Route exact path="/create-listing" component={createListing} />
-        <Route exact path="/signUp1" component={Signup} />
+        <Route exact path="/signUp1" component={Signup1} />
         <AuthProvider>
-          <Route exact path="/temp" component={Temp} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/login" component={Login} />
         </AuthProvider>
         <Route component={PageNotFound} />
       </Switch>

@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 import { AuthProvider } from './Contexts/AuthContext';
+import PrivateRoute from './Components/PrivateRoute';
 
 //All views
 import Home from './views/Home';
@@ -10,7 +11,8 @@ import PageNotFound from './views/PageNotFound';
 import createListing from './views/createListing';
 import Login from './views/Login';
 import Signup1 from './views/SignupB';
-import Signup from './views/Signup'
+import Signup from './views/Signup';
+import UserProfile from './views/UserProfile';
 
 function App() {
   return (
@@ -20,8 +22,9 @@ function App() {
         <Route exact path="/create-listing" component={createListing} />
         <Route exact path="/signUp1" component={Signup1} />
         <AuthProvider>
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/login" component={Login} />
+          <PrivateRoute exact path="/userprofile" component={UserProfile} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/login" component={Login} />
         </AuthProvider>
         <Route component={PageNotFound} />
       </Switch>

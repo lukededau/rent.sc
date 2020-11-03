@@ -13,6 +13,7 @@ import Login from './views/Login';
 import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
+import User from './Components/User';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <PrivateRoute exact path="/userprofile" component={UserProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
+          <Route path="/user" component={User} />
         </AuthProvider>
         <Route component={PageNotFound} />
       </Switch>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../firebase';
-import { withProps, compose } from 'recompose'
+import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 

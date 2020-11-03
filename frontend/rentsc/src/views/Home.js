@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import firebase from '../firebase';
+import firebase from '../firebase.js';
 import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
@@ -34,7 +35,12 @@ const InitialMap = compose(
                 onCloseClick={() => props.onClose()}
             >
                 <div>
-                    <h4>{marker.name}</h4>
+                    <h4>{marker.address}</h4>
+                    <img src={marker.image} width={175} height={175} alt="listing image"/> <br></br>
+                    <p>
+                        Number of Baths: {marker.numBaths} <br></br>
+                        Number of Bedrooms: {marker.numBedrooms}
+                    </p>
                 </div>
             </InfoWindow>}
         </Marker>
@@ -70,7 +76,11 @@ export class Home extends Component {
                     'position': {
                         'lat': latitude,
                         'lng': longitude
-                    }
+                    },
+                    'address': '417 Maple Street',
+                    'numBaths': "1",
+                    'numBedrooms': "1",
+                    'image': require('./../Images/default_listing.png')
                 });
             });
             this.setState({

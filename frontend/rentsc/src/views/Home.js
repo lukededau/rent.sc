@@ -34,12 +34,16 @@ const InitialMap = compose(
             <InfoWindow
                 onCloseClick={() => props.onClose()}
             >
-                <div>
+                <div style={{width: 200, height: 200}} onClick={() => window.location.href="/create-listing"}>
                     <h4>{marker.address}</h4>
-                    <img src={marker.image} width={175} height={175} alt="listing image"/> <br></br>
+                    <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="listing image"/> <br></br>
                     <p>
+                        Description: <br></br>
+                        Price: <br></br>
+                        Max Number of Tenents: <br></br>
                         Number of Baths: {marker.numBaths} <br></br>
-                        Number of Bedrooms: {marker.numBedrooms}
+                        Number of Bedrooms: {marker.numBedrooms} <br></br>
+                        Tags:
                     </p>
                 </div>
             </InfoWindow>}

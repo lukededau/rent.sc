@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../firebase';
-import { withProps, compose } from 'recompose'
+import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 
@@ -43,46 +43,40 @@ const InitialMap = compose(
 );
 
 export class Home extends Component {
+
+    allListings = [];
+
     constructor(props) {
         super(props);
         this.state = {
             selectedMarker: 0,
-            markers:[
-                {
-                    id: 1,
-                    name: "For Rent",
-                    position: {
-                        lat: 36.9757,
-                        lng: -122.0370
-                    }
-                },
-                {
-                    id: 2,
-                    name: "For Sell",
-                    position: {
-                        lat: 36.9730,
-                        lng: -122.0286
-                    }
-                }
-            ]
+            markers:[]
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
-        let list = { listings : []};
-        const db = firebase.firestore();
-        db.collection('listings').get().then('value', listings => {
-                listings.forEach( listing => {
-                        list.listings.push({'name': listing.key,
-                                'longitude': listing.val().lng,
-                                'latitude': listing.val().lat}
-    
-                            )
-                })
-                this.setState({ markers:  list.listings });
-            })
+    componentDidMount() {
+        this._fetchListings();
+    }
 
-        return null
+    _fetchListings() {
+        this.allListings = [];
+        const db = firebase.firestore();
+        db.collection('listings').get().then((listings) => {
+            listings.forEach((doc) => {
+                const {id, name, longitude, latitude} = doc.data();
+                this.allListings.push({
+                    'id': id,
+                    'name': name,
+                    'position': {
+                        'lat': latitude,
+                        'lng': longitude
+                    }
+                });
+            });
+            this.setState({
+                markers: this.allListings
+            });
+        });
     }
 
     onMarkerClick = (markerID) => {
@@ -103,10 +97,6 @@ export class Home extends Component {
             selectedMarker: 0
         });
     };
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     return (this.state.selectedMarker !== nextState.selectedMarker);
-    // }
     
     render() {
         return (

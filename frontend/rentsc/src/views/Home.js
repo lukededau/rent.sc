@@ -4,6 +4,8 @@ import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import Carousel from 'react-bootstrap/Carousel';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
@@ -30,21 +32,35 @@ const InitialMap = compose(
             }}
             onClick={() => props.onMarkerClick(marker.id)}
         >
-            {props.selectedMarker === marker.id && 
-            <InfoWindow
-                onCloseClick={() => props.onClose()}
-            >
-                <div style={{width: 200, height: 200}} onClick={() => window.location.href="/create-listing"}>
+            {
+            props.selectedMarker === marker.id && 
+            <InfoWindow onCloseClick={() => props.onClose()}>
+                <div style={{width: 200, height: 200}}>
                     <h4>{marker.address}</h4>
-                    <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="listing image"/> <br></br>
-                    <p>
-                        Description: <br></br>
-                        Price: <br></br>
-                        Max Number of Tenents: <br></br>
+                    <p style={{'text-align': 'center'}}>
+                    <Carousel>
+                        <Carousel.Item>
+                            <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="image 1"></img>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="image 2"></img>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="image 3"></img>
+                        </Carousel.Item>
+                    </Carousel>
+                    </p>
+                    <p style={{'font-size': 15}}>
+                        Description: {marker.description} <br></br>
+                        Price: {marker.price} <br></br>
+                        Max Number of Tenents: {marker.size} <br></br>
                         Number of Baths: {marker.numBaths} <br></br>
                         Number of Bedrooms: {marker.numBedrooms} <br></br>
-                        Tags:
+                        Tags: {marker.tags}
                     </p>
+                    <Button variant="outline-primary" size="sm" onclick="location.href='/create-listing'">
+                        View Listing
+                    </Button>
                 </div>
             </InfoWindow>}
         </Marker>
@@ -74,6 +90,17 @@ export class Home extends Component {
         db.collection('listings').get().then((listings) => {
             listings.forEach((doc) => {
                 const {id, name, longitude, latitude} = doc.data();
+                const tags = {
+                    'dog friendly': true,
+                    'cat friendly': true
+                };
+                var verifiedTags = [];
+                Object.keys(tags).forEach(function (key) {
+                    if (tags[key]) {
+                        verifiedTags.push(key);
+                    }
+                })
+                var tagString = verifiedTags.join(", ");
                 this.allListings.push({
                     'id': id,
                     'name': name,
@@ -84,7 +111,11 @@ export class Home extends Component {
                     'address': '417 Maple Street',
                     'numBaths': "1",
                     'numBedrooms': "1",
-                    'image': require('./../Images/default_listing.png')
+                    'image': require('./../Images/default_listing.png'),
+                    'price': "1000",
+                    'size': "3",
+                    'description': 'Its a house',
+                    'tags': tagString
                 });
             });
             this.setState({

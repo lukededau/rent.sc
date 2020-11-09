@@ -35,29 +35,36 @@ const InitialMap = compose(
             {
             props.selectedMarker === marker.id && 
             <InfoWindow onCloseClick={() => props.onClose()}>
-                <div style={{width: 200, height: 200}}>
+                <div style={{width: 250, height: 300}}>
                     <h4>{marker.address}</h4>
                     <p style={{'text-align': 'center'}}>
                     <Carousel>
                         <Carousel.Item>
-                            <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="image 1"></img>
+                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 1"></img>
                         </Carousel.Item>
                         <Carousel.Item>
-                            <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="image 2"></img>
+                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 2"></img>
                         </Carousel.Item>
                         <Carousel.Item>
-                            <img src={marker.image} style={{width: 175, height: 175, padding: 10}} alt="image 3"></img>
+                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 3"></img>
                         </Carousel.Item>
                     </Carousel>
                     </p>
-                    <p style={{'font-size': 15}}>
+                    <p style={{'font-size': 15, margin: 5}}>Description: {marker.description}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Price: {marker.price}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Max Number of Tenents: {marker.size}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Tags: {marker.tags}</p>
+                    <br></br>
+                    {/* <p style={{'font-size': 15}}>
                         Description: {marker.description} <br></br>
                         Price: {marker.price} <br></br>
                         Max Number of Tenents: {marker.size} <br></br>
                         Number of Baths: {marker.numBaths} <br></br>
                         Number of Bedrooms: {marker.numBedrooms} <br></br>
                         Tags: {marker.tags}
-                    </p>
+                    </p> */}
                     <Button variant="outline-primary" size="sm" onclick="location.href='/create-listing'">
                         View Listing
                     </Button>

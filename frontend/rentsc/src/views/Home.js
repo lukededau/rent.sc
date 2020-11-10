@@ -60,14 +60,6 @@ const InitialMap = compose(
                     <p style={{'font-size': 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
                     <p style={{'font-size': 15, margin: 5}}>Tags: {marker.tags}</p>
                     <br></br>
-                    {/* <p style={{'font-size': 15}}>
-                        Description: {marker.description} <br></br>
-                        Price: {marker.price} <br></br>
-                        Max Number of Tenents: {marker.size} <br></br>
-                        Number of Baths: {marker.numBaths} <br></br>
-                        Number of Bedrooms: {marker.numBedrooms} <br></br>
-                        Tags: {marker.tags}
-                    </p> */}
                     <Button variant="outline-primary" size="sm" onclick="location.href='/create-listing'">
                         View Listing
                     </Button>

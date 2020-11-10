@@ -40,3 +40,17 @@ def createUser(request):
     auth.create_user(email=body['email'], display_name=fullName, 
         password=body['password'], uid=body['email'])
     return HttpResponse("WOoHoO")
+
+def getAllListings(request):
+    res = []
+    listings_ref = db.collection(u'listing')
+    docs = listings_ref.stream()
+
+    for doc in docs:
+        res.append(doc.to_dict())
+    response = JsonResponse(res, safe=False)
+  
+    response['Access-Control-Allow-Origin'] = '*'
+    response["Access-Control-Allow-Methods"] = '*'
+    response["Access-Control-Allow-Headers"] = '*'
+    return response

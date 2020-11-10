@@ -5,6 +5,21 @@ import Navbar from 'react-bootstrap/Navbar'
 import Image from 'react-bootstrap/Image'
 import defaultProfileImage from '../Images/Default_profile_image.jpg'
 
+/*<NavDropdown 
+                            title={
+                                    <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
+                            }
+                            id="collapsible-nav-dropdown"
+                        >
+
+                            <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
+                            <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
+                            <NavDropdown.Divider/>
+                            <NavDropdown.Item href="#user/user-profile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item href="#user/sign-out">sign out</NavDropdown.Item>
+
+                        </NavDropdown>
+*/
 class NavigationBar extends React.Component{
     render(){
         return(
@@ -28,13 +43,17 @@ class NavigationBar extends React.Component{
                             title={
                                     <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
                             }
-                            id="basic-nav-dropdown"
+                            id="collapsible-nav-dropdown"
+                            alignRight
+                            flip="true"
                         >
+
                             <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
                             <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
                             <NavDropdown.Divider/>
                             <NavDropdown.Item href="#user/user-profile">Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="#user/sign-out">sign out</NavDropdown.Item>
+                            <NavDropdown.Item href="#user/sign-out">Sign out</NavDropdown.Item>
+
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

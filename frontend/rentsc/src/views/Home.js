@@ -8,37 +8,37 @@ const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const InitialMap = compose(
     withProps({
-            googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places",
-            loadingElement: <div style={{ height: `100%` }} />,
-            containerElement: <div style={{ height: `935px`, width: '100%' }} />,
-            mapElement: <div style={{ height: `100%` }} /> 
-        }),
-        withScriptjs,
-        withGoogleMap
-    )(props => 
+        googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places",
+        loadingElement: <div style={{ height: `100%` }} />,
+        containerElement: <div style={{ height: `935px`, width: '100%' }} />,
+        mapElement: <div style={{ height: `100%` }} />
+    }),
+    withScriptjs,
+    withGoogleMap
+)(props =>
     <GoogleMap
-        defaultCenter = { { lat: 36.9741, lng: -122.0308 } }
-        defaultZoom = { 14 }
+        defaultCenter={{ lat: 36.9741, lng: -122.0308 }}
+        defaultZoom={14}
     >
-    {props.markers.map(marker => (
-        <Marker
-            key={marker.id}
-            position={{
-                lat: marker.position.lat,
-                lng: marker.position.lng
-            }}
-            onClick={() => props.onMarkerClick(marker.id)}
-        >
-            {props.selectedMarker === marker.id && 
-            <InfoWindow
-                onCloseClick={() => props.onClose()}
+        {props.markers.map(marker => (
+            <Marker
+                key={marker.id}
+                position={{
+                    lat: marker.position.lat,
+                    lng: marker.position.lng
+                }}
+                onClick={() => props.onMarkerClick(marker.id)}
             >
-                <div>
-                    <h4>{marker.name}</h4>
-                </div>
-            </InfoWindow>}
-        </Marker>
-    ))};
+                {props.selectedMarker === marker.id &&
+                    <InfoWindow
+                        onCloseClick={() => props.onClose()}
+                    >
+                        <div>
+                            <h4>{marker.name}</h4>
+                        </div>
+                    </InfoWindow>}
+            </Marker>
+        ))};
     </GoogleMap>
 );
 
@@ -50,7 +50,7 @@ export class Home extends Component {
         super(props);
         this.state = {
             selectedMarker: 0,
-            markers:[]
+            markers: []
         };
     }
 
@@ -63,7 +63,7 @@ export class Home extends Component {
         const db = firebase.firestore();
         db.collection('listings').get().then((listings) => {
             listings.forEach((doc) => {
-                const {id, name, longitude, latitude} = doc.data();
+                const { id, name, longitude, latitude } = doc.data();
                 this.allListings.push({
                     'id': id,
                     'name': name,
@@ -80,7 +80,7 @@ export class Home extends Component {
     }
 
     onMarkerClick = (markerID) => {
-        if(this.state.selectedMarker === markerID) {
+        if (this.state.selectedMarker === markerID) {
             this.setState({
                 selectedMarker: 0
             });
@@ -97,7 +97,7 @@ export class Home extends Component {
             selectedMarker: 0
         });
     };
-    
+
     render() {
         return (
             <div>
@@ -112,5 +112,5 @@ export class Home extends Component {
         );
     }
 }
-  
+
 export default Home;

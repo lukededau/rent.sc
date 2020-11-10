@@ -10,6 +10,8 @@ class ListingFields extends React.Component {
         super(props);
         this.state = {
             address: "",
+            city: "",
+            zip: "",
             price: "",
             numBedrooms: "",
             numBaths: "",
@@ -17,8 +19,8 @@ class ListingFields extends React.Component {
             description: ""
         };
         this.tags = {
-            'dog friendly': false,
-            'cat friendly': false
+            dogFriendly: false,
+            catFriendly: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.storeTag = this.storeTag.bind(this);
@@ -58,6 +60,14 @@ class ListingFields extends React.Component {
                 <Form.Label> Address </Form.Label>
                 <Form.Control type="text" placeholder="Address"/>
             </Form.Group>
+            <Form.Group controlId="city">
+                <Form.Label> City </Form.Label>
+                <Form.Control type="text" placeholder="City"/>
+            </Form.Group>
+            <Form.Group controlId="zip">
+                <Form.Label> Zip Code </Form.Label>
+                <Form.Control type="text" placeholder="Zip Code"/>
+            </Form.Group>
             <Form.Group controlId="price">
                 <Form.Label> Price per Month </Form.Label>
                 <Form.Control type="text" placeholder="Price"/>
@@ -82,10 +92,10 @@ class ListingFields extends React.Component {
             {/* Tags */}
             <label> Tags </label> <br></br>
             <div className="btn-toolbar">
-                <Button type="button" name="dog friendly" onClick={this.storeTag}>
+                <Button type="button" name="dogFriendly" onClick={this.storeTag}>
                     dog friendly
                 </Button>
-                <Button type="button" name="cat friendly" onClick={this.storeTag}>
+                <Button type="button" name="catFriendly" onClick={this.storeTag}>
                     cat friendly
                 </Button>
             </div> <br></br>

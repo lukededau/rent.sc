@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import firebase from '../firebase';
+import firebase from '../firebase.js';
 import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import Geocode from 'react-geocode';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import Carousel from 'react-bootstrap/Carousel';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
@@ -32,12 +35,34 @@ const InitialMap = compose(
             }}
             onClick={() => props.onMarkerClick(marker.id)}
         >
-            {props.selectedMarker === marker.id && 
-            <InfoWindow
-                onCloseClick={() => props.onClose()}
-            >
-                <div>
+            {
+            props.selectedMarker === marker.id && 
+            <InfoWindow onCloseClick={() => props.onClose()}>
+                <div style={{width: 250, height: 300}}>
                     <h4>{marker.address}</h4>
+                    <p style={{'text-align': 'center'}}>
+                    <Carousel>
+                        <Carousel.Item>
+                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 1"></img>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 2"></img>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 3"></img>
+                        </Carousel.Item>
+                    </Carousel>
+                    </p>
+                    <p style={{'font-size': 15, margin: 5}}>Description: {marker.description}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Price: {marker.price}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Max Number of Tenents: {marker.size}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
+                    <p style={{'font-size': 15, margin: 5}}>Tags: {marker.tags}</p>
+                    <br></br>
+                    <Button variant="outline-primary" size="sm" onclick="location.href='/create-listing'">
+                        View Listing
+                    </Button>
                 </div>
             </InfoWindow>}
         </Marker>
@@ -70,7 +95,17 @@ export class Home extends Component {
         const responses = [];
         listings.forEach((listing) => {
             responses.push(new Promise(async (resolve) => {
-                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags: {dogFriendly, catFriendly}} = listing.data();
+                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags} = listing.data();
+                
+                // Create tag string
+                var verifiedTags = [];
+                Object.keys(tags).forEach(function (key) {
+                    if (tags[key]) {
+                        verifiedTags.push(key);
+                    }
+                })
+                var tagString = verifiedTags.join(", ");
+
                 const coordinates = await this._convertAddressToCoordinates(address, city);
                 console.log(coordinates);
                 this.allListings.push({
@@ -83,10 +118,8 @@ export class Home extends Component {
                     'numBedrooms': numBedrooms,
                     'price': price,
                     'size': size,
-                    'tags': {
-                        'dogFriendly': dogFriendly,
-                        'catFriendly': catFriendly
-                    },
+                    'image': require('./../Images/default_listing.png'),
+                    'tags': tagString,
                     'position': {
                         'lat': coordinates.lat,
                         'lng': coordinates.lng

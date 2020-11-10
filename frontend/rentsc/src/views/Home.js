@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import firebase from '../firebase';
 import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
+import Geocode from 'react-geocode';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
-console.log(API_KEY);
+
+Geocode.setApiKey(API_KEY);
+
 const InitialMap = compose(
     withProps({
             googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places",
@@ -34,7 +37,7 @@ const InitialMap = compose(
                 onCloseClick={() => props.onClose()}
             >
                 <div>
-                    <h4>{marker.name}</h4>
+                    <h4>{marker.address}</h4>
                 </div>
             </InfoWindow>}
         </Marker>
@@ -58,25 +61,53 @@ export class Home extends Component {
         this._fetchListings();
     }
 
-    _fetchListings() {
+    async _fetchListings() {
         this.allListings = [];
         const db = firebase.firestore();
-        db.collection('listings').get().then((listings) => {
-            listings.forEach((doc) => {
-                const {id, name, longitude, latitude} = doc.data();
+        const listings = await db.collection('listing').get();
+        var id = 1;
+
+        const responses = [];
+        listings.forEach((listing) => {
+            responses.push(new Promise(async (resolve) => {
+                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags: {dogFriendly, catFriendly}} = listing.data();
+                const coordinates = await this._convertAddressToCoordinates(address, city);
+                console.log(coordinates);
                 this.allListings.push({
-                    'id': id,
-                    'name': name,
+                    'id': id++,
+                    'address': address,
+                    'city': city,
+                    'zip': zip,
+                    'description':description,
+                    'numBaths': numBaths,
+                    'numBedrooms': numBedrooms,
+                    'price': price,
+                    'size': size,
+                    'tags': {
+                        'dogFriendly': dogFriendly,
+                        'catFriendly': catFriendly
+                    },
                     'position': {
-                        'lat': latitude,
-                        'lng': longitude
+                        'lat': coordinates.lat,
+                        'lng': coordinates.lng
                     }
                 });
-            });
+                resolve();
+            }));
+        });
+
+        Promise.all(responses).then(() => {
+            console.log(this.allListings);
             this.setState({
                 markers: this.allListings
             });
         });
+    }
+
+    _convertAddressToCoordinates = async (address, city) => {
+        const response = await Geocode.fromAddress(address + ", " + city);
+        const { lat, lng } = response.results[0].geometry.location;
+        return { lat, lng };
     }
 
     onMarkerClick = (markerID) => {

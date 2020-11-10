@@ -103,7 +103,17 @@ export class Home extends Component {
         const responses = [];
         listings.forEach((listing) => {
             responses.push(new Promise(async (resolve) => {
-                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags: {dogFriendly, catFriendly}} = listing.data();
+                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags} = listing.data();
+                
+                // Create tag string
+                var verifiedTags = [];
+                Object.keys(tags).forEach(function (key) {
+                    if (tags[key]) {
+                        verifiedTags.push(key);
+                    }
+                })
+                var tagString = verifiedTags.join(", ");
+
                 const coordinates = await this._convertAddressToCoordinates(address, city);
                 console.log(coordinates);
                 this.allListings.push({
@@ -116,10 +126,8 @@ export class Home extends Component {
                     'numBedrooms': numBedrooms,
                     'price': price,
                     'size': size,
-                    'tags': {
-                        'dogFriendly': dogFriendly,
-                        'catFriendly': catFriendly
-                    },
+                    'image': require('./../Images/default_listing.png'),
+                    'tags': tagString,
                     'position': {
                         'lat': coordinates.lat,
                         'lng': coordinates.lng

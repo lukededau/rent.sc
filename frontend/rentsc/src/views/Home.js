@@ -5,7 +5,7 @@ import NavBar from '../common/NavBar';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
-
+console.log(API_KEY);
 const InitialMap = compose(
     withProps({
             googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places",

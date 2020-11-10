@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import firebase from '../firebase.js';
 import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
+import Geocode from 'react-geocode';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
+
+Geocode.setApiKey(API_KEY);
 
 const InitialMap = compose(
     withProps({
@@ -91,44 +94,53 @@ export class Home extends Component {
         this._fetchListings();
     }
 
-    _fetchListings() {
+    async _fetchListings() {
         this.allListings = [];
         const db = firebase.firestore();
-        db.collection('listings').get().then((listings) => {
-            listings.forEach((doc) => {
-                const {id, name, longitude, latitude} = doc.data();
-                const tags = {
-                    'dog friendly': true,
-                    'cat friendly': true
-                };
-                var verifiedTags = [];
-                Object.keys(tags).forEach(function (key) {
-                    if (tags[key]) {
-                        verifiedTags.push(key);
-                    }
-                })
-                var tagString = verifiedTags.join(", ");
+        const listings = await db.collection('listing').get();
+        var id = 1;
+
+        const responses = [];
+        listings.forEach((listing) => {
+            responses.push(new Promise(async (resolve) => {
+                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags: {dogFriendly, catFriendly}} = listing.data();
+                const coordinates = await this._convertAddressToCoordinates(address, city);
+                console.log(coordinates);
                 this.allListings.push({
-                    'id': id,
-                    'name': name,
-                    'position': {
-                        'lat': latitude,
-                        'lng': longitude
+                    'id': id++,
+                    'address': address,
+                    'city': city,
+                    'zip': zip,
+                    'description':description,
+                    'numBaths': numBaths,
+                    'numBedrooms': numBedrooms,
+                    'price': price,
+                    'size': size,
+                    'tags': {
+                        'dogFriendly': dogFriendly,
+                        'catFriendly': catFriendly
                     },
-                    'address': '417 Maple Street',
-                    'numBaths': "1",
-                    'numBedrooms': "1",
-                    'image': require('./../Images/default_listing.png'),
-                    'price': "1000",
-                    'size': "3",
-                    'description': 'Its a house',
-                    'tags': tagString
+                    'position': {
+                        'lat': coordinates.lat,
+                        'lng': coordinates.lng
+                    }
                 });
-            });
+                resolve();
+            }));
+        });
+
+        Promise.all(responses).then(() => {
+            console.log(this.allListings);
             this.setState({
                 markers: this.allListings
             });
         });
+    }
+
+    _convertAddressToCoordinates = async (address, city) => {
+        const response = await Geocode.fromAddress(address + ", " + city);
+        const { lat, lng } = response.results[0].geometry.location;
+        return { lat, lng };
     }
 
     onMarkerClick = (markerID) => {

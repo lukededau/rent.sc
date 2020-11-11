@@ -2,11 +2,14 @@ import React, { useRef, useState } from 'react'
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
+import firebase from '../firebase'
 
-export default function Login() {
+export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { login } = useAuth()
+    const firstNameRef = useRef()
+    const lastNameRef = useRef()
+    const { currentUser, signup } = useAuth()
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -17,10 +20,10 @@ export default function Login() {
         try {
             setError("")
             setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
+            await signup(emailRef.current.value, passwordRef.current.value, firstNameRef.current.value, lastNameRef.current.value)
             history.push("/userprofile")
         } catch {
-            setError("Failed to login")
+            setError("Failed to signup")
         }
         setLoading(false)
     }
@@ -29,9 +32,17 @@ export default function Login() {
         <>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-3">Login</h2>
+                    <h2 className="text-center mb-3">Signup</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={handleSubmit}>
+                        <Form.Group id="firstname">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control type="string" ref={firstNameRef} required></Form.Control>
+                        </Form.Group>
+                        <Form.Group id="lastname">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="string" ref={lastNameRef} required></Form.Control>
+                        </Form.Group>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" ref={emailRef} required></Form.Control>
@@ -40,12 +51,12 @@ export default function Login() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" ref={passwordRef} required></Form.Control>
                         </Form.Group>
-                        <Button disabled={loading} className="w-100" type="submit">Login</Button>
+                        <Button disabled={loading} className="w-100" type="submit">Signup</Button>
                     </Form>
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                Need an account? <Link to="/signup">Sign up</Link>
+                Already have an account? <Link to="/login">Login</Link>
             </div>
         </>
     )

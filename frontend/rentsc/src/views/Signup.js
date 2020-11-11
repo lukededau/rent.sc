@@ -2,11 +2,14 @@ import React, { useRef, useState } from 'react'
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
+import firebase from '../firebase'
 
 export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { signup } = useAuth()
+    const firstNameRef = useRef()
+    const lastNameRef = useRef()
+    const { currentUser, signup } = useAuth()
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -17,8 +20,8 @@ export default function Signup() {
         try {
             setError("")
             setLoading(true)
-            await signup(emailRef.current.value, passwordRef.current.value)
-            history.push("/")
+            await signup(emailRef.current.value, passwordRef.current.value, firstNameRef.current.value, lastNameRef.current.value)
+            history.push("/userprofile")
         } catch {
             setError("Failed to signup")
         }
@@ -32,6 +35,14 @@ export default function Signup() {
                     <h2 className="text-center mb-3">Signup</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={handleSubmit}>
+                        <Form.Group id="firstname">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control type="string" ref={firstNameRef} required></Form.Control>
+                        </Form.Group>
+                        <Form.Group id="lastname">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="string" ref={lastNameRef} required></Form.Control>
+                        </Form.Group>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" ref={emailRef} required></Form.Control>

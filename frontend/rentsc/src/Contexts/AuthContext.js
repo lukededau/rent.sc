@@ -11,8 +11,23 @@ export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
 
-    function signup(email, password) {
+    function signup(email, password, firstName, lastName) {
+        const db = firebase.firestore()
+
         return firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function(result) {
+                return result.user.updateProfile({
+                displayName: firstName+" "+lastName
+            })
+        })
+        .then(function(result) {
+            return db.collection('users').add({
+                firstname: firstName,
+                lastname: lastName,
+                email: email,
+                uid: firebase.auth().currentUser.uid
+            })
+        })
     }
 
     function login (email, password) {

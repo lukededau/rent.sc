@@ -19,13 +19,19 @@ export default function UserProfile() {
         }
     }
 
+    //console.log("displayName: " + currentUser.displayName + " uid: " + currentUser.uid)
+
     return (
         <>
             <Card>
                 <Card.Body>
                     <h2 className="text-center mb-4">Profile</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
+                    <strong>Name: </strong> {currentUser.displayName}
+                    <div></div>
                     <strong>Email: </strong> {currentUser.email}
+                    <div></div>
+                    <strong>UID: </strong> {currentUser.uid}
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">

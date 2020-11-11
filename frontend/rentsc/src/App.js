@@ -19,6 +19,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path="/listings" component={listing} />
         <Route exact path="/" component={Home} />
         <Route exact path="/create-listing" component={createListing} />
         <Route exact path="/signUp1" component={Signup1} />
@@ -28,7 +29,7 @@ function App() {
           <Route path="/login" component={Login} />
         </AuthProvider>
         <Route exact path="/signUp1" component={Signup} />
-        <Route exact path="/listings" component={listing} />
+
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

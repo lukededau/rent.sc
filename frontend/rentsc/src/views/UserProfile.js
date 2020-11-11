@@ -30,8 +30,6 @@ export default function UserProfile() {
                     <strong>Name: </strong> {currentUser.displayName}
                     <div></div>
                     <strong>Email: </strong> {currentUser.email}
-                    <div></div>
-                    <strong>UID: </strong> {currentUser.uid}
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">

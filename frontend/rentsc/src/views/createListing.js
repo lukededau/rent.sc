@@ -10,6 +10,8 @@ class ListingFields extends React.Component {
         super(props);
         this.state = {
             address: "",
+            city: "",
+            zip: "",
             price: "",
             numBedrooms: "",
             numBaths: "",

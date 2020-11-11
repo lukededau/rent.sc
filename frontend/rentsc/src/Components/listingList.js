@@ -3,8 +3,9 @@ import 'firebase/auth';
 import ListingObject from './listingObject.js'
 import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';
-// import Button from 'react-bootstrap/Button'
-// import { useState, ToggleButton, ButtonGroup } from 'react';
+import Button from 'react-bootstrap/Button'
+import { useState, ToggleButton, ButtonGroup } from 'react';
+
 
 class ListingList extends React.Component {
     constructor(props) {
@@ -134,7 +135,14 @@ class ListingList extends React.Component {
                 </div>
 
                 <div style={{ width: "30%", paddingLeft: "15px", display: "table" }}>
-
+                    {/* <Button variant="outline-dark">Dark</Button>
+                    <>
+                        <ButtonGroup toggle className="mb-2">
+                            <ToggleButton type="checkbox" variant="secondary" checked={checked} value="1"
+                                onChange={(e) => setChecked(e.currentTarget.checked)}> Checked
+                        </ToggleButton>
+                        </ButtonGroup>
+                    </> */}
                     <div style={{ display: "table-row", height: "100 %" }}>
                         <div style={{ backgroundColor: "", display: "table-cell" }}>
                             <Dropdown>

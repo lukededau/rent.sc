@@ -10,6 +10,8 @@ class ListingFields extends React.Component {
         super(props);
         this.state = {
             address: "",
+            city: "",
+            zip: "",
             price: "",
             numBedrooms: "",
             numBaths: "",
@@ -17,8 +19,8 @@ class ListingFields extends React.Component {
             description: ""
         };
         this.tags = {
-            'dog friendly': false,
-            'cat friendly': false
+            'dogFriendly': false,
+            'catFriendly': false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.storeTag = this.storeTag.bind(this);
@@ -51,58 +53,58 @@ class ListingFields extends React.Component {
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit} style={{paddingTop:'100px', paddingLeft:'50px', width:'25%'}}>
+            <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '25%' }}>
 
-            {/* Text Fields */}
-            <Form.Group controlId="address">
-                <Form.Label> Address </Form.Label>
-                <Form.Control type="text" placeholder="Address"/>
-            </Form.Group>
-            <Form.Group controlId="price">
-                <Form.Label> Price per Month </Form.Label>
-                <Form.Control type="text" placeholder="Price"/>
-            </Form.Group>
-            <Form.Group controlId="size">
-                <Form.Label> Maximum No. of Tenents </Form.Label>
-                <Form.Control type="text" placeholder="Max # Tenents"/>
-            </Form.Group>
-            <Form.Group controlId="numBedrooms">
-                <Form.Label> Number of Bedrooms </Form.Label>
-                <Form.Control type="text" placeholder="# of Bedrooms"/>
-            </Form.Group>
-            <Form.Group controlId="numBaths">
-                <Form.Label> Number of Baths </Form.Label>
-                <Form.Control type="text" placeholder="# of Bathrooms"/>
-            </Form.Group>
-            <Form.Group controlId="description">
-                <Form.Label> Description </Form.Label>
-                <Form.Control type="text" placeholder="Description"/>
-            </Form.Group>
+                {/* Text Fields */}
+                <Form.Group controlId="address">
+                    <Form.Label> Address </Form.Label>
+                    <Form.Control type="text" placeholder="Address" />
+                </Form.Group>
+                <Form.Group controlId="price">
+                    <Form.Label> Price per Month </Form.Label>
+                    <Form.Control type="text" placeholder="Price" />
+                </Form.Group>
+                <Form.Group controlId="size">
+                    <Form.Label> Maximum No. of Tenents </Form.Label>
+                    <Form.Control type="text" placeholder="Max # Tenents" />
+                </Form.Group>
+                <Form.Group controlId="numBedrooms">
+                    <Form.Label> Number of Bedrooms </Form.Label>
+                    <Form.Control type="text" placeholder="# of Bedrooms" />
+                </Form.Group>
+                <Form.Group controlId="numBaths">
+                    <Form.Label> Number of Baths </Form.Label>
+                    <Form.Control type="text" placeholder="# of Bathrooms" />
+                </Form.Group>
+                <Form.Group controlId="description">
+                    <Form.Label> Description </Form.Label>
+                    <Form.Control type="text" placeholder="Description" />
+                </Form.Group>
 
-            {/* Tags */}
-            <label> Tags </label> <br></br>
-            <div className="btn-toolbar">
-                <Button type="button" name="dog friendly" onClick={this.storeTag}>
-                    dog friendly
+                {/* Tags */}
+                <label> Tags </label> <br></br>
+                <div className="btn-toolbar">
+                    <Button type="button" name="dogFriendly" onClick={this.storeTag}>
+                        dog friendly
                 </Button>
-                <Button type="button" name="cat friendly" onClick={this.storeTag}>
-                    cat friendly
+                    <Button type="button" name="catFriendly" onClick={this.storeTag}>
+                        cat friendly
                 </Button>
-            </div> <br></br>
+                </div> <br></br>
 
-            <Button variant="primary" type="submit">
-                Submit
+                <Button variant="primary" type="submit">
+                    Submit
             </Button>
             </Form>
         );
     }
 }
 
-function createListing() {  
-    return(
+function createListing() {
+    return (
         <div>
-        <NavigationBar></NavigationBar>
-        <ListingFields />
+            <NavigationBar></NavigationBar>
+            <ListingFields />
         </div>
     );
 }

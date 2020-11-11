@@ -26,6 +26,8 @@ function App() {
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
         </AuthProvider>
+        <Route exact path="/signUp1" component={Signup} />
+        <Route exact path="/listings" component={listing} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

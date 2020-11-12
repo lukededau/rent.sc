@@ -1,8 +1,5 @@
 import React from 'react'
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
-import Navbar from 'react-bootstrap/Navbar'
-import Image from 'react-bootstrap/Image'
+import { Nav, Navbar, NavDropdown, Image } from 'react-bootstrap'
 import defaultProfileImage from '../Images/Default_profile_image.jpg'
 
 /*<NavDropdown 

@@ -1,6 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Button, Form } from 'react-bootstrap';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
@@ -13,8 +12,8 @@ class ListingFields extends React.Component {
             city: "",
             zip: "",
             price: "",
-            numBedrooms: "",
-            numBaths: "",
+            numBedrooms: 0,
+            numBaths: 0,
             size: "",
             description: ""
         };
@@ -40,8 +39,8 @@ class ListingFields extends React.Component {
             if (element.if !== "" && element.value !== "") {
                 this.state[element.id] = element.value
             }
-            console.log(this.state)
         }
+        console.log(this.state)
         this.state["tags"] = this.tags;
         await this.makeListing();
     }
@@ -70,11 +69,11 @@ class ListingFields extends React.Component {
                 </Form.Group>
                 <Form.Group controlId="numBedrooms">
                     <Form.Label> Number of Bedrooms </Form.Label>
-                    <Form.Control type="text" placeholder="# of Bedrooms" />
+                    <Form.Control type="integer" placeholder="# of Bedrooms" />
                 </Form.Group>
                 <Form.Group controlId="numBaths">
                     <Form.Label> Number of Baths </Form.Label>
-                    <Form.Control type="text" placeholder="# of Bathrooms" />
+                    <Form.Control type="integer" placeholder="# of Bathrooms" />
                 </Form.Group>
                 <Form.Group controlId="description">
                     <Form.Label> Description </Form.Label>

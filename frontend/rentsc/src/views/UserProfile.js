@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
+import CreateListing from './createListing'
 
 export default function UserProfile() {
     const [error, setError] = useState("")
@@ -19,7 +20,7 @@ export default function UserProfile() {
         }
     }
 
-    //console.log("displayName: " + currentUser.displayName + " uid: " + currentUser.uid)
+    console.log("current user: " + currentUser.uid)
 
     return (
         <>
@@ -36,6 +37,11 @@ export default function UserProfile() {
                 <Button variant="link" onClick={handleLogout}>
                     Logout
                 </Button>
+                <div>
+                    <Button href="create-listing">
+                        Create Listing
+                    </Button>
+                </div>
             </div>
         </>
     )

@@ -153,7 +153,7 @@ class ListingList extends React.Component {
                                 <Dropdown.Menu>
                                     <Dropdown.Item onClick={this.sortPrice} href="#/SortByPrice">Price</Dropdown.Item>
                                     <Dropdown.Item onClick={this.sortBedrooms} href="#/SortByBedrooms">Bedrooms</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortTenents} href="#/SortByTenents">Number of Tenents</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortTenents} href="#/SortByTenants">Number of Tenants</Dropdown.Item>
                                     <Dropdown.Item onClick={this.sortDogsFriendly} href="#/SortByDogFriendly">Dog Friendly</Dropdown.Item>
                                     <Dropdown.Item onClick={this.sortCatFriendly} href="#/SortByCatFriendly">Cat Friendly</Dropdown.Item>
                                 </Dropdown.Menu>

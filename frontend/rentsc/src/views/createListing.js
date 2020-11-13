@@ -65,7 +65,7 @@ class ListingFields extends React.Component {
                     <Form.Control type="text" placeholder="Price" />
                 </Form.Group>
                 <Form.Group controlId="size">
-                    <Form.Label> Maximum No. of Tenents </Form.Label>
+                    <Form.Label> Maximum No. of Tenants </Form.Label>
                     <Form.Control type="text" placeholder="Max # Tenents" />
                 </Form.Group>
                 <Form.Group controlId="numBedrooms">

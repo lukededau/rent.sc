@@ -31,7 +31,14 @@ export function AuthProvider({children}) {
     }
 
     function login (email, password) {
-        return firebase.auth().signInWithEmailAndPassword(email, password)
+        return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(function() {
+            console.log("set persistence")
+            return firebase.auth().signInWithEmailAndPassword(email, password)
+        })
+        .catch(function (error){
+            console.log("failed to set persistence")
+        }) 
     }
 
     function logout() {

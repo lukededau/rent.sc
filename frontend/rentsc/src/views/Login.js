@@ -22,7 +22,7 @@ export default function Login() {
         } catch {
             setError("Failed to login")
         }
-        setLoading(false)
+        //setLoading(false)
     }
 
     return (

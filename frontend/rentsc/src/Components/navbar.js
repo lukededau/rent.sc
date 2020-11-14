@@ -34,8 +34,8 @@ class NavigationBar extends React.Component{
                         
                     </Nav>
                         <Nav>
-                        <Nav.Link href="create-listing">Create a Listing</Nav.Link>
-                        <Nav.Link href="signUp">Create Account</Nav.Link>
+                        <Nav.Link href="create-listing" >Create a Listing</Nav.Link>
+                        <Nav.Link href="signup">Create Account</Nav.Link>
                         <NavDropdown 
                             title={
                                     <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
@@ -48,7 +48,7 @@ class NavigationBar extends React.Component{
                             <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
                             <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
                             <NavDropdown.Divider/>
-                            <NavDropdown.Item href="#user/user-profile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item href="userprofile">Profile</NavDropdown.Item>
                             <NavDropdown.Item href="#user/sign-out">Sign out</NavDropdown.Item>
 
                         </NavDropdown>
@@ -59,5 +59,6 @@ class NavigationBar extends React.Component{
         );
     }
 }
+
 export default NavigationBar
 

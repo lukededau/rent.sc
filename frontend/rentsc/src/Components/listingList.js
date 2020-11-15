@@ -5,7 +5,13 @@ import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button'
 import { useState, ToggleButton, ButtonGroup } from 'react';
-
+import { FcBiohazard } from 'react-icons/fc';
+import { GrSort } from 'react-icons/gr';
+import { GiMoneyStack } from "react-icons/gi";
+import { BiBed } from "react-icons/bi";
+import { IoIosPeople } from "react-icons/io";
+import { FaDog } from "react-icons/fa";
+import { FaCat } from "react-icons/fa";
 
 class ListingList extends React.Component {
     constructor(props) {
@@ -145,17 +151,19 @@ class ListingList extends React.Component {
                     </> */}
                     <div style={{ display: "table-row", height: "100 %" }}>
                         <div style={{ backgroundColor: "", display: "table-cell" }}>
+                            <h3><FcBiohazard /> </h3>
+                            <i class="fas fa-angry"></i>
                             <Dropdown>
                                 <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
-                                    Sort By
+                                    Sort By  <GrSort />
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item onClick={this.sortPrice} href="#/SortByPrice">Price</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortBedrooms} href="#/SortByBedrooms">Bedrooms</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortTenents} href="#/SortByTenants">Number of Tenants</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortDogsFriendly} href="#/SortByDogFriendly">Dog Friendly</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortCatFriendly} href="#/SortByCatFriendly">Cat Friendly</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortPrice} href="#/SortByPrice">Price <GiMoneyStack /></Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortBedrooms} href="#/SortByBedrooms">Bedrooms <BiBed /></Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortTenents} href="#/SortByTenants">Number of Tenants <IoIosPeople /></Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortDogsFriendly} href="#/SortByDogFriendly">Dog Friendly <FaDog /></Dropdown.Item>
+                                    <Dropdown.Item onClick={this.sortCatFriendly} href="#/SortByCatFriendly">Cat Friendly <FaCat /></Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>

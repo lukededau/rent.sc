@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React /*{ useEffect }*/ from 'react';
 import firebaseObj from '../firebase.js';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,75 +8,75 @@ import 'firebase/auth';
 
 class Signup extends React.Component {
 
-    handleSubmit(event){
+    handleSubmit(event) {
         const form = event.currentTarget;
         this.createUser(form.elements.formBasicEmail.value, form.elements.formBasicPassword.value,
             form.elements.formFirstName.value + " " + form.elements.formLastName.value)
 
-        
+
     }
-    componentWillMount(){
+    componentWillMount() {
         this.listener = firebaseObj.auth().onAuthStateChanged(user => {
             if (!user) {
             } else {
             }
         })
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.listener();
     }
-    
-    createUser(email, password, displayName){
-        firebaseObj.auth().createUserWithEmailAndPassword(email, password).then(function(result) {
+
+    createUser(email, password, displayName) {
+        firebaseObj.auth().createUserWithEmailAndPassword(email, password).then(function (result) {
             return result.user.updateProfile({
-              displayName: displayName
+                displayName: displayName
             })
-          }).catch(function(error) {
+        }).catch(function (error) {
             console.log(error);
-          });
+        });
     }
-    render(){
-   
+    render() {
+
         return (
 
             <div>
-            <NavigationBar></NavigationBar>
-            
-            <Form onSubmit={(event) => this.handleSubmit(event)} style={{paddingTop:'100px', paddingLeft:'50px', width:'25%'}}>
-            <Form.Group controlId="formFirstName">
-                <Form.Label>
-                    First Name
+                <NavigationBar></NavigationBar>
+
+                <Form onSubmit={(event) => this.handleSubmit(event)} style={{ paddingTop: '100px', paddingLeft: '50px', width: '25%' }}>
+                    <Form.Group controlId="formFirstName">
+                        <Form.Label>
+                            First Name
                 </Form.Label>
-                <Form.Control type="text" placeholder="First name"/>
-            </Form.Group>
-            <Form.Group controlId="formLastName">
-                <Form.Label>
-                    Last Name
+                        <Form.Control type="text" placeholder="First name" />
+                    </Form.Group>
+                    <Form.Group controlId="formLastName">
+                        <Form.Label>
+                            Last Name
                 </Form.Label>
-                <Form.Control type="text" placeholder="Last name"/>
-            </Form.Group>
-            <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-            <Form.Text className="text-muted">
-                We'll never share your email with anyone else, but EVBallsofSteal420(whaatpenguin).
+                        <Form.Control type="text" placeholder="Last name" />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Text className="text-muted">
+                            We'll never share your email with anyone else, but EVBallsofSteal420(whaatpenguin).
             </Form.Text>
-            </Form.Group>
-            <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-            Submit
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicCheckbox">
+                        <Form.Check type="checkbox" label="Check me out" />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Submit
             </Button>
-            </Form>
+                </Form>
             </div>
         )
     }
-    
+
 }
 
 export default Signup;

@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
+import { FaDog } from "react-icons/fa";
+import { FaCat } from "react-icons/fa";
 
 class ListingFields extends React.Component {
     constructor(props) {
@@ -85,11 +87,12 @@ class ListingFields extends React.Component {
                 <label> Tags </label> <br></br>
                 <div className="btn-toolbar">
                     <Button type="button" name="dogFriendly" onClick={this.storeTag}>
-                        dog friendly
-                </Button>
+                        Dog friendly <FaDog />
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
                     <Button type="button" name="catFriendly" onClick={this.storeTag}>
-                        cat friendly
-                </Button>
+                        Cat friendly  <FaCat />
+                    </Button>
                 </div> <br></br>
 
                 <Button variant="primary" type="submit">

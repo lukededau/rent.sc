@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react'
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
-import firebase from '../firebase'
+// import firebase from '../firebase'
 
 export default function Signup() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const firstNameRef = useRef()
     const lastNameRef = useRef()
-    const { currentUser, signup } = useAuth()
+    const { /*currentUser,*/ signup } = useAuth()
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")

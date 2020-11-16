@@ -1,7 +1,7 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+// import Container from 'react-bootstrap/Container';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
 import Home from './Home.js'
 import NavigationBar from '../Components/navbar.js'
 import ListingList from '../Components/listingList.js'
@@ -18,24 +18,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 </Container>
 */
 
-class listing extends React.Component{
-    render(){
+class listing extends React.Component {
+    render() {
         //document.body.style.overflow = 'hidden'; // disable pagewise scroll
-        return(
+        return (
             <div>
-                <NavigationBar/>
-                <div style={{paddingTop: "60px"}}>
-                <div style={{width: "50%", display: "inline-block"}}>    
-                <ListingList/>
-                </div>
-                <div style={{top: "0px", position: "fixed", width: "50%", display: "inline-block"}}>
-                <Home />
-                </div>
-                
+                <NavigationBar />
+                <div style={{ paddingTop: "60px" }}>
+                    <div style={{ width: "50%", display: "inline-block" }}>
+                        <ListingList />
+                    </div>
+                    <div style={{ top: "0px", position: "fixed", width: "50%", display: "inline-block" }}>
+                        <Home />
+                    </div>
+
                 </div>
 
             </div>
-            
+
         );
     }
 }

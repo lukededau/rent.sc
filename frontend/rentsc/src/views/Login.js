@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react'
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
+import { FiLogIn } from "react-icons/fi";
+
 
 export default function Login() {
     const emailRef = useRef()
@@ -31,7 +33,7 @@ export default function Login() {
                 <Card.Body>
                     <h2 className="text-center mb-3">Login</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
-                    <Form onSubmit={handleSubmit}>
+                    <Form style={{ paddingLeft: "15px", paddingRight: "15px" }} onSubmit={handleSubmit}>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" ref={emailRef} required></Form.Control>
@@ -40,7 +42,7 @@ export default function Login() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" ref={passwordRef} required></Form.Control>
                         </Form.Group>
-                        <Button disabled={loading} className="w-100" type="submit">Login</Button>
+                        <Button disabled={loading} className="w-100" type="submit">Login <FiLogIn /></Button>
                     </Form>
                 </Card.Body>
             </Card>

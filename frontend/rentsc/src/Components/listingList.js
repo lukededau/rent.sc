@@ -3,29 +3,41 @@ import 'firebase/auth';
 import ListingObject from './listingObject.js'
 import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';
-import Button from 'react-bootstrap/Button'
-import { useState, ToggleButton, ButtonGroup } from 'react';
-import { FcBiohazard } from 'react-icons/fc';
+// import Button from 'react-bootstrap/Button'
+// import { useState, ToggleButton, ButtonGroup } from 'react';
+// import { FcBiohazard } from 'react-icons/fc';
 import { GrSort } from 'react-icons/gr';
 import { GiMoneyStack } from "react-icons/gi";
 import { BiBed } from "react-icons/bi";
 import { IoIosPeople } from "react-icons/io";
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
+// import { ToggleButton } from 'react-bootstrap';
+// import ReactDOM from 'react-dom'
 
 class ListingList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            listings: []
+            listings: [],
+            isToggleOn: true
+
         }
         this.sortPrice = this.sortPrice.bind(this);
         this.sortBedrooms = this.sortBedrooms.bind(this);
         this.sortTenents = this.sortTenents.bind(this);
         this.sortDogsFriendly = this.sortDogsFriendly.bind(this);
         this.sortCatFriendly = this.sortCatFriendly.bind(this);
+        this.handleClick = this.handleClick.bind(this);
 
     }
+
+    handleClick() {
+        this.setState(state => ({
+            isToggleOn: !state.isToggleOn
+        }));
+    }
+
     componentDidMount() {
         axios.get('http://127.0.0.1:8000/app/getAllListings')
             .then((response) => {
@@ -36,78 +48,114 @@ class ListingList extends React.Component {
 
     }
     sortPrice() {
+        var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (this.state.listings[k].price > this.state.listings[k + 1].price) {
-                    var temp = this.state.listings[k]
-                    this.state.listings[k] = this.state.listings[k + 1]
-                    this.state.listings[k + 1] = temp
+
+                    // var temp = this.state.listings[k]
+
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+
+                    // this.setState(state => ({
+                    //     listings[k] = listings[k + 1]
+                    // }));
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
                 }
             }
         }
     }
 
     sortTenents() {
+        var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (this.state.listings[k].size < this.state.listings[k + 1].size) {
-                    var temp = this.state.listings[k]
-                    this.state.listings[k] = this.state.listings[k + 1]
-                    this.state.listings[k + 1] = temp
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
                 }
             }
         }
     }
 
     sortBedrooms() {
+        var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (Number(this.state.listings[k].numBedrooms) < Number(this.state.listings[k + 1].numBedrooms)) {
-                    var temp = this.state.listings[k]
-                    this.state.listings[k] = this.state.listings[k + 1]
-                    this.state.listings[k + 1] = temp
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
                 }
             }
         }
     }
 
     sortBathrooms() {
+        var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (Number(this.state.listings[k].numBaths) < Number(this.state.listings[k + 1].numBaths)) {
-                    var temp = this.state.listings[k]
-                    this.state.listings[k] = this.state.listings[k + 1]
-                    this.state.listings[k + 1] = temp
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
                 }
             }
         }
     }
 
     sortDogsFriendly() {
+        var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.dogFriendly) {
-                    var temp = this.state.listings[k]
-                    this.state.listings[k] = this.state.listings[k + 1]
-                    this.state.listings[k + 1] = temp
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
                 }
             }
         }
     }
 
     sortCatFriendly() {
+        var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.catFriendly) {
-                    var temp = this.state.listings[k]
-                    this.state.listings[k] = this.state.listings[k + 1]
-                    this.state.listings[k + 1] = temp
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
                 }
             }
         }
@@ -140,19 +188,36 @@ class ListingList extends React.Component {
                     {/* <Button variant="outline-dark" onClick={() => this.unCheck()}>Dog Friendly</Button> */}
                 </div>
 
-                <div style={{ width: "30%", paddingLeft: "15px", display: "table" }}>
-                    {/* <Button variant="outline-dark">Dark</Button>
-                    <>
-                        <ButtonGroup toggle className="mb-2">
-                            <ToggleButton type="checkbox" variant="secondary" checked={checked} value="1"
-                                onChange={(e) => setChecked(e.currentTarget.checked)}> Checked
-                        </ToggleButton>
-                        </ButtonGroup>
-                    </> */}
+                <div style={{ width: "100%", paddingLeft: "15px", display: "table" }}>
+
                     <div style={{ display: "table-row", height: "100 %" }}>
                         <div style={{ backgroundColor: "", display: "table-cell" }}>
-                            <h3><FcBiohazard /> </h3>
-                            <i class="fas fa-angry"></i>
+                            {/* <h3><FcBiohazard /> </h3> */}
+                            {/* <Button disabled variant="outline-dark" id="dropdown-basic">
+                                Sort By <GrSort /> :
+                            </Button> */}
+                            {/* <ToggleButton>here</ToggleButton> */}
+                            {/* <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <GiMoneyStack /> : 'Price'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <BiBed /> : 'Bedrooms'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <IoIosPeople /> : 'Tenants'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <FaDog /> : 'Dog Friendly'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <FaCat /> : 'Cat Friendly'}
+                            </Button> */}
+
                             <Dropdown>
                                 <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
                                     Sort By  <GrSort />
@@ -172,10 +237,13 @@ class ListingList extends React.Component {
 
 
 
+
                 </div>
+
                 {this.renderListing()}
             </div >
         );
     }
 }
+
 export default ListingList

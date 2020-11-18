@@ -30,8 +30,15 @@ export function AuthProvider({ children }) {
             })
     }
 
-    function login(email, password) {
-        return firebase.auth().signInWithEmailAndPassword(email, password)
+    function login (email, password) {
+        return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(function() {
+            console.log("set persistence")
+            return firebase.auth().signInWithEmailAndPassword(email, password)
+        })
+        .catch(function (error){
+            console.log("failed to set persistence")
+        })
     }
 
     function logout() {
@@ -39,12 +46,14 @@ export function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
+            console.log("onauthstatechange: " + user)
+
             setCurrentUser(user)
             setLoading(false)
         })
 
-        return unsubscribe
+        //return unsubscribe
     }, []);
 
     const value = {

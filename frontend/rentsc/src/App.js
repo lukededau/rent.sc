@@ -19,16 +19,14 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/listings" component={listing} />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/create-listing" component={createListing} />
-        <Route exact path="/signUp1" component={Signup1} />
         <AuthProvider>
           <PrivateRoute exact path="/userprofile" component={UserProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
+          <Route exact path="/create-listing" component={createListing} />
+          <Route exact path="/listings" component={listing} />
+          <Route exact path="/" component={Home} />
         </AuthProvider>
-        <Route exact path="/signUp1" component={Signup} />
 
         <Route component={PageNotFound} />
       </Switch>

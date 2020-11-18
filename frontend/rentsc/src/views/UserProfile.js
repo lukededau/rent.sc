@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Card, Button, Alert } from 'react-bootstrap'
 import NavigationBar from '../Components/navbar'
 import { useAuth } from '../Contexts/AuthContext'
-import { Link, useHistory } from 'react-router-dom'
+import { /*Link,*/ useHistory } from 'react-router-dom'
 
 export default function UserProfile() {
     const [error, setError] = useState("")

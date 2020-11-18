@@ -96,7 +96,7 @@ export class Home extends Component {
         listings.forEach((listing) => {
             responses.push(new Promise(async (resolve) => {
                 const {address, city, zip, description, numBaths, numBedrooms, price, size, tags} = listing.data();
-                
+
                 // Create tag string
                 var verifiedTags = [];
                 Object.keys(tags).forEach(function (key) {
@@ -107,30 +107,32 @@ export class Home extends Component {
                 var tagString = verifiedTags.join(", ");
 
                 const coordinates = await this._convertAddressToCoordinates(address, city);
-                console.log(coordinates);
-                this.allListings.push({
-                    'id': id++,
-                    'address': address,
-                    'city': city,
-                    'zip': zip,
-                    'description':description,
-                    'numBaths': numBaths,
-                    'numBedrooms': numBedrooms,
-                    'price': price,
-                    'size': size,
-                    'image': require('./../Images/default_listing.png'),
-                    'tags': tagString,
-                    'position': {
-                        'lat': coordinates.lat,
-                        'lng': coordinates.lng
-                    }
-                });
+                // console.log(coordinates);
+                if(coordinates.lat !== 0 && coordinates.lng !== 0) {
+                    this.allListings.push({
+                        'id': id++,
+                        'address': address,
+                        'city': city,
+                        'zip': zip,
+                        'description':description,
+                        'numBaths': numBaths,
+                        'numBedrooms': numBedrooms,
+                        'price': price,
+                        'size': size,
+                        'image': require('./../Images/default_listing.png'),
+                        'tags': tagString,
+                        'position': {
+                            'lat': coordinates.lat,
+                            'lng': coordinates.lng
+                        }
+                    });
+                }
                 resolve();
             }));
         });
 
         Promise.all(responses).then(() => {
-            console.log(this.allListings);
+            // console.log(this.allListings);
             this.setState({
                 markers: this.allListings
             });
@@ -138,8 +140,16 @@ export class Home extends Component {
     }
 
     _convertAddressToCoordinates = async (address, city) => {
-        const response = await Geocode.fromAddress(address + ", " + city);
-        const { lat, lng } = response.results[0].geometry.location;
+        
+        let lat = 0, lng = 0;
+        try{
+            const response = await Geocode.fromAddress(address + ", " + city);
+            lat = response.results[0].geometry.location.lat;
+            lng = response.results[0].geometry.location.lng;
+        }
+        catch(e) {
+            
+        }
         return { lat, lng };
     }
 

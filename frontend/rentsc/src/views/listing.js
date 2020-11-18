@@ -16,24 +16,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 </Container>
 */
 
-class listing extends React.Component{
-    render(){
+class listing extends React.Component {
+    render() {
         //document.body.style.overflow = 'hidden'; // disable pagewise scroll
-        return(
+        return (
             <div>
-                <NavigationBar/>
-                <div style={{paddingTop: "60px"}}>
-                <div style={{width: "50%", display: "inline-block"}}>    
-                <ListingList/>
-                </div>
-                <div style={{top: "0px", position: "fixed", width: "50%", display: "inline-block"}}>
-                <Home />
-                </div>
-                
+                <NavigationBar />
+                <div style={{ paddingTop: "60px" }}>
+                    <div style={{ width: "50%", display: "inline-block" }}>
+                        <ListingList />
+                    </div>
+                    <div style={{ top: "0px", position: "fixed", width: "50%", display: "inline-block" }}>
+                        <Home />
+                    </div>
+
                 </div>
 
             </div>
-            
+
         );
     }
 }

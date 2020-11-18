@@ -46,12 +46,14 @@ export function AuthProvider({children}) {
     }
 
     useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
+            console.log("onauthstatechange: " + user)
+
             setCurrentUser(user)
             setLoading(false)
         })
 
-        return unsubscribe
+        //return unsubscribe
     }, []);
 
     const value = {

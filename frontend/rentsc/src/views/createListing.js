@@ -28,8 +28,8 @@ class ListingFields extends React.Component {
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
 
-        if(firebase.auth().currentUser != null)
-            console.log(firebase.auth().currentUser.uid)
+        //if(firebase.auth().currentUser != null)
+            //console.log(firebase.auth().currentUser.uid)
     }
 
     storeTag(event) {

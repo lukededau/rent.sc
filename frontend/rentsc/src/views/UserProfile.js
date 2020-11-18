@@ -24,7 +24,7 @@ export default function UserProfile() {
         history.push("/create-listing")
     }
 
-    console.log("current user: " + currentUser.uid)
+    //console.log("current user: " + currentUser.uid)
 
     return (
         <>

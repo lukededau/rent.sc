@@ -14,6 +14,7 @@ import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
+import Messages from './views/Messages'
 
 function App() {
   return (
@@ -23,13 +24,13 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/create-listing" component={createListing} />
         <Route exact path="/signUp1" component={Signup1} />
+        <Route exact path="/messages" component={Messages} />
         <AuthProvider>
           <PrivateRoute exact path="/userprofile" component={UserProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
         </AuthProvider>
         <Route exact path="/signUp1" component={Signup} />
-
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

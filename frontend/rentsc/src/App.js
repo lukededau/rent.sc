@@ -14,6 +14,7 @@ import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
+import selectAppointmentTimes from './views/selectAppointmentTimes';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route exact path="/create-listing" component={createListing} />
           <Route exact path="/listings" component={listing} />
+          <Route exact path="/select-appointment-times" component={selectAppointmentTimes} />
           <Route exact path="/" component={Home} />
         </AuthProvider>
 

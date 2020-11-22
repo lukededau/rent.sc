@@ -11,7 +11,7 @@ const ListItem = ({value}) => (
 const List = ({dates}) => (
     <ListGroup>
         {
-            dates.map((date) => <ListItem value={date}/>)
+            Object.keys(dates).map((date, none) => <ListItem value={date}/>)
         }
     </ListGroup>
 );
@@ -20,12 +20,15 @@ class ChooseAvailability extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            availableDates: [],
+            availableDates: {},
         }
-        this.name = firebase.auth().currentUser.displayName;
+        this.state.uid = firebase.auth().currentUser.uid;
+        this.state.email = firebase.auth().currentUser.email;
+        this.state.username = firebase.auth().currentUser.displayName;
 
         this.onClickDay = this.onClickDay.bind(this);
         this.formatDate = this.formatDate.bind(this);
+        this.onButtonClick = this.onButtonClick.bind(this);
     }
 
     formatDate(value) {
@@ -37,14 +40,22 @@ class ChooseAvailability extends React.Component {
 
     onClickDay(value) {
         const date = this.formatDate(value);
-        const index = this.state.availableDates.indexOf(date);
-        if (index > -1) {
-            this.state.availableDates.splice(index, 1);
+        if (date in this.state.availableDates) {
+            delete this.state.availableDates[date];
         }
         else {
-            this.state.availableDates.push(date);
+            let copyState = this.state;
+            copyState.availableDates[date] = null;
+            this.setState(copyState);
         }
         this.setState(this.state);
+    }
+
+    async onButtonClick() {
+        const db = firebase.firestore();
+        const res = await db.collection('availability').doc().set(this.state);
+        console.log(res);
+        window.location.href='/userprofile';
     }
 
     render() {
@@ -56,7 +67,7 @@ class ChooseAvailability extends React.Component {
                         allowPartialRange={true}
                     />
                     <div style={{float: "left", paddingTop: "20px"}}>
-                        <Button>
+                        <Button onClick={this.onButtonClick}>
                             Submit Dates
                         </Button>
                     </div>

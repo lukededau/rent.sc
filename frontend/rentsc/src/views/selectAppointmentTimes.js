@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationBar from '../Components/navbar';
 import ChooseAvailability from '../Components/chooseAvailability'
 
-class appointment extends React.Component {
+class selectAppointmentTimes extends React.Component {
     render() {
         return (
             <div>
@@ -15,4 +15,4 @@ class appointment extends React.Component {
     }
 }
 
-export default appointment;
+export default selectAppointmentTimes;

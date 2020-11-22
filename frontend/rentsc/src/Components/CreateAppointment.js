@@ -64,7 +64,7 @@ class CreateAppointment extends React.Component {
     render() {
         return (
             <div>
-                <h5 style={{paddingLeft: "20px"}}>Choose a date to schedule an appointment:</h5>
+                <h5 style={{paddingLeft: "20px", paddingBottom: "15px"}}>Choose a date to schedule an appointment:</h5>
                 <div style={{float: "left", paddingLeft: "20px"}}>
                     <Calendar 
                         onClickDay={this.onClickDay}

@@ -61,6 +61,7 @@ class ChooseAvailability extends React.Component {
     render() {
         return (
             <div>
+                <h5 style={{paddingLeft: "20px", paddingBottom: "15px"}}>Select your availability for possible appointments:</h5>
                 <div style={{float: "left", paddingLeft: "20px"}}>
                     <Calendar 
                         onClickDay={this.onClickDay}
@@ -73,7 +74,7 @@ class ChooseAvailability extends React.Component {
                     </div>
                 </div>
                 <div style={{float: "left", paddingLeft: "20px"}}>
-                    <h2>Selected Dates:</h2>
+                    <h4>Selected Dates:</h4>
                     <List dates={this.state.availableDates}/>
                 </div>
             </div>

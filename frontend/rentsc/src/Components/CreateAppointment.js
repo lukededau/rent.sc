@@ -10,11 +10,14 @@ function ChooseAlert(props) {
     if (props.isDateAvailable == null) {
         return <Alert variant="secondary">No date has been selected.</Alert>
     }
-    else if (props.isDateAvailable) {
+    else if (props.isDateAvailable === "error") {
+        return <Alert variant="secondary">{firstName} has not provided any availability at this time. Please message {firstName} to start setting up an appointment.</Alert>
+    }
+    else if (props.isDateAvailable === true) {
         return (
             <div>
                 <Alert variant="success">{firstName} is available on {props.date}.</Alert>
-                <Button>Send Message</Button>
+                <Button>Send Notification</Button>
             </div>
         )
     }
@@ -49,14 +52,20 @@ class CreateAppointment extends React.Component {
         this.state.date = this.formatDate(value);
         const db = firebase.firestore();
         const availabilityRef = db.collection('availability')
-        const queriedAvailability = await availabilityRef.where('uid', '==', this.state.uid).get();
-        var availability = queriedAvailability.docs[0].data();
 
-        if (this.state.date in availability["availableDates"]) {
-            this.state.availableDate = true;
+        var availability = null;
+        const doc = await availabilityRef.doc(this.state.uid).get();
+        if (doc.exists) {
+            availability = doc.data();
+            if (this.state.date in availability["availableDates"]) {
+                this.state.availableDate = true;
+            }
+            else {
+                this.state.availableDate = false;
+            }
         }
         else {
-            this.state.availableDate = false;
+            this.state.availableDate = "error";
         }
         this.setState(this.state);
     }

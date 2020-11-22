@@ -53,8 +53,9 @@ class ChooseAvailability extends React.Component {
 
     async onButtonClick() {
         const db = firebase.firestore();
-        const res = await db.collection('availability').doc().set(this.state);
-        console.log(res);
+        const availabilityRef = db.collection('availability')
+        const updateRes = await availabilityRef.doc(this.state.uid).update(this.state);
+        console.log(updateRes);
         window.location.href='/userprofile';
     }
 

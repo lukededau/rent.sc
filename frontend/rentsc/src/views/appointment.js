@@ -7,7 +7,7 @@ class appointment extends React.Component {
         return (
             <div>
                 <NavigationBar />
-                <div style={{ paddingTop: "90px" }}>
+                <div style={{ paddingTop: "100px" }}>
                     <ChooseAvailability />
                 </div>
             </div>

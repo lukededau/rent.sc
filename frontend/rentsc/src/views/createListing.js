@@ -20,7 +20,8 @@ class ListingFields extends React.Component {
             description: "",
             uid: "",
             email: "",
-            username: ""
+            username: "",
+            reviews: [],
         };
         this.tags = {
             'dogFriendly': false,
@@ -31,7 +32,7 @@ class ListingFields extends React.Component {
         this.makeListing = this.makeListing.bind(this);
 
         //if(firebase.auth().currentUser != null)
-            //console.log(firebase.auth().currentUser.uid)
+        //console.log(firebase.auth().currentUser.uid)
     }
 
     storeTag(event) {

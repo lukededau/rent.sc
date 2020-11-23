@@ -6,7 +6,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
-
+import Button from 'react-bootstrap/Button'
+import {
+    BrowserRouter as Router,
+    Link,
+} from 'react-router-dom';
+import PropertyReview from '/Users/Josue/Desktop/rent.sc/frontend/rentsc/src/views/propertyReview.js'
+import Review_Owner from '/Users/Josue/Desktop/rent.sc/frontend/rentsc/src/views/ownerReview';
 
 import homeland from '../Images/tiananmen_square.jpeg'
 import homeland_master from '../Images/tiananmen_square_master.jpg'
@@ -24,9 +30,44 @@ class ListingObject extends React.Component {
             size: "",
             numBedrooms: "",
             tags: {},
-            index: 0
+            reviews: [],
+            index: 0,
+            showPropertyReview: false,
+            showOwnerReview: false,
         }
+        this.propertyReview = "ReviewProperty"
+        this.ownerReview = "ReviewOwner"
     }
+    handleC(p) {
+        var l = <PropertyReview {...p} />
+        this.setState(state => ({
+            showPropertyReview: !state.showPropertyReview
+        }));
+        this.setState(state => ({
+            showOwnerReview: false
+        }));
+        // <PropertyReview/>
+        console.log(l)
+    }
+    handleR(p) {
+        var l = <PropertyReview {...p} />
+        this.setState(state => ({
+            showOwnerReview: !state.showOwnerReview
+        }));
+        this.setState(state => ({
+            showPropertyReview: false
+        }));
+        // <PropertyReview/>
+        console.log(l)
+    }
+
+    renderPropertyReview(p) {
+        console.log("p", p)
+        var l = <PropertyReview {...p} />
+        console.log("L:", l)
+        return l
+    }
+
     renderTags() {
         var tags = "";
 
@@ -41,6 +82,7 @@ class ListingObject extends React.Component {
     render() {
         return (
             <div>
+
                 <Container fluid
                     style={{ paddingTop: "60px" }}
                 >
@@ -65,12 +107,27 @@ class ListingObject extends React.Component {
                                 <ListGroup.Item style={{ fontSize: "14px", fontWeight: "200" }}>{this.renderTags()}</ListGroup.Item>
                                 <ListGroup.Item style={{ fontWeight: "bold", fontSize: "18px", textAlign: "right", position: "absolute", bottom: 0, right: 0 }}>${this.props.price} / month</ListGroup.Item>
                             </ListGroup>
+
                         </Col>
 
                     </Row>
+                    <br></br>
+                    <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">review place  {this.props.address}</Button>
+                    &nbsp;&nbsp;&nbsp;
+                    <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">review owner {this.props.username} </Button>
+                    {/* href={this.ownerReview + "#" + this.props.username} */}
+                    {/* <Link to={{ ReviewProperty: `/${this.props.testvalue}`}} params={{ testvalue: "hello" }}>Create Idea</Link> */}
+                    {/* <Link to={`/ReviewProperty/#${this.props.address}`} >review property {this.props.address}</Link> */}
+                    <div>
+                        {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
+                        {this.state.showOwnerReview ? <Review_Owner /> : ''}
+                    </div>
+
+
                 </Container>
                 <hr></hr>
-            </div>
+            </div >
+
         );
     }
 }

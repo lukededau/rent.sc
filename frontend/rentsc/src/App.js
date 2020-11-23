@@ -14,6 +14,8 @@ import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
+import propertyReview from './views/propertyReview';
+import Review_Owner from './views/ownerReview';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route exact path="/create-listing" component={createListing} />
           <Route exact path="/listings" component={listing} />
           <Route exact path="/" component={Home} />
+          <Route exact path="/ReviewProperty" component={propertyReview} />
+          <Route exact path="/ReviewOwner" component={Review_Owner} />
         </AuthProvider>
 
         <Route component={PageNotFound} />

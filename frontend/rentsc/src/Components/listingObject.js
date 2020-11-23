@@ -39,7 +39,7 @@ class ListingObject extends React.Component {
         this.ownerReview = "ReviewOwner"
     }
     handleC(p) {
-        var l = <PropertyReview {...p} />
+        var l = <PropertyReview pr={p} />
         this.setState(state => ({
             showPropertyReview: !state.showPropertyReview
         }));
@@ -47,7 +47,7 @@ class ListingObject extends React.Component {
             showOwnerReview: false
         }));
         // <PropertyReview/>
-        console.log(l)
+        // console.log(l)
     }
     handleR(p) {
         var l = <PropertyReview {...p} />
@@ -115,9 +115,7 @@ class ListingObject extends React.Component {
                     <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">review place  {this.props.address}</Button>
                     &nbsp;&nbsp;&nbsp;
                     <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">review owner {this.props.username} </Button>
-                    {/* href={this.ownerReview + "#" + this.props.username} */}
-                    {/* <Link to={{ ReviewProperty: `/${this.props.testvalue}`}} params={{ testvalue: "hello" }}>Create Idea</Link> */}
-                    {/* <Link to={`/ReviewProperty/#${this.props.address}`} >review property {this.props.address}</Link> */}
+
                     <div>
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
                         {this.state.showOwnerReview ? <Review_Owner /> : ''}

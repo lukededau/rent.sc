@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
 import 'firebase/auth';
 import { MdRateReview } from "react-icons/md";
+import axios from 'axios'
 
 class PropertyReview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            lis_tings: [],
             uid: "",
             email: "",
             username: "",
@@ -22,11 +24,44 @@ class PropertyReview extends React.Component {
         // this.updateListing = this.updateListing.bind(this);
 
     }
-    print() {
-        console.log(window.location.href)
-        // console.log(this.props)
+    // async getMarker() {
+    //     const db = firebase.firestore();
+    //     const snapshot = await db.collection('listings')
+    //     console.log("snapshot", snapshot)
+    //     snapshot.get().then((querySnapshot) => {
+    //         const tempDoc = querySnapshot.docs.map((doc) => {
+    //             return { id: doc.id, ...doc.data() }
+    //         })
+    //         console.log(tempDoc)
+    //     })
+    //     // return snapshot.get().docs.map(doc => doc.data());
+    // }
+
+    componentDidMount() {
+        // console.log("test", this.listings)
+        axios.get('http://127.0.0.1:8000/app/getAllListings')
+            .then((response) => {
+                var listing_stream = response.data;
+                this.setState({ lis_tings: listing_stream })
+            })
+        // console.log("test1", this.listings)
+
+    }
+
+    updateState() {
+
+        console.log("prop2", this.props)
+        // const db = firebase.firestore();
+        // var docs = db.collection(u'listings').where(u'size', u'==', 5).stream()
+        // var docs1 = this.getMarker()
+        // console.log(docs1)
+        console.log("docs1", this.state)
+        // var x = db.collection('listings').document()
+        // console.log(x)
+
     }
     async handleSubmit(event) {
+        this.updateState();
         event.preventDefault();
 
 
@@ -40,6 +75,7 @@ class PropertyReview extends React.Component {
     }
 
     updateListing() {
+        console.log("prop", this.props)
         const db = firebase.firestore();
         var post = db.collection('listings').doc()
         console.log("Post", post)
@@ -47,100 +83,73 @@ class PropertyReview extends React.Component {
         console.log("Post", post)
         // db.collection('listing').doc().set(this.state)
     }
-    // console.log(firebase.auth().currentUser.uid, firebase.auth().currentUser.email, firebase.auth().currentUser.displayName)
-    // storeTag(event) {
-    //     this.tags[event.target.name] = !this.tags[event.target.name];
-    // }
-
-    // async handleSubmit(event) {
-    //     event.preventDefault();
-    //     const form = event.currentTarget;
-    //     for (var i = 0; i < form.elements.length; i++) {
-    //         var element = form.elements[i];
-    //         //console.log(element.id + " " + element.value);
-    //         if (element.if !== "" && element.value !== "") {
-    //             this.state[element.id] = element.value
-    //         }
-    //     }
-
-    //     // Add user info
-    //     this.state.uid = firebase.auth().currentUser.uid
-    //     this.state.email = firebase.auth().currentUser.email
-    //     this.state.username = firebase.auth().currentUser.displayName
-
-    //     this.state["tags"] = this.tags;
-    //     await this.makeListing();
-    // }
-
-    // makeListing() {
-    //     const db = firebase.firestore();
-    //     db.collection('listing').doc().set(this.state)
-    // }
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit} style={{ paddingTop: '5%', paddingLeft: '2%', width: '35%' }}>
+            <Form onSubmit={this.handleSubmit} >
+                <h4 style={{ paddingTop: '3%', paddingLeft: '2%', width: '50%' }}>
+                    <Form.Group controlId="address">
+                        <Form.Label> Write a review <MdRateReview /></Form.Label>
+                        <Form.Control type="text" as="textarea" rows={4} placeholder="Review..." />
+                    </Form.Group>
+                </h4>
 
-                <Form.Group controlId="address">
-                    <Form.Label> Write a review <MdRateReview /></Form.Label>
-                    <Form.Control type="text" as="textarea" rows={3} placeholder="Review..." />
-                </Form.Group>
-                <Form.Label>Accuracy</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-                <Form.Label>Location</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-                <Form.Label>Value</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-                <Form.Label>Cleanliness</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
+                <h6 style={{ paddingTop: '-5%', paddingLeft: '2%', width: '10%' }}>
+                    <Form.Label >Accuracy</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                    <Form.Label>Location</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                    <Form.Label>Value</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                    <Form.Label>Cleanliness</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                </h6>
                 <br></br>
                 {/*Accuracy Location Value Cleanliness*/}
-                <Button variant="primary" onClick={this.print}>
-                    Here
-                </Button>
+                {this.updateState()}
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-            </Form>
+            </Form >
         );
     }
 }
 
-function propertyReview() {
-    return (
-        <div>
-            <NavigationBar></NavigationBar>
-            <PropertyReview />
-        </div>
-    );
-}
+// function propertyReview() {
+//     return (
+//         <div>
+//             <NavigationBar></NavigationBar>
+//             <PropertyReview />
+//         </div>
+//     );
+// }
 
-export default propertyReview;
+export default PropertyReview;

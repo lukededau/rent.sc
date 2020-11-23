@@ -19,81 +19,83 @@ class Review_Owner extends React.Component {
 
     }
 
-    // storeTag(event) {
-    //     this.tags[event.target.name] = !this.tags[event.target.name];
-    // }
+    updateState() {
+        console.log("prop2", this.props)
 
-    // async handleSubmit(event) {
-    //     event.preventDefault();
-    //     const form = event.currentTarget;
-    //     for (var i = 0; i < form.elements.length; i++) {
-    //         var element = form.elements[i];
-    //         //console.log(element.id + " " + element.value);
-    //         if (element.if !== "" && element.value !== "") {
-    //             this.state[element.id] = element.value
-    //         }
-    //     }
+    }
+    async handleSubmit(event) {
+        this.updateState();
+        event.preventDefault();
 
-    //     // Add user info
-    //     this.state.uid = firebase.auth().currentUser.uid
-    //     this.state.email = firebase.auth().currentUser.email
-    //     this.state.username = firebase.auth().currentUser.displayName
 
-    //     this.state["tags"] = this.tags;
-    //     await this.makeListing();
-    // }
+        // Add user info
+        this.state.uid = firebase.auth().currentUser.uid
+        this.state.email = firebase.auth().currentUser.email
+        this.state.username = firebase.auth().currentUser.displayName
 
-    // makeListing() {
-    //     const db = firebase.firestore();
-    //     db.collection('listing').doc().set(this.state)
-    // }
+
+        await this.updateListing();
+    }
+
+    updateListing() {
+        console.log("prop", this.props)
+        const db = firebase.firestore();
+        var post = db.collection('listings').doc()
+        console.log("Post", post)
+        post.update({ 'size': 3 })
+        console.log("Post", post)
+        // db.collection('listing').doc().set(this.state)
+    }
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit} style={{ paddingTop: '5%', paddingLeft: '2%', width: '35%' }}>
-
-                <Form.Group controlId="address">
-                    <Form.Label> Write a review <MdRateReview /></Form.Label>
-                    <Form.Control type="text" as="textarea" rows={3} placeholder="Review..." />
-                </Form.Group>
-                <Form.Label>Friendliness</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-                <Form.Label>Responsiveness</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-                <Form.Label>Considerate</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-                <Form.Label>Lenient</Form.Label>
-                <Form.Control as="select">
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
+            <Form onSubmit={this.handleSubmit} >
+                <h4 style={{ paddingTop: '3%', paddingLeft: '2%', width: '50%' }}>
+                    <Form.Group controlId="address">
+                        <Form.Label> Write a review <MdRateReview /></Form.Label>
+                        <Form.Control type="text" as="textarea" rows={4} placeholder="Review..." />
+                    </Form.Group>
+                </h4>
+                <h6 style={{ paddingTop: '-5%', paddingLeft: '2%', width: '10%' }}>
+                    <Form.Label>Friendliness</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                    <Form.Label>Responsiveness</Form.Label>
+                    <Form.Control as="select" >
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                    <Form.Label>Considerate</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                    <Form.Label>Lenient</Form.Label>
+                    <Form.Control as="select">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Form.Control>
+                </h6>
                 <br></br>
-                {/*Accuracy Location Value Cleanliness*/}
+
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
@@ -102,13 +104,4 @@ class Review_Owner extends React.Component {
     }
 }
 
-function ownerReview() {
-    return (
-        <div>
-            <NavigationBar></NavigationBar>
-            <Review_Owner />
-        </div>
-    );
-}
-
-export default ownerReview;
+export default Review_Owner;

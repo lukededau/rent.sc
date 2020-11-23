@@ -4,16 +4,12 @@ import ListingObject from './listingObject.js'
 import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';
 // import Button from 'react-bootstrap/Button'
-// import { useState, ToggleButton, ButtonGroup } from 'react';
-// import { FcBiohazard } from 'react-icons/fc';
 import { GrSort } from 'react-icons/gr';
 import { GiMoneyStack } from "react-icons/gi";
 import { BiBed } from "react-icons/bi";
 import { IoIosPeople } from "react-icons/io";
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
-// import { ToggleButton } from 'react-bootstrap';
-// import ReactDOM from 'react-dom'
 
 class ListingList extends React.Component {
     constructor(props) {
@@ -41,7 +37,6 @@ class ListingList extends React.Component {
     componentDidMount() {
         axios.get('http://127.0.0.1:8000/app/getAllListings')
             .then((response) => {
-                // console.log(response.data)
                 var listing_stream = response.data;
                 this.setState({ listings: listing_stream })
             })
@@ -53,19 +48,10 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (this.state.listings[k].price > this.state.listings[k + 1].price) {
-
-                    // var temp = this.state.listings[k]
-
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
                     this.setState(state => ({ listings: tempList }))
-
-                    // this.setState(state => ({
-                    //     listings[k] = listings[k + 1]
-                    // }));
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                 }
             }
         }
@@ -77,9 +63,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (this.state.listings[k].size < this.state.listings[k + 1].size) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -95,9 +78,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (Number(this.state.listings[k].numBedrooms) < Number(this.state.listings[k + 1].numBedrooms)) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -113,9 +93,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (Number(this.state.listings[k].numBaths) < Number(this.state.listings[k + 1].numBaths)) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -131,9 +108,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.dogFriendly) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -149,9 +123,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.catFriendly) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -192,32 +163,6 @@ class ListingList extends React.Component {
 
                     <div style={{ display: "table-row", height: "100 %" }}>
                         <div style={{ backgroundColor: "", display: "table-cell" }}>
-                            {/* <h3><FcBiohazard /> </h3> */}
-                            {/* <Button disabled variant="outline-dark" id="dropdown-basic">
-                                Sort By <GrSort /> :
-                            </Button> */}
-                            {/* <ToggleButton>here</ToggleButton> */}
-                            {/* <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <GiMoneyStack /> : 'Price'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <BiBed /> : 'Bedrooms'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <IoIosPeople /> : 'Tenants'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <FaDog /> : 'Dog Friendly'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <FaCat /> : 'Cat Friendly'}
-                            </Button> */}
-
                             <Dropdown>
                                 <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
                                     Sort By  <GrSort />

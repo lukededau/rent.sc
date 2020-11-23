@@ -6,7 +6,39 @@ import 'react-calendar/dist/Calendar.css';
 
 
 function ChooseAlert(props) {
+
+    // Should create 2 documents for landlord/user
+    async function onButtonClick() {
+        const db = firebase.firestore();
+        const appointmentRef = db.collection('appointment');
+        const appointment = {
+            firstName: props.name.split(" ")[0],
+            lastName: props.name.split(" ")[1],
+            date: props.date,
+            uid: props.uid,
+            email: props.email,
+            index: 0,
+        };
+        const doc = await appointmentRef.doc(props.uid).get();
+        if (doc.exists) {
+            const appointmentData = doc.data();
+            const keys = Object.keys(appointmentData);
+            const nextKey = Number(keys[keys.length - 1]) + 1;
+            var formattedAppointment = {};
+            formattedAppointment[nextKey] = appointment;
+            formattedAppointment[nextKey]["index"] = nextKey;
+            const updateRes = await appointmentRef.doc(props.uid).update(formattedAppointment);
+            console.log(updateRes);
+        }
+        else {
+            const updateRes = await appointmentRef.doc(props.uid).set({0: appointment});
+            console.log(updateRes);
+        }
+        window.location.href='/userprofile';
+    }
+
     const firstName = props.name.split(" ")[0];
+    
     if (props.isDateAvailable == null) {
         return <Alert variant="secondary">No date has been selected.</Alert>
     }
@@ -17,7 +49,7 @@ function ChooseAlert(props) {
         return (
             <div>
                 <Alert variant="success">{firstName} is available on {props.date}.</Alert>
-                <Button>Send Notification</Button>
+                <Button onClick={onButtonClick}>Schedule Appointment</Button>
             </div>
         )
     }
@@ -85,6 +117,8 @@ class CreateAppointment extends React.Component {
                         isDateAvailable={this.state.availableDate} 
                         date={this.state.date} 
                         name={this.state.username}
+                        uid={this.state.uid}
+                        email={this.state.email}
                     />
                 </div>
             </div>

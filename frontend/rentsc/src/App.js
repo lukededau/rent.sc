@@ -16,6 +16,7 @@ import UserProfile from './views/UserProfile';
 import listing from './views/listing';
 import SelectAppointmentTimes from './views/SelectAppointmentTimes';
 import ScheduleAppointment from './views/ScheduleAppointment';
+import ViewAppointments from './views/ViewAppointments';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route exact path="/listings" component={listing} />
           <Route exact path="/select-appointment-times" component={SelectAppointmentTimes} />
           <Route exact path="/schedule-appointment" component={ScheduleAppointment} />
+          <Route exact path="/view-appointments" component={ViewAppointments} />
           <Route exact path="/" component={Home} />
         </AuthProvider>
 

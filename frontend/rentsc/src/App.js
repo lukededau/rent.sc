@@ -34,9 +34,8 @@ function App() {
           <Route exact path="/schedule-appointment" component={ScheduleAppointment} />
           <Route exact path="/view-appointments" component={ViewAppointments} />
           <Route exact path="/" component={Home} />
+          <Route path="/page-not-found" component={PageNotFound} />
         </AuthProvider>
-
-        <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>
   );

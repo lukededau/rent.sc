@@ -13,7 +13,7 @@ const AppointmentCard = ({value, remove}) => (
                     Email: {value.email}
                 </Card.Text>
                 <Button>Contact {value.firstName} {value.lastName}</Button>
-                <Button style={{ float: "right" }} variant="danger">
+                <Button onClick={() => remove(value)} style={{ float: "right" }} variant="danger">
                     Remove
                 </Button>
             </Card.Body>
@@ -56,6 +56,7 @@ function CreateCards(props) {
             );
             console.log(res);
         }
+        window.location.reload(false);
     }
 }
 

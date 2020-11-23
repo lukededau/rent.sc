@@ -58,7 +58,7 @@ class ListingObject extends React.Component {
             showPropertyReview: false
         }));
         // <PropertyReview/>
-        console.log(l)
+        console.log("lol",l)
     }
 
     renderPropertyReview(p) {

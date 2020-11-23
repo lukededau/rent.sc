@@ -57,42 +57,54 @@ class Review_Owner extends React.Component {
                     </Form.Group>
                 </h4>
                 <h6 style={{ paddingTop: '-5%', paddingLeft: '2%', width: '10%' }}>
-                    <Form.Label>Friendliness</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
-                    <Form.Label>Responsiveness</Form.Label>
-                    <Form.Control as="select" >
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
-                    <Form.Label>Considerate</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
-                    <Form.Label>Lenient</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
+
+                    <Form.Group controlId="friend">
+                        <Form.Label>Friendliness</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="respond">
+                        <Form.Label>Responsiveness</Form.Label>
+                        <Form.Control as="select" >
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="consider">
+                        <Form.Label>Considerate</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="lenient">
+                        <Form.Label>Lenient</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
                 </h6>
                 <br></br>
 

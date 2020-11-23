@@ -61,8 +61,10 @@ class PropertyReview extends React.Component {
 
     }
     async handleSubmit(event) {
-        this.updateState();
+
         event.preventDefault();
+        this.updateState();
+        const form = event.currentTarget;
 
 
         // Add user info
@@ -76,11 +78,11 @@ class PropertyReview extends React.Component {
 
     updateListing() {
         console.log("prop", this.props)
-        const db = firebase.firestore();
-        var post = db.collection('listings').doc()
-        console.log("Post", post)
-        post.update({ 'size': 3 })
-        console.log("Post", post)
+        // const db = firebase.firestore();
+        // var post = db.collection('listings').doc()
+        // console.log("Post", post)
+        // post.update({ 'size': 3 })
+        // console.log("Post", post)
         // db.collection('listing').doc().set(this.state)
     }
 
@@ -95,46 +97,58 @@ class PropertyReview extends React.Component {
                 </h4>
 
                 <h6 style={{ paddingTop: '-5%', paddingLeft: '2%', width: '10%' }}>
-                    <Form.Label >Accuracy</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
-                    <Form.Label>Location</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
-                    <Form.Label>Value</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
-                    <Form.Label>Cleanliness</Form.Label>
-                    <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Form.Control>
+
+                    <Form.Group controlId="accuracy">
+                        <Form.Label >Accuracy</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="location">
+                        <Form.Label>Location</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="value">
+                        <Form.Label>Value</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="clean">
+                        <Form.Label>Cleanliness</Form.Label>
+                        <Form.Control as="select">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </Form.Control>
+                    </Form.Group>
                 </h6>
                 <br></br>
                 {/*Accuracy Location Value Cleanliness*/}
-                {this.updateState()}
+                {/* {this.updateState()} */}
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>

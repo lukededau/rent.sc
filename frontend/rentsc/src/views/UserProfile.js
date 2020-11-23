@@ -24,6 +24,10 @@ export default function UserProfile() {
         history.push("/create-listing")
     }
 
+    function viewAppointments() {
+        history.push("/view-appointments")
+    }
+
     //console.log("current user: " + currentUser.uid)
 
     return (
@@ -45,6 +49,11 @@ export default function UserProfile() {
                 <div>
                     <Button onClick={createListing}>
                         Create Listing
+                    </Button>
+                </div>
+                <div style={{paddingTop: "15px"}}>
+                    <Button onClick={viewAppointments}>
+                        Open Appointments
                     </Button>
                 </div>
             </div>

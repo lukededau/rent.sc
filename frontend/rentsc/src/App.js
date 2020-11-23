@@ -10,7 +10,6 @@ import Home from './views/Home';
 import PageNotFound from './views/PageNotFound';
 import createListing from './views/createListing';
 import Login from './views/Login';
-import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';

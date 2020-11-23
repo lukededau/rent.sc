@@ -14,7 +14,6 @@ import { RiMenuAddFill } from "react-icons/ri";
 
 import { GoSignOut } from "react-icons/go";
 
-
 /*<NavDropdown 
                             title={
                                     <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
@@ -30,6 +29,7 @@ import { GoSignOut } from "react-icons/go";
 
                         </NavDropdown>
 */
+
 class NavigationBar extends React.Component {
     render() {
         return (
@@ -63,7 +63,7 @@ class NavigationBar extends React.Component {
                             <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
                             <NavDropdown.Divider/>
                             <NavDropdown.Item href="userprofile">Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="#user/sign-out">Sign out</NavDropdown.Item>
+                            <NavDropdown.Item href="#user/SignOut">Sign out</NavDropdown.Item>
 
                             </NavDropdown>
                         </Nav>

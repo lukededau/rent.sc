@@ -33,21 +33,22 @@ export function AuthProvider({ children }) {
     function login (email, password) {
         return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(function() {
-            console.log("set persistence")
+            //console.log("set persistence")
             return firebase.auth().signInWithEmailAndPassword(email, password)
         })
         .catch(function (error){
-            console.log("failed to set persistence")
+            //console.log("failed to set persistence")
         })
     }
 
     function logout() {
+        console.log("logout")
         return firebase.auth().signOut()
     }
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged(user => {
-            console.log("onauthstatechange: " + user)
+            //console.log("onauthstatechange: " + user)
 
             setCurrentUser(user)
             setLoading(false)

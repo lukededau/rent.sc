@@ -13,6 +13,7 @@
     "firebase-admin": "^9.2.0",
     "geocode": "0.0.3",
     "google-maps-react": "2.0.6",
+    "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.0",
     "react-composer": "^5.0.1",

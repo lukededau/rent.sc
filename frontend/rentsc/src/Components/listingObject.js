@@ -7,17 +7,17 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
-import {
-    BrowserRouter as Router,
-    Link,
-} from 'react-router-dom';
-import PropertyReview from '/Users/Josue/Desktop/rent.sc/frontend/rentsc/src/views/propertyReview.js'
-import Review_Owner from '/Users/Josue/Desktop/rent.sc/frontend/rentsc/src/views/ownerReview';
+// import {
+//     BrowserRouter as Router,
+//     Link,
+// } from 'react-router-dom';
+import PropertyReview from '../views/propertyReview.js'
+import Review_Owner from '../views/ownerReview';
 
 import homeland from '../Images/tiananmen_square.jpeg'
 import homeland_master from '../Images/tiananmen_square_master.jpg'
 import homeland_ceiling from '../Images/tiananmen_square_ceiling.jpeg'
-// import { string } from 'prop-types';
+
 
 class ListingObject extends React.Component {
     constructor(props) {

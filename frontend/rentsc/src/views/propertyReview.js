@@ -58,6 +58,8 @@ class PropertyReview extends React.Component {
         this.temp.username = firebase.auth().currentUser.displayName
 
         await this.updateListing();
+        alert("Submitted!");
+        window.location.reload(false);
     }
 
     updateListing() {

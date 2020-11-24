@@ -64,6 +64,8 @@ class Review_Owner extends React.Component {
         this.temp.reviewer_username = firebase.auth().currentUser.displayName
 
         await this.updateListing();
+        alert("Submitted!");
+        window.location.reload(false);
     }
 
     updateListing() {

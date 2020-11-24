@@ -7,13 +7,8 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
-// import {
-//     BrowserRouter as Router,
-//     Link,
-// } from 'react-router-dom';
 import PropertyReview from '../views/propertyReview.js'
 import Review_Owner from '../views/ownerReview';
-
 import homeland from '../Images/tiananmen_square.jpeg'
 import homeland_master from '../Images/tiananmen_square_master.jpg'
 import homeland_ceiling from '../Images/tiananmen_square_ceiling.jpeg'
@@ -38,41 +33,34 @@ class ListingObject extends React.Component {
         this.propertyReview = "ReviewProperty"
         this.ownerReview = "ReviewOwner"
     }
+
     handleC(p) {
-        // var l = <PropertyReview pr={p} />
+        console.log(this.state)
         this.setState(state => ({
             showPropertyReview: !state.showPropertyReview
         }));
         this.setState(state => ({
             showOwnerReview: false
         }));
-        // <PropertyReview/>
-        // console.log(l)
     }
+
     handleR(p) {
-        // var l = <PropertyReview {...p} />
         this.setState(state => ({
             showOwnerReview: !state.showOwnerReview
         }));
         this.setState(state => ({
             showPropertyReview: false
         }));
-        // <PropertyReview/>
-        // console.log("lol", l)
     }
 
     renderPropertyReview(p) {
-        console.log("p", p)
-        var l = <PropertyReview {...p} />
-        console.log("L:", l)
-        return l
+        var toRender = <PropertyReview {...p} />
+        return toRender
     }
 
     renderOwnerReview(p) {
-        console.log("p", p)
-        var l = <Review_Owner {...p} />
-        console.log("L:", l)
-        return l
+        var toRender = <Review_Owner {...p} />
+        return toRender
     }
 
     renderTags() {
@@ -127,8 +115,6 @@ class ListingObject extends React.Component {
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
                         {this.state.showOwnerReview ? this.renderOwnerReview(this.props) : ''}
                     </div>
-
-
                 </Container>
                 <hr></hr>
             </div >

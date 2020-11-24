@@ -11,14 +11,32 @@ class PropertyReview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            lis_tings: [],
+            // lis_tings: [],
+            postingAddress: "",
             uid: "",
             email: "",
             username: "",
-            reviews: []
+            review: "",
+            accuracy: 0,
+            location: 0,
+            value: 0,
+            clean: 0,
 
         };
+        this.mama = {
+            // lis_tings: [],
+            postingAddress: "",
+            uid: "",
+            email: "",
+            username: "",
+            review: "",
+            accuracy: 0,
+            location: 0,
+            value: 0,
+            clean: 0,
 
+        }
+        this.listings = []
         this.handleSubmit = this.handleSubmit.bind(this);
         // this.storeTag = this.storeTag.bind(this);
         // this.updateListing = this.updateListing.bind(this);
@@ -39,58 +57,100 @@ class PropertyReview extends React.Component {
 
     componentDidMount() {
         // console.log("test", this.listings)
-        axios.get('http://127.0.0.1:8000/app/getAllListings')
-            .then((response) => {
-                var listing_stream = response.data;
-                this.setState({ lis_tings: listing_stream })
-            })
+        // axios.get('http://127.0.0.1:8000/app/getAllListings')
+        //     .then((response) => {
+        //         var listing_stream = response.data;
+        //         console.log("consoleee", this.state.uid === "")
+        //         console.log("Before", this.state)
+        //         if (this.state.uid !== "") {
+        //             this.setState({ lis_tings: listing_stream })
+        //         }
+        //         console.log("After", this.state)
+        //     })
         // console.log("test1", this.listings)
+
+        // console.log("stops", this.props)
+        // console.log("stops1", this.state)
+        // this.updateState();
+        // console.log("stops2", this.state)
+        // console.log("test2", this.listings)
 
     }
 
     updateState() {
 
-        console.log("prop2", this.props)
-        // const db = firebase.firestore();
-        // var docs = db.collection(u'listings').where(u'size', u'==', 5).stream()
-        // var docs1 = this.getMarker()
-        // console.log(docs1)
-        console.log("docs1", this.state)
-        // var x = db.collection('listings').document()
-        // console.log(x)
+        // console.log("prop2", this.props)
+        // // const db = firebase.firestore();
+        // // var docs = db.collection(u'listings').where(u'size', u'==', 5).stream()
+        // // var docs1 = this.getMarker()
+        // // console.log(docs1)
+        // console.log("docs1", this.mama)
+        // // var x = db.collection('listings').document()
+        // // console.log(x)
 
     }
     async handleSubmit(event) {
-
+        // console.log("1right hereeeeeeeee", this.mama)
         event.preventDefault();
-        this.updateState();
+        // console.log("1right hereeeeeeeee", this.state)
+        // this.state.uid = firebase.auth().currentUser.uid
+        // this.state.email = firebase.auth().currentUser.email
+        // this.state.username = firebase.auth().currentUser.displayName
+        // console.log("2right hereeeeeeeee", this.state)
         const form = event.currentTarget;
 
+        for (var i = 0; i < form.elements.length; i++) {
+            var element = form.elements[i];
 
-        // Add user info
-        this.state.uid = firebase.auth().currentUser.uid
-        this.state.email = firebase.auth().currentUser.email
-        this.state.username = firebase.auth().currentUser.displayName
+            // console.log("element", element, "TYPE.", element.type, ".idddd", ".", this.state.type !== '', element.id, ".")
+            if (this.mama.type !== "submit") {
+                // console.log("josue leyva", element.id)
+                this.mama[element.id] = element.value
+                // console.log("right hereeeeeeeee", this.mama)
+            }
+        }
+
+        // Add current user info
+        this.mama.postingAddress = this.props.address
+        this.mama.uid = firebase.auth().currentUser.uid
+        this.mama.email = firebase.auth().currentUser.email
+        this.mama.username = firebase.auth().currentUser.displayName
+
 
 
         await this.updateListing();
     }
 
     updateListing() {
-        console.log("prop", this.props)
+        // console.log("prop", this.state, this.mama)
         // const db = firebase.firestore();
         // var post = db.collection('listings').doc()
         // console.log("Post", post)
         // post.update({ 'size': 3 })
         // console.log("Post", post)
         // db.collection('listing').doc().set(this.state)
+        const db = firebase.firestore();
+        // for (state in this.state) {
+        // console.log("STATEEEE", state)
+        // }
+
+        for (let p in this.mama) {
+            // console.log("mammmmaa", this.mama[p], this.mama[p].k === 0, p, p.length === 0, this.mama.hasOwnProperty(p))
+            if (p.length !== 0) {
+                this.state[p] = this.mama[p]
+            }
+        }
+        // console.log("prop final", this.state, this.mama)
+        db.collection('propertyReviews').doc().set(this.state)
     }
 
     render() {
         return (
+
             <Form onSubmit={this.handleSubmit} >
+
                 <h4 style={{ paddingTop: '3%', paddingLeft: '2%', width: '50%' }}>
-                    <Form.Group controlId="address">
+                    <Form.Group controlId="review">
                         <Form.Label> Write a review <MdRateReview /></Form.Label>
                         <Form.Control type="text" as="textarea" rows={4} placeholder="Review..." />
                     </Form.Group>
@@ -148,7 +208,7 @@ class PropertyReview extends React.Component {
                 </h6>
                 <br></br>
                 {/*Accuracy Location Value Cleanliness*/}
-                {/* {this.updateState()} */}
+
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>

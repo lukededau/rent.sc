@@ -58,12 +58,19 @@ class ListingObject extends React.Component {
             showPropertyReview: false
         }));
         // <PropertyReview/>
-        console.log("lol",l)
+        console.log("lol", l)
     }
 
     renderPropertyReview(p) {
         console.log("p", p)
         var l = <PropertyReview {...p} />
+        console.log("L:", l)
+        return l
+    }
+
+    renderOwnerReview(p) {
+        console.log("p", p)
+        var l = <Review_Owner {...p} />
         console.log("L:", l)
         return l
     }
@@ -118,7 +125,7 @@ class ListingObject extends React.Component {
 
                     <div>
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
-                        {this.state.showOwnerReview ? <Review_Owner /> : ''}
+                        {this.state.showOwnerReview ? this.renderOwnerReview(this.props) : ''}
                     </div>
 
 

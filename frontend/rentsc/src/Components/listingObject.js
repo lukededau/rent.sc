@@ -7,8 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
+// import {
+//     BrowserRouter as Router,
+//     Link,
+// } from 'react-router-dom';
 import PropertyReview from '../views/propertyReview.js'
 import Review_Owner from '../views/ownerReview';
+
 import homeland from '../Images/tiananmen_square.jpeg'
 import homeland_master from '../Images/tiananmen_square_master.jpg'
 import homeland_ceiling from '../Images/tiananmen_square_ceiling.jpeg'
@@ -33,9 +38,8 @@ class ListingObject extends React.Component {
         this.propertyReview = "ReviewProperty"
         this.ownerReview = "ReviewOwner"
     }
-
     handleC(p) {
-        console.log(this.state)
+
         this.setState(state => ({
             showPropertyReview: !state.showPropertyReview
         }));
@@ -43,14 +47,16 @@ class ListingObject extends React.Component {
             showOwnerReview: false
         }));
     }
-
     handleR(p) {
+        // var l = <PropertyReview {...p} />
         this.setState(state => ({
             showOwnerReview: !state.showOwnerReview
         }));
         this.setState(state => ({
             showPropertyReview: false
         }));
+        // <PropertyReview/>
+        // console.log("lol", l)
     }
 
     renderPropertyReview(p) {
@@ -115,6 +121,8 @@ class ListingObject extends React.Component {
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
                         {this.state.showOwnerReview ? this.renderOwnerReview(this.props) : ''}
                     </div>
+
+                    {() => this.handleC(this.props)}
                 </Container>
                 <hr></hr>
             </div >

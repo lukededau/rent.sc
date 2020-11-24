@@ -65,7 +65,7 @@ class Review_Owner extends React.Component {
 
         await this.updateListing();
         alert("Submitted!");
-        window.location.reload(false);
+        // window.location.reload(false);
     }
 
     updateListing() {

@@ -59,7 +59,6 @@ class PropertyReview extends React.Component {
 
         await this.updateListing();
         alert("Submitted!");
-        window.location.reload(false);
     }
 
     updateListing() {

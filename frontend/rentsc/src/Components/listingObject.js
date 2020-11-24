@@ -39,7 +39,7 @@ class ListingObject extends React.Component {
         this.ownerReview = "ReviewOwner"
     }
     handleC(p) {
-        var l = <PropertyReview pr={p} />
+        // var l = <PropertyReview pr={p} />
         this.setState(state => ({
             showPropertyReview: !state.showPropertyReview
         }));
@@ -50,7 +50,7 @@ class ListingObject extends React.Component {
         // console.log(l)
     }
     handleR(p) {
-        var l = <PropertyReview {...p} />
+        // var l = <PropertyReview {...p} />
         this.setState(state => ({
             showOwnerReview: !state.showOwnerReview
         }));
@@ -58,7 +58,7 @@ class ListingObject extends React.Component {
             showPropertyReview: false
         }));
         // <PropertyReview/>
-        console.log("lol", l)
+        // console.log("lol", l)
     }
 
     renderPropertyReview(p) {

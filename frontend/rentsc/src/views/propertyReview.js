@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
 import 'firebase/auth';
 import { MdRateReview } from "react-icons/md";
-import axios from 'axios'
+// import axios from 'axios'
 
 class PropertyReview extends React.Component {
     constructor(props) {
@@ -92,6 +92,11 @@ class PropertyReview extends React.Component {
     async handleSubmit(event) {
         // console.log("1right hereeeeeeeee", this.mama)
         event.preventDefault();
+        console.log("prop2", this.props)
+        console.log("prop2", this.state)
+        console.log("prop2", this.mama)
+        console.log("ici", this.mama)
+
         // console.log("1right hereeeeeeeee", this.state)
         // this.state.uid = firebase.auth().currentUser.uid
         // this.state.email = firebase.auth().currentUser.email
@@ -216,14 +221,5 @@ class PropertyReview extends React.Component {
         );
     }
 }
-
-// function propertyReview() {
-//     return (
-//         <div>
-//             <NavigationBar></NavigationBar>
-//             <PropertyReview />
-//         </div>
-//     );
-// }
 
 export default PropertyReview;

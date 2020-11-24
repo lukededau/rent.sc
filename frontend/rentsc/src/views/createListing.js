@@ -24,7 +24,8 @@ class ListingFields extends React.Component {
             parkingSpots: "",
             uid: "",
             email: "",
-            username: ""
+            username: "",
+            reviews: [],
         };
         this.tags = {
             'dogFriendly': false,

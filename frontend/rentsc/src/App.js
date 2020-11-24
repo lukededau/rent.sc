@@ -14,6 +14,8 @@ import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
+import propertyReview from './views/propertyReview';
+import Review_Owner from './views/ownerReview';
 import MainListing from './views/MainListing';
 import SelectAppointmentTimes from './views/SelectAppointmentTimes';
 import ScheduleAppointment from './views/ScheduleAppointment';
@@ -34,6 +36,8 @@ function App() {
           <Route exact path="/schedule-appointment" component={ScheduleAppointment} />
           <Route exact path="/view-appointments" component={ViewAppointments} />
           <Route exact path="/" component={Home} />
+          <Route exact path="/ReviewProperty" component={propertyReview} />
+          <Route exact path="/ReviewOwner" component={Review_Owner} />
         </AuthProvider>
 
         <Route component={PageNotFound} />

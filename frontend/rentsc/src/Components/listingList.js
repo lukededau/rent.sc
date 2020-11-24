@@ -4,19 +4,35 @@ import ListingObject from './listingObject.js'
 import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';
 // import Button from 'react-bootstrap/Button'
-import { GrSort } from 'react-icons/gr';
+// import { useState, ToggleButton, ButtonGroup } from 'react';
+// import { FcBiohazard } from 'react-icons/fc';
+// import { GrSort } from 'react-icons/gr';
 import { GiMoneyStack } from "react-icons/gi";
 import { BiBed } from "react-icons/bi";
 import { IoIosPeople } from "react-icons/io";
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
+import { ToggleButton, ButtonGroup } from 'react-bootstrap';
+import { MdSmokeFree } from "react-icons/md";
+// import ReactDOM from 'react-dom'
 
 class ListingList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             listings: [],
-            isToggleOn: true
+            isToggleOn: true,
+            priceChecked: false,
+            bedroomsChecked: false,
+            tenantsChecked: false,
+            dogChecked: false,
+            catChecked: false,
+            apartment: false,
+            house: false,
+            townhouse: false,
+            entirePlace: false,
+            sharedRoom: false,
+            privateRoom: false
 
         }
         this.sortPrice = this.sortPrice.bind(this);
@@ -25,6 +41,39 @@ class ListingList extends React.Component {
         this.sortDogsFriendly = this.sortDogsFriendly.bind(this);
         this.sortCatFriendly = this.sortCatFriendly.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleCheck = this.handleCheck.bind(this);
+        this.sortApartment = this.sortApartment.bind(this);
+        this.sortHouse = this.sortHouse.bind(this);
+        this.sortEntirePlace = this.sortEntirePlace.bind(this);
+        this.sortSharedRoom = this.sortSharedRoom.bind(this);
+        this.sortPrivateRoom = this.sortPrivateRoom.bind(this);
+        this.sortFurnished = this.sortFurnished.bind(this);
+        this.sortPool = this.sortPool.bind(this);
+        this.sortFireplace = this.sortFireplace.bind(this);
+        this.sortAC = this.sortAC.bind(this);
+        this.sortSmokerFriendly = this.sortSmokerFriendly.bind(this);
+        this.sortStreetParking = this.sortStreetParking.bind(this);
+        this.sortParkingSpots = this.sortParkingSpots.bind(this);
+
+
+        this.handlePriceCheck = this.handlePriceCheck.bind(this);
+        this.handleBedroomsCheck = this.handleBedroomsCheck.bind(this);
+        this.handleTenantsCheck = this.handleTenantsCheck.bind(this);
+        this.handleDogCheck = this.handleDogCheck.bind(this);
+        this.handleCatCheck = this.handleCatCheck.bind(this);
+        this.handleApartment = this.handleApartment.bind(this);
+        this.handleHouse = this.handleHouse.bind(this);
+        this.handleTownhouse = this.handleTownhouse.bind(this);
+        this.handleEntirePlace = this.handleEntirePlace.bind(this);
+        this.handleSharedRoom = this.handleSharedRoom.bind(this);
+        this.handlePrivateRoom = this.handlePrivateRoom.bind(this);
+        this.handleFurnished = this.handleFurnished.bind(this);
+        this.handlePool = this.handlePool.bind(this);
+        this.handleFireplace = this.handleFireplace.bind(this);
+        this.handleAC = this.handleAC.bind(this);
+        this.handleSmokerFriendly = this.handleSmokerFriendly.bind(this);
+        this.handleStreetParking = this.handleStreetParking.bind(this);
+        this.handleParkingSpots = this.handleParkingSpots.bind(this);
 
     }
 
@@ -102,6 +151,26 @@ class ListingList extends React.Component {
         }
     }
 
+    sortParkingSpots() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (Number(this.state.listings[k].parkingSpots) < Number(this.state.listings[k + 1].parkingSpots)) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+
+
     sortDogsFriendly() {
         var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
@@ -130,6 +199,353 @@ class ListingList extends React.Component {
                 }
             }
         }
+    }
+
+    sortApartment() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.apartment) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortHouse() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.house) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortTownhouse() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.townhouse) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+    sortEntirePlace() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.entirePlace) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+    sortSharedRoom() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.sharedRoom) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortPrivateRoom() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.privateRoom) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortFurnished() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.furnished) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortPool() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.pool) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortFireplace() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.fireplace) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortAC() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.AC) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortStreetParking() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.streetParking) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    sortSmokerFriendly() {
+        var tempList = this.state.listings
+        for (var j = 0; j < this.state.listings.length; j++) {
+            for (var k = 0; k < this.state.listings.length - j - 1; k++) {
+
+                if (!this.state.listings[k].tags.smokerFriendly) {
+                    // var temp = this.state.listings[k]
+                    // this.state.listings[k] = this.state.listings[k + 1]
+                    // this.state.listings[k + 1] = temp
+                    var temp1 = tempList[k]
+                    tempList[k] = tempList[k + 1]
+                    tempList[k + 1] = temp1
+                    this.setState(state => ({ listings: tempList }))
+                }
+            }
+        }
+    }
+
+    handleCheck() {
+        this.setState(state => ({
+            checked: !state.checked
+        }));
+    }
+
+    handlePriceCheck() {
+        this.setState(state => ({
+            priceChecked: !state.priceChecked
+        }));
+        this.sortPrice();
+    }
+
+    handleBedroomsCheck() {
+        this.setState(state => ({
+            bedroomsChecked: !state.bedroomsChecked
+        }));
+        this.sortBedrooms();
+    }
+
+    handleTenantsCheck() {
+        this.setState(state => ({
+            tenantsChecked: !state.tenantsChecked
+        }));
+        this.sortTenents();
+    }
+
+    handleDogCheck() {
+        this.setState(state => ({
+            dogChecked: !state.dogChecked
+        }));
+        this.sortDogsFriendly();
+    }
+
+    handleCatCheck() {
+        this.setState(state => ({
+            catChecked: !state.catChecked
+        }));
+        this.sortCatFriendly();
+    }
+
+    handleApartment() {
+        this.setState(state => ({
+            apartment: !state.apartment
+        }));
+        this.sortApartment();
+    }
+
+    handleHouse() {
+        this.setState(state => ({
+            house: !state.house
+        }));
+        this.sortHouse();
+    }
+
+
+    handleTownhouse() {
+        this.setState(state => ({
+            townhouse: !state.townhouse
+        }));
+        this.sortTownhouse();
+    }
+
+    handleEntirePlace() {
+        this.setState(state => ({
+            entirePlace: !state.entirePlace
+        }));
+        this.sortEntirePlace();
+    }
+
+    handleSharedRoom() {
+        this.setState(state => ({
+            sharedRoom: !state.sharedRoom
+        }));
+        this.sortSharedRoom();
+    }
+
+    handlePrivateRoom() {
+        this.setState(state => ({
+            privateRoom: !state.privateRoom
+        }));
+        this.sortPrivateRoom();
+    }
+
+    handleFurnished() {
+        this.setState(state => ({
+            furnished: !state.furnished
+        }));
+        this.sortFurnished();
+    }
+
+    handlePool() {
+        this.setState(state => ({
+            pool: !state.pool
+        }));
+        this.sortPool();
+    }
+
+    handleFireplace() {
+        this.setState(state => ({
+            fireplace: !state.fireplace
+        }));
+        this.sortFireplace();
+    }
+
+    handleAC() {
+        this.setState(state => ({
+            AC: !state.AC
+        }));
+        this.sortAC();
+    }
+
+    handleStreetParking() {
+        this.setState(state => ({
+            streetParking: !state.streetParking
+        }));
+        this.sortStreetParking();
+    }
+
+    handleSmokerFriendly() {
+        this.setState(state => ({
+            smokerFriendly: !state.smokerFriendly
+        }));
+        this.sortSmokerFriendly();
+    }
+
+    handleParkingSpots() {
+        this.setState(state => ({
+            parkingSpots: !state.parkingSpots
+        }));
+        this.sortParkingSpots();
     }
 
     renderListing(list) {
@@ -163,28 +579,125 @@ class ListingList extends React.Component {
 
                     <div style={{ display: "table-row", height: "100 %" }}>
                         <div style={{ backgroundColor: "", display: "table-cell" }}>
-                            <Dropdown>
-                                <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
-                                    Sort By  <GrSort />
-                                </Dropdown.Toggle>
+                            {/* <h3><FcBiohazard /> </h3> */}
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item onClick={this.sortPrice} href="#/SortByPrice">Price <GiMoneyStack /></Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortBedrooms} href="#/SortByBedrooms">Bedrooms <BiBed /></Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortTenents} href="#/SortByTenants">Number of Tenants <IoIosPeople /></Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortDogsFriendly} href="#/SortByDogFriendly">Dog Friendly <FaDog /></Dropdown.Item>
-                                    <Dropdown.Item onClick={this.sortCatFriendly} href="#/SortByCatFriendly">Cat Friendly <FaCat /></Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
+                            <text>Sort By: </text>
+                            <br></br>
+                            <ButtonGroup toggle size="sm" className="mb-2">
+
+
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.priceChecked} onChange={this.handlePriceCheck} value="1">
+                                    Price <GiMoneyStack />
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.bedroomsChecked} onChange={this.handleBedroomsCheck} value="1">
+                                    Bedrooms <BiBed />
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.tenantsChecked} onChange={this.handleTenantsCheck} value="1">
+                                    Tenants <IoIosPeople />
+                                </ToggleButton>
+
+
+                            </ButtonGroup>
+                            <br></br>
+
+                            <label> Rental Type: </label> <br></br>
+                            <ButtonGroup toggle size="sm" className="mb-2">
+
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.apartment} onChange={this.handleApartment} value="1">
+                                    Apartment
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.house} onChange={this.handleHouse} value="1">
+                                    House
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.townhouse} onChange={this.handleTownhouse} value="1">
+                                    Townhouse
+                                </ToggleButton>
+                            </ButtonGroup>
+                            <br></br>
+                            <label> Type of Place: </label> <br></br>
+                            <ButtonGroup toggle size="sm" className="mb-2">
+
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.entirePlace} onChange={this.handleEntirePlace} value="1">
+                                    Entire Place
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.sharedRoom} onChange={this.handleSharedRoom} value="1">
+                                    Shared Room
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.privateRoom} onChange={this.handlePrivateRoom} value="1">
+                                    Private Room
+                                </ToggleButton>
+                            </ButtonGroup>
+
+                            <br></br>
+
+
+                            {/* <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.dogChecked} onChange={this.handleDogCheck} value="1">
+                                    Dog Friendly <FaDog />
+                                </ToggleButton>
+                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.catChecked} onChange={this.handleCatCheck} value="1">
+                                    Cat Friendly <FaCat />
+                                </ToggleButton> */}
+                            {/* <Button disabled variant="outline-dark" id="dropdown-basic">
+                                Sort By <GrSort /> :
+                            </Button> */}
+                            {/* <ToggleButton>here</ToggleButton> */}
+                            {/* <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <GiMoneyStack /> : 'Price'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <BiBed /> : 'Bedrooms'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <IoIosPeople /> : 'Tenants'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <FaDog /> : 'Dog Friendly'}
+                            </Button>
+                            <span> </span>
+                            <Button onClick={this.handleClick}>
+                                {this.state.isToggleOn ? <FaCat /> : 'Cat Friendly'}
+                            </Button> */}
+                            <div className="mb-2">
+
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="outline-dark" id="dropdown-basic" >
+                                        Amenities
+                                </Dropdown.Toggle>
+                                    <Dropdown.Menu >
+                                        <Dropdown.Item onClick={this.sortParkingSpots}>Parking on Premise</Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortStreetParking}>Street Parking</Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortAC}>Air Conditioner</Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortFurnished}>Furnished</Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortFireplace}>Fireplace</Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortPool}>Pool</Dropdown.Item>
+                                        <Dropdown.Divider />
+                                        <Dropdown.Item onClick={this.sortDogsFriendly}>Dog Friendly <FaDog /></Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortCatFriendly}>Cat Friendly <FaCat /></Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortSmokerFriendly}>Smoker Friendly <MdSmokeFree /></Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>
+                            {/* <div>
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
+                                        Other
+                                </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item onClick={this.sortDogsFriendly}>Dog Friendly <FaDog /></Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortCatFriendly}>Cat Friendly <FaCat /></Dropdown.Item>
+                                        <Dropdown.Item onClick={this.sortCatFriendly}>Smoker Friendly <MdSmokeFree /></Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+
+                            </div> */}
                         </div>
 
                     </div>
-
-
-
-
                 </div>
-
                 {this.renderListing()}
             </div >
         );

@@ -85,7 +85,7 @@ class ListingObject extends React.Component {
             <div>
 
                 <Container fluid
-                    style={{ paddingTop: "60px" }}
+                    style={{ paddingTop: "20px" }}
                 >
                     <Row>
                         <Col>

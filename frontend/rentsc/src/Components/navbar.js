@@ -1,8 +1,5 @@
 import React from 'react'
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
-import Navbar from 'react-bootstrap/Navbar'
-import Image from 'react-bootstrap/Image'
+import { Nav, Navbar, NavDropdown, Image } from 'react-bootstrap'
 import defaultProfileImage from '../Images/Default_profile_image.jpg'
 import { BsHouseDoor } from "react-icons/bs";
 import { BsPersonPlus } from "react-icons/bs";
@@ -51,22 +48,22 @@ class NavigationBar extends React.Component {
 
                         </Nav>
                         <Nav>
-                            <Nav.Link href="create-listing">Create a Listing <RiMenuAddFill /></Nav.Link>
-                            <Nav.Link href="signUp">Create Account <RiUserAddLine /></Nav.Link>
-                            <NavDropdown
-                                title={
-                                    <Image src={defaultProfileImage} style={{ height: "25px" }} roundedCircle></Image>
-                                }
-                                id="collapsible-nav-dropdown"
-                                alignRight
-                                flip="true"
-                            >
+                        <Nav.Link href="create-listing" >Create a Listing</Nav.Link>
+                        <Nav.Link href="signup">Create Account</Nav.Link>
+                        <NavDropdown 
+                            title={
+                                    <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
+                            }
+                            id="collapsible-nav-dropdown"
+                            alignRight
+                            flip="true"
+                        >
 
-                                <NavDropdown.Item href="#user/Messages">Messages <TiMessages /></NavDropdown.Item>
-                                <NavDropdown.Item href="#user/Favorites"> Favorites <GrFavorite /></NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#user/user-profile">Profile <CgProfile /></NavDropdown.Item>
-                                <NavDropdown.Item href="#user/sign-out">Sign Out <GoSignOut /></NavDropdown.Item>
+                            <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
+                            <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
+                            <NavDropdown.Divider/>
+                            <NavDropdown.Item href="userprofile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item href="#user/sign-out">Sign out</NavDropdown.Item>
 
                             </NavDropdown>
                         </Nav>
@@ -76,5 +73,6 @@ class NavigationBar extends React.Component {
         );
     }
 }
+
 export default NavigationBar
 

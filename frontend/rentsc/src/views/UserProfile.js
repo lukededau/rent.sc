@@ -1,5 +1,6 @@
-import React, { /*useRef,*/ useState } from 'react'
-import { /*Form,*/ Card, Button, Alert } from 'react-bootstrap'
+import React, { useRef, useState } from 'react'
+import { Card, Button, Alert } from 'react-bootstrap'
+import NavigationBar from '../Components/navbar'
 import { useAuth } from '../Contexts/AuthContext'
 import { /*Link,*/ useHistory } from 'react-router-dom'
 
@@ -19,10 +20,19 @@ export default function UserProfile() {
         }
     }
 
-    //console.log("displayName: " + currentUser.displayName + " uid: " + currentUser.uid)
+    function createListing() {
+        history.push("/create-listing")
+    }
+
+    function viewAppointments() {
+        history.push("/view-appointments")
+    }
+
+    //console.log("current user: " + currentUser.uid)
 
     return (
         <>
+        <NavigationBar></NavigationBar>
             <Card>
                 <Card.Body>
                     <h2 className="text-center mb-4">Profile</h2>
@@ -36,6 +46,16 @@ export default function UserProfile() {
                 <Button variant="link" onClick={handleLogout}>
                     Logout
                 </Button>
+                <div>
+                    <Button onClick={createListing}>
+                        Create Listing
+                    </Button>
+                </div>
+                <div style={{paddingTop: "15px"}}>
+                    <Button onClick={viewAppointments}>
+                        Open Appointments
+                    </Button>
+                </div>
             </div>
         </>
     )

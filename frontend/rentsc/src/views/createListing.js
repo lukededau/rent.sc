@@ -95,34 +95,15 @@ class ListingFields extends React.Component {
         storageRef.put(this.image).on('state_changed', snapshot => {
             const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
             this.progress = progress
-        },
-        error => {
-            console.log(error)
-        },
-        () => {
-            firebase.storage()
-                .ref('images')
-                .child(image.name)
-                .getDownloadURL()
-                .then(url => {
-                    this.url = url
-                })
-        })
-
-        /*
-        storageRef.on('state_changed', (snap) => {
-            let percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
-            this.progress = percentage
-            console.log(this.progress)
         }, (err) => {
             this.error = err
         }, async () => {
-            const url = await storageRef.getDownloadUrl()
-            const createdAt = timestamp()
+            const url = await storageRef.getDownloadURL()
+            //const createdAt = timestamp()
             this.url = url
-            console.log("url: ", url)
         })
-        */
+
+        console.log("upload done")
     }
 
     makeListing() {

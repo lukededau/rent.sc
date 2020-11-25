@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert} from 'react-bootstrap';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import firebase from '../firebase.js';
+import firebase from '../firebase';
+import storage from '../firebase';
+import timestamp from '../firebase';
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 
@@ -26,12 +28,18 @@ class ListingFields extends React.Component {
             'dogFriendly': false,
             'catFriendly': false
         };
+        this.imageState = { 
+            image: null,
+            url: null,
+            progress: null,
+            error: ''
+        };
+
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
-
-        //if(firebase.auth().currentUser != null)
-            //console.log(firebase.auth().currentUser.uid)
     }
 
     storeTag(event) {
@@ -40,8 +48,10 @@ class ListingFields extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
+
         const form = event.currentTarget;
-        for (var i = 0; i < form.elements.length; i++) {
+
+        for (var i = 1; i < form.elements.length; i++) {
             var element = form.elements[i];
             //console.log(element.id + " " + element.value);
             if (element.if !== "" && element.value !== "") {
@@ -50,12 +60,69 @@ class ListingFields extends React.Component {
         }
 
         // Add user info
-        this.state.uid = firebase.auth().currentUser.uid
-        this.state.email = firebase.auth().currentUser.email
-        this.state.username = firebase.auth().currentUser.displayName
+        this.uid = firebase.auth().currentUser.uid
+        this.email = firebase.auth().currentUser.email
+        this.username = firebase.auth().currentUser.displayName
 
         this.state["tags"] = this.tags;
         await this.makeListing();
+    }
+
+    // Handles image upload change
+    handleChange(e) {
+        const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
+
+        if (e.target.files[0] && imageTypes.includes(e.target.files[0].type)){
+            const selected = e.target.files[0]
+            this.image = selected
+            this.error = ''
+            console.log("handlechange: ", this.image)
+        } else {
+            this.image = null
+            this.error = "Please select an image file"
+            //console.log(this.image)
+        }
+    }
+
+    // Handles image upload change
+    handleUpload() {
+        //console.log("handleUpload:", this.image)
+        const image = this.image
+        const storageRef = firebase.storage().ref(image.name)
+        console.log(storageRef)
+        //storage.ref(`images/${image.name}`).put(image)
+
+        storageRef.put(this.image).on('state_changed', snapshot => {
+            const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            this.progress = progress
+        },
+        error => {
+            console.log(error)
+        },
+        () => {
+            firebase.storage()
+                .ref('images')
+                .child(image.name)
+                .getDownloadURL()
+                .then(url => {
+                    this.url = url
+                })
+        })
+
+        /*
+        storageRef.on('state_changed', (snap) => {
+            let percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
+            this.progress = percentage
+            console.log(this.progress)
+        }, (err) => {
+            this.error = err
+        }, async () => {
+            const url = await storageRef.getDownloadUrl()
+            const createdAt = timestamp()
+            this.url = url
+            console.log("url: ", url)
+        })
+        */
     }
 
     makeListing() {
@@ -66,14 +133,21 @@ class ListingFields extends React.Component {
     render() {
         return (
             <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '25%' }}>
-
+                {/* Image Fields */}
+                <Form.Group controlId="image">
+                    <Form.Label> Images </Form.Label>
+                    <Form.Control type="file" onChange={this.handleChange}></Form.Control>
+                    {this.error && <Alert variant="danger">{this.error}</Alert>}
+                    <br></br>
+                    <Button type="button" name="upload" onClick={this.handleUpload}>Upload</Button>
+                </Form.Group>                
                 {/* Text Fields */}
                 <Form.Group controlId="address">
                     <Form.Label> Address </Form.Label>
                     <Form.Control type="text" placeholder="Address" />
                 </Form.Group>
                 <Form.Group controlId="city">
-                    <Form.Label> Address </Form.Label>
+                    <Form.Label> City </Form.Label>
                     <Form.Control type="text" placeholder="City" />
                 </Form.Group>
                 <Form.Group controlId="zip">

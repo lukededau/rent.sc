@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
     }
 
     function logout() {
-        console.log("logout")
+        //console.log("logout")
         return firebase.auth().signOut()
     }
 

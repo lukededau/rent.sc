@@ -54,3 +54,80 @@ def getAllListings(request):
     response["Access-Control-Allow-Methods"] = '*'
     response["Access-Control-Allow-Headers"] = '*'
     return response
+
+@csrf_exempt
+def createRooms(request):
+    body = json.loads(request.body.decode('utf-8'))
+    newRoomRef = db.collection(u'rooms').document()
+    newRoomRef.set(body)
+
+    print(newRoomRef)
+    newUsertoRoom = db.collection(u'userToRoom').document()
+    newUsertoRoom.set({
+        u'room_id': newRoomRef.id,
+        u'user_id': body['sender']
+    })
+    newUsertoRoom1 = db.collection(u'userToRoom').document()
+    newUsertoRoom1.set({
+        u'room_id': newRoomRef.id,
+        u'user_id': body['receiver']
+    })
+    return HttpResponse("Created Room Successfully")
+
+@csrf_exempt
+def createMessage(request):
+
+    body = json.loads(request.body.decode('utf-8'))  
+    data = {
+        u'sender': body['sender'],
+        u'msg': body['msg'],
+        u'time': body['time']
+    }
+    newMsgRef = db.collection(u'rooms').document(body['room_id'])
+    message_ref = newMsgRef.collection(u'messages').document().set(data)
+
+    return HttpResponse("Created Msg Successfully")
+
+@csrf_exempt
+def getAllRooms(request):
+    body = json.loads(request.body.decode('utf-8'))
+    res = []
+    room_ref = db.collection(u'userToRoom')
+    user_id = body['user_id']
+
+    query_ref = room_ref.where(u'user_id', u'==', user_id)
+    docs = query_ref.stream()
+
+        
+    for doc in docs:
+        query_ref1 = room_ref.where(u'room_id', u'==', doc.to_dict()['room_id'])
+        docs1 = query_ref1.stream()
+        for doc1 in docs1:
+            if doc1.to_dict()['user_id'] != user_id:
+                dic = {"doc_id": doc1.id}
+                dic.update(doc1.to_dict())
+                res.append(dic)
+
+    response = JsonResponse(res, safe=False)
+    response['Access-Control-Allow-Origin'] = '*'
+    response["Access-Control-Allow-Methods"] = '*'
+    response["Access-Control-Allow-Headers"] = '*'
+    return response
+
+@csrf_exempt
+def getMessages(request):
+    body = json.loads(request.body.decode('utf-8'))
+    res = []
+    room_a_ref = db.collection(u'rooms').document(body['room_id'])
+    message_ref = room_a_ref.collection(u'messages')
+    docs = message_ref.stream()
+
+        
+    for doc in docs:
+        res.append(doc.to_dict())
+    res.sort(key = lambda x : x["time"])
+    response = JsonResponse(res, safe=False)
+    response['Access-Control-Allow-Origin'] = '*'
+    response["Access-Control-Allow-Methods"] = '*'
+    response["Access-Control-Allow-Headers"] = '*'
+    return response

@@ -13,7 +13,7 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "firebase": "^7.24.0",
-    "firebase-admin": "^9.2.0",
+    "firebase-admin": "^9.4.1",
     "geocode": "0.0.3",
     "google-maps-react": "2.0.6",
     "react": "^16.14.0",

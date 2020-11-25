@@ -3,6 +3,7 @@ import firebase from '../firebase.js';
 import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import Geocode from 'react-geocode';
+import { withRouter } from 'react-router-dom';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -15,9 +16,9 @@ const InitialMap = compose(
             loadingElement: <div style={{ height: `100%` }} />,
             containerElement: <div style={{ height: `935px`, width: '100%' }} />,
             mapElement: <div style={{ height: `100%` }} /> 
-        }),
-        withScriptjs,
-        withGoogleMap
+    }),
+    withScriptjs,
+    withGoogleMap
     )(props => 
     <GoogleMap
         defaultCenter = { { lat: 36.9741, lng: -122.0308 } }
@@ -37,7 +38,7 @@ const InitialMap = compose(
             <InfoWindow onCloseClick={() => props.onClose()}>
                 <div style={{width: 250, height: 300}}>
                     <h4>{marker.address}</h4>
-                    <p style={{'text-align': 'center'}}>
+                    <div style={{textAlign: 'center'}}>
                     <Carousel>
                         <Carousel.Item>
                             <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 1"></img>
@@ -49,15 +50,15 @@ const InitialMap = compose(
                             <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 3"></img>
                         </Carousel.Item>
                     </Carousel>
-                    </p>
-                    <p style={{'font-size': 15, margin: 5}}>Description: {marker.description}</p>
-                    <p style={{'font-size': 15, margin: 5}}>Price: {marker.price}</p>
-                    <p style={{'font-size': 15, margin: 5}}>Max Number of Tenents: {marker.size}</p>
-                    <p style={{'font-size': 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
-                    <p style={{'font-size': 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
-                    <p style={{'font-size': 15, margin: 5}}>Tags: {marker.tags}</p>
+                    </div>
+                    <p style={{fontSize: 15, margin: 5}}>Description: {marker.description}</p>
+                    <p style={{fontSize: 15, margin: 5}}>Price: {marker.price}</p>
+                    <p style={{fontSize: 15, margin: 5}}>Max Number of Tenents: {marker.size}</p>
+                    <p style={{fontSize: 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
+                    <p style={{fontSize: 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
+                    <p style={{fontSize: 15, margin: 5}}>Tags: {marker.tags}</p>
                     <br></br>
-                    <Button variant="outline-primary" size="sm" onclick="location.href='/create-listing'">
+                    <Button variant="outline-primary" size="sm" onClick={() => props.onViewButtonClick(marker.address, marker.city)}>
                         View Listing
                     </Button>
                 </div>
@@ -67,6 +68,7 @@ const InitialMap = compose(
     </GoogleMap>
 );
 
+
 export class Home extends Component {
 
     allListings = [];
@@ -75,7 +77,7 @@ export class Home extends Component {
         super(props);
         this.state = {
             selectedMarker: 0,
-            markers:[]
+            markers:[],
         };
     }
 
@@ -150,6 +152,17 @@ export class Home extends Component {
         return { lat, lng };
     }
 
+    _handleViewListingButtonClick = (address, city) => {
+        const { history } = this.props;
+        history.push({
+            pathname: '/main-listing',
+            state: {
+                selectedAddress: address,
+                selectedCity: city
+            }
+        }); 
+    }
+
     onMarkerClick = (markerID) => {
         if(this.state.selectedMarker === markerID) {
             this.setState({
@@ -178,10 +191,11 @@ export class Home extends Component {
                     markers={this.state.markers}
                     onMarkerClick={this.onMarkerClick}
                     onClose={this.onClose}
+                    onViewButtonClick={this._handleViewListingButtonClick}
                 />
             </div>
         );
     }
 }
   
-export default Home;
+export default withRouter(Home);

@@ -6,6 +6,7 @@ import { Carousel, Image, Badge, Card, Button } from 'react-bootstrap';
 import { BsStar, BsGeoAlt, BsFillPersonFill, BsCursorFill, BsStarFill, BsCalendar } from 'react-icons/bs';
 import firebase from '../firebase.js';
 import NavigationBar from '../Components/navbar.js';
+import { withRouter } from 'react-router-dom';
 import Sample1 from '../Images/tiananmen_square_ceiling.jpeg';
 import Sample2 from '../Images/tiananmen_square_master.jpg';
 import Sample3 from '../Images/tiananmen_square.jpeg';
@@ -20,10 +21,20 @@ const subtitleStyle = {
 class MainListing extends React.Component {
     constructor(props) {
         super(props);
+        let selectedAddress = "";
+        let selectedCity = "";
+        if(this.props.location.state === undefined) {
+            this.props.history.push("/page-not-found"); 
+        }
+        else {
+            selectedAddress = this.props.location.state.selectedAddress;
+            selectedCity = this.props.location.state.selectedCity;
+        }
         this.state = {
-            address: this.props.location.state.selectedAddress,
-            city: this.props.location.state.selectedCity,
+            address: selectedAddress,
+            city: selectedCity,
             description: "",
+            username: "",
             email: "",
             numBaths: "",
             numBedrooms: "",
@@ -42,8 +53,7 @@ class MainListing extends React.Component {
         const db = firebase.firestore();
         const listings = await db.collection('listing').where("address", "==", this.state.address).where("city", "==", this.state.city).get();
         listings.forEach((listing) => {
-            const {zip, description, numBaths, numBedrooms, price, size, tags, email} = listing.data();
-
+            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username} = listing.data();
             // Create tag string
             var verifiedTags = [];
             Object.keys(tags).forEach(function (key) {
@@ -51,6 +61,10 @@ class MainListing extends React.Component {
                     verifiedTags.push(key);
                 }
             })
+
+            if(verifiedTags.length === 0) {
+                verifiedTags.push("None");
+            }
 
             this.setState({
                 zip: zip,
@@ -61,6 +75,7 @@ class MainListing extends React.Component {
                 size: size,
                 tags: verifiedTags,
                 email: email,
+                username: username,
             });
         });
     }
@@ -92,7 +107,7 @@ class MainListing extends React.Component {
                                 className="d-block w-100"
                                 src={Sample1}
                                 alt="First slide"
-                                fluid
+                                fluid="true"
                                 />
                             </Carousel.Item>
                             <Carousel.Item>
@@ -100,7 +115,7 @@ class MainListing extends React.Component {
                                 className="d-block w-100"
                                 src={Sample2}
                                 alt="Third slide"
-                                fluid
+                                fluid="true"
                                 />
                             </Carousel.Item>
                             <Carousel.Item>
@@ -108,7 +123,7 @@ class MainListing extends React.Component {
                                 className="d-block w-100"
                                 src={Sample3}
                                 alt="Third slide"
-                                fluid
+                                fluid="true"
                                 />
                             </Carousel.Item>
                         </Carousel>
@@ -125,7 +140,7 @@ class MainListing extends React.Component {
                             </p>
                         </Col>
                         <Col>
-                            <Button style={{marginTop: 2}}>Make An Appointment <BsCalendar /></Button>
+                            <Button href="/schedule-appointment" style={{marginTop: 2}}>Make An Appointment <BsCalendar /></Button>
                         </Col>
                     </Row>
                     <Row>
@@ -138,7 +153,7 @@ class MainListing extends React.Component {
                             <Card style={{height: "100%", width: "100%"}}>
                                 <Card.Header style={{fontSize: 20}}><b>Contact</b> <BsFillPersonFill /></Card.Header>
                                 <Card.Body>
-                                    <Card.Title>Bob Lin</Card.Title>
+                                    <Card.Title>{this.state.username}</Card.Title>
                                     <Card.Text>
                                         Email: {this.state.email}
                                     </Card.Text>
@@ -180,4 +195,4 @@ class MainListing extends React.Component {
     }
 }
 
-export default MainListing
+export default withRouter(MainListing)

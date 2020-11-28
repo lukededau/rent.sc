@@ -25,7 +25,7 @@ class ListingFields extends React.Component {
             uid: "",
             email: "",
             username: "",
-            imageUrl: null
+            imageUrl: null,
             reviews: [],
         };
         this.tags = {

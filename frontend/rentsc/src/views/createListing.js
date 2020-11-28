@@ -3,10 +3,9 @@ import { Button, Form, Alert} from 'react-bootstrap';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase';
-import storage from '../firebase';
-import timestamp from '../firebase';
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
+import { storage } from 'firebase';
 
 class ListingFields extends React.Component {
     constructor(props) {
@@ -22,50 +21,27 @@ class ListingFields extends React.Component {
             description: "",
             uid: "",
             email: "",
-            username: ""
+            username: "",
+            imageUrl: null
         };
         this.tags = {
             'dogFriendly': false,
             'catFriendly': false
         };
-        this.imageState = { 
-            image: null,
-            url: null,
-            progress: null,
-            error: ''
-        };
+        this.imageState = { url: null };
+        this.docID = { docID: null };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
+
+        this.fullSubmit = this.fullSubmit.bind(this)
     }
 
     storeTag(event) {
         this.tags[event.target.name] = !this.tags[event.target.name];
-    }
-
-    async handleSubmit(event) {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-
-        for (var i = 1; i < form.elements.length; i++) {
-            var element = form.elements[i];
-            //console.log(element.id + " " + element.value);
-            if (element.if !== "" && element.value !== "") {
-                this.state[element.id] = element.value
-            }
-        }
-
-        // Add user info
-        this.uid = firebase.auth().currentUser.uid
-        this.email = firebase.auth().currentUser.email
-        this.username = firebase.auth().currentUser.displayName
-
-        this.state["tags"] = this.tags;
-        await this.makeListing();
     }
 
     // Handles image upload change
@@ -73,42 +49,62 @@ class ListingFields extends React.Component {
         const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
         if (e.target.files[0] && imageTypes.includes(e.target.files[0].type)){
-            const selected = e.target.files[0]
-            this.image = selected
-            this.error = ''
-            console.log("handlechange: ", this.image)
+            const image = e.target.files[0]
+            this.image = image
         } else {
             this.image = null
-            this.error = "Please select an image file"
-            //console.log(this.image)
         }
     }
 
-    // Handles image upload change
+    // Handles image upload
     handleUpload() {
-        //console.log("handleUpload:", this.image)
         const image = this.image
         const storageRef = firebase.storage().ref(image.name)
-        console.log(storageRef)
-        //storage.ref(`images/${image.name}`).put(image)
 
-        storageRef.put(this.image).on('state_changed', snapshot => {
+        storageRef.put(image).on('state_changed', snapshot => {
             const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
             this.progress = progress
         }, (err) => {
             this.error = err
-        }, async () => {
-            const url = await storageRef.getDownloadURL()
-            //const createdAt = timestamp()
-            this.url = url
+        }, () => {
+            storageRef.getDownloadURL()
+            .then((url) => {
+                this.url = url
+                this.state.imageUrl = url
+                this.fullSubmit()
+            })
         })
+    }
 
-        console.log("upload done")
+    handleSubmit(event) {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        for (var i = 1; i < form.elements.length; i++) {
+            var element = form.elements[i];
+            if (element.if !== "" && element.value !== "") {
+                this.state[element.id] = element.value
+            }
+        }
+
+        // Add user info
+        this.state.uid = firebase.auth().currentUser.uid
+        this.state.email = firebase.auth().currentUser.email
+        this.state.username = firebase.auth().currentUser.displayName
+
+        this.state["tags"] = this.tags
+
+        // Handle photo upload
+        this.handleUpload()
     }
 
     makeListing() {
-        const db = firebase.firestore();
-        db.collection('listing').doc().set(this.state)
+        const db = firebase.firestore().collection('listing');
+        db.doc().set(this.state)
+    }
+
+    fullSubmit() {
+        this.makeListing()
     }
 
     render() {
@@ -119,37 +115,36 @@ class ListingFields extends React.Component {
                     <Form.Label> Images </Form.Label>
                     <Form.Control type="file" onChange={this.handleChange}></Form.Control>
                     {this.error && <Alert variant="danger">{this.error}</Alert>}
-                    <br></br>
-                    <Button type="button" name="upload" onClick={this.handleUpload}>Upload</Button>
+                    {/*<Button type="button" name="upload" onClick={this.handleUpload}>Upload</Button>*/}
                 </Form.Group>                
                 {/* Text Fields */}
                 <Form.Group controlId="address">
                     <Form.Label> Address </Form.Label>
-                    <Form.Control type="text" placeholder="Address" />
+                    <Form.Control type="text" placeholder="Address" required/>
                 </Form.Group>
                 <Form.Group controlId="city">
                     <Form.Label> City </Form.Label>
-                    <Form.Control type="text" placeholder="City" />
+                    <Form.Control type="text" placeholder="City" required/>
                 </Form.Group>
                 <Form.Group controlId="zip">
-                    <Form.Label> Address </Form.Label>
-                    <Form.Control type="text" placeholder="Zip Code" />
+                    <Form.Label> Zip </Form.Label>
+                    <Form.Control type="text" placeholder="Zip Code" required/>
                 </Form.Group>
                 <Form.Group controlId="price">
                     <Form.Label> Price per Month </Form.Label>
-                    <Form.Control type="text" placeholder="Price" />
+                    <Form.Control type="text" placeholder="Price" required/>
                 </Form.Group>
                 <Form.Group controlId="size">
                     <Form.Label> Maximum No. of Tenants </Form.Label>
-                    <Form.Control type="number" placeholder="Max # Tenents" />
+                    <Form.Control type="number" placeholder="Max # Tenents" required/>
                 </Form.Group>
                 <Form.Group controlId="numBedrooms">
                     <Form.Label> Number of Bedrooms </Form.Label>
-                    <Form.Control type="number" placeholder="# of Bedrooms" />
+                    <Form.Control type="number" placeholder="# of Bedrooms" required/>
                 </Form.Group>
                 <Form.Group controlId="numBaths">
                     <Form.Label> Number of Baths </Form.Label>
-                    <Form.Control type="number" placeholder="# of Bathrooms" />
+                    <Form.Control type="number" placeholder="# of Bathrooms" required/>
                 </Form.Group>
                 <Form.Group controlId="description">
                     <Form.Label> Description </Form.Label>
@@ -168,7 +163,7 @@ class ListingFields extends React.Component {
                     </Button>
                 </div> <br></br>
 
-                <Button variant="primary" type="submit">
+        <   Button variant="primary" type="submit">
                     Submit
             </Button>
             </Form>

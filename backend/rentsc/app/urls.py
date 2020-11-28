@@ -6,5 +6,10 @@ from . import views
 urlpatterns = [
     path('hello', views.index, name='index'),
     path('createUser', views.createUser, name='createUser'),
-    path('getAllListings', views.getAllListings, name='getAllListings')
+    path('getAllListings', views.getAllListings, name='getAllListings'),
+    path('getAllRooms', views.getAllRooms, name='getAllRooms'),
+    path('getMessages', views.getMessages, name='getMessages'),
+    path('createRooms', views.createRooms, name='createRooms'),
+    path('createMessage', views.createMessage, name='createMessage')
+
 ]

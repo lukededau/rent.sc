@@ -134,7 +134,6 @@ class ListingFields extends React.Component {
                     <Form.Label> Images </Form.Label>
                     <Form.Control type="file" onChange={this.handleChange}></Form.Control>
                     {this.error && <Alert variant="danger">{this.error}</Alert>}
-                    {/*<Button type="button" name="upload" onClick={this.handleUpload}>Upload</Button>*/}
                 </Form.Group>                
                 {/* Text Fields */}
                 <Form.Group controlId="address">

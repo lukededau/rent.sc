@@ -7,6 +7,7 @@ import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 import { MdSmokeFree } from "react-icons/md";
 import { AiOutlineCar } from "react-icons/ai";
+import { withRouter } from 'react-router-dom'
 // import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 class ListingFields extends React.Component {
@@ -46,13 +47,13 @@ class ListingFields extends React.Component {
         };
         this.imageState = { url: null };
         this.docID = { docID: null };
+        this.redirectState = { redirect: null };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
-
         this.fullSubmit = this.fullSubmit.bind(this)
     }
 
@@ -120,14 +121,19 @@ class ListingFields extends React.Component {
     makeListing() {
         const db = firebase.firestore().collection('listing');
         db.doc().set(this.state)
+        this.redirectState.redirect = "/listings"
     }
 
-    fullSubmit() {
-        this.makeListing()
+    async fullSubmit() {
+        await this.makeListing()
+        this.props.history.push('/listings')
     }
 
     render() {
-        return (
+        return (   
+            <div>
+                <NavigationBar></NavigationBar>
+         
             <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '25%' }}>
                 {/* Image Fields */}
                 <Form.Group controlId="image">
@@ -246,13 +252,11 @@ class ListingFields extends React.Component {
                 <br></br>
                 <br></br>
 
-
-        <   Button variant="primary" type="submit">
-                    Submit
-                </Button>
+                <Button variant="primary" type="submit">Submit</Button>
                 <br></br>
                 <br></br>
             </Form >
+            </div>
         );
     }
 }
@@ -267,13 +271,5 @@ class ListingFields extends React.Component {
 // 'parkingSpots': 0,
 // 'streetParking': false,
 // 'smokerFriendly': false
-function createListing() {
-    return (
-        <div>
-            <NavigationBar></NavigationBar>
-            <ListingFields />
-        </div>
-    );
-}
 
-export default createListing;
+export default withRouter(ListingFields);

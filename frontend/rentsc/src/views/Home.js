@@ -1,29 +1,59 @@
+/*global google*/
 import React, { Component } from 'react';
 import firebase from '../firebase.js';
-import { withProps, compose } from 'recompose';
+import { withProps, compose, lifecycle } from 'recompose';
 import NavBar from '../common/NavBar';
 import Geocode from 'react-geocode';
 import { withRouter } from 'react-router-dom';
-import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs } from 'react-google-maps';
+import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs, DirectionsRenderer } from 'react-google-maps';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
+Geocode.setApiKey(API_KEY);
+
 const InitialMap = compose(
     withProps({
-            googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places",
-            loadingElement: <div style={{ height: `100%` }} />,
-            containerElement: <div style={{ height: `935px`, width: '100%' }} />,
-            mapElement: <div style={{ height: `100%` }} /> 
+        googleMapURL: "https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places",
+        loadingElement: <div style={{ height: `100%` }} />,
+        containerElement: <div style={{ height: `935px`, width: '100%' }} />,
+        mapElement: <div style={{ height: `100%` }} /> 
     }),
     withScriptjs,
-    withGoogleMap
+    withGoogleMap,
+    // lifecycle({
+    //     componentDidMount() {
+    //         const directionsService = new google.maps.DirectionsService();
+    //         const origin = { lat: 36.9741, lng: -122.0308 };
+    //         const destination = { lat: 36.9881, lng: -122.0582 };
+
+    //         directionsService.route(
+    //             {
+    //                 origin: origin,
+    //                 destination: destination,
+    //                 travelMode: google.maps.TravelMode.DRIVING
+    //             },
+    //             (result, status) => {
+    //                 if (status === google.maps.DirectionsStatus.OK) {
+    //                     this.setState({
+    //                         directions: result
+    //                     });
+    //                 } else {
+    //                     console.error(`error fetching directions ${result}`);
+    //                 }
+    //             }
+    //         );
+    //     }
+    //   })
     )(props => 
     <GoogleMap
         defaultCenter = { { lat: 36.9741, lng: -122.0308 } }
         defaultZoom = { 14 }
     >
+    {props.directions && <DirectionsRenderer
+        directions={props.directions}
+    />}
     {props.markers.map(marker => (
         <Marker
             key={marker.id}
@@ -57,6 +87,7 @@ const InitialMap = compose(
                     <p style={{fontSize: 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
                     <p style={{fontSize: 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
                     <p style={{fontSize: 15, margin: 5}}>Tags: {marker.tags}</p>
+                    {/* <p>Directions: {props.directions}</p> */}
                     <br></br>
                     <Button variant="outline-primary" size="sm" onClick={() => props.onViewButtonClick(marker.address, marker.city)}>
                         View Listing
@@ -78,6 +109,7 @@ export class Home extends Component {
         this.state = {
             selectedMarker: 0,
             markers:[],
+            directions: null,
         };
     }
 
@@ -95,7 +127,7 @@ export class Home extends Component {
         listings.forEach((listing) => {
             responses.push(new Promise(async (resolve) => {
                 const {address, city, zip, description, numBaths, numBedrooms, price, size, tags} = listing.data();
-
+                // console.log(address + " " + city);
                 // Create tag string
                 var verifiedTags = [];
                 Object.keys(tags).forEach(function (key) {
@@ -138,16 +170,39 @@ export class Home extends Component {
         });
     }
 
+    _renderDirections() {
+        const directionsService = new google.maps.DirectionsService();
+        const origin = { lat: 36.9741, lng: -122.0308 };
+        const destination = { lat: 36.9881, lng: -122.0582 };
+
+        directionsService.route(
+            {
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            },
+            (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    this.setState({
+                        directions: result
+                    });
+                } else {
+                    console.error(`error fetching directions ${result}`);
+                }
+            }
+        );
+    }
+
     _convertAddressToCoordinates = async (address, city) => {
-        
         let lat = 0, lng = 0;
         try{
             const response = await Geocode.fromAddress(address + ", " + city);
             lat = response.results[0].geometry.location.lat;
             lng = response.results[0].geometry.location.lng;
+            // console.log("lat: " + lat + ", " + "lng: " + lng);
         }
         catch(e) {
-            
+            console.error(e);
         }
         return { lat, lng };
     }
@@ -174,6 +229,10 @@ export class Home extends Component {
                 selectedMarker: markerID
             });
         }
+        this._renderDirections();
+        // this.setState({
+        //     directions: "hi"
+        // });
     }
 
     onClose = () => {
@@ -189,6 +248,7 @@ export class Home extends Component {
                 <InitialMap
                     selectedMarker={this.state.selectedMarker}
                     markers={this.state.markers}
+                    directions={this.state.directions}
                     onMarkerClick={this.onMarkerClick}
                     onClose={this.onClose}
                     onViewButtonClick={this._handleViewListingButtonClick}

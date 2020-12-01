@@ -48,7 +48,6 @@ class ListingFields extends React.Component {
         };
         this.imageState = { 
             images: [],
-            tempImg: null,
             url: null 
         };
         this.docID = { docID: null };
@@ -78,8 +77,6 @@ class ListingFields extends React.Component {
         if(e.target.files) {
             const filesArray = Array.from(e.target.files)
             this.imageState.images = filesArray
-
-            this.imageState.tempImg = URL.createObjectURL(e.target.files[0])
         }
         else {
             this.error = "Please select images to upload"

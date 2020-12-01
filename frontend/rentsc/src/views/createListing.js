@@ -48,6 +48,7 @@ class ListingFields extends React.Component {
         };
         this.imageState = { 
             images: [],
+            tempImg: null,
             url: null 
         };
         this.docID = { docID: null };
@@ -69,7 +70,6 @@ class ListingFields extends React.Component {
         }
     }
 
-    ///*
     // Handles MULTIPLE image change
     handleChange(e) {
         // Specified file types
@@ -78,19 +78,20 @@ class ListingFields extends React.Component {
         if(e.target.files) {
             const filesArray = Array.from(e.target.files)
             this.imageState.images = filesArray
-            //this.handleUpload()
+
+            this.imageState.tempImg = URL.createObjectURL(e.target.files[0])
         }
         else {
             this.error = "Please select images to upload"
         }
     }
+
     // Handle upload MULTPIPLE image upload
     async handleUpload() {
         const imageNames = Array.from(this.imageState.images)
 
         for (var i = 0; i < imageNames.length; i++) {
             await this.uploadTask(imageNames[i], imageNames.length)
-            console.log(imageNames[i].name)
         }
     }
 
@@ -106,15 +107,11 @@ class ListingFields extends React.Component {
             .then((url) => {
                 if(this.state.imageURL == null) {
                     this.state.imageURL = url
-                    console.log(this.state.imageURL)
                 }
                 else if(this.state.imageURL != null) {
                     this.state.imageURL.push(url)
-                    console.log(this.state.imageURL)
-                    //this.fullSubmit()
                 }
                 if(this.state.imageURL.length == length) {
-                    //console.log('full submit')
                     this.fullSubmit()
                 }
             })
@@ -145,14 +142,14 @@ class ListingFields extends React.Component {
 
     async fullSubmit() {
         await this.makeListing()
-        //this.props.history.push('/listings')
+        setTimeout(() => {
+            this.props.history.push('/listings')
+        }, 1000)
     }
 
     makeListing() {
         const db = firebase.firestore().collection('listing');
         db.doc().set(this.state)
-        console.log(this.state)
-        //this.redirectState.redirect = "/listings"
     }
 
     render() {

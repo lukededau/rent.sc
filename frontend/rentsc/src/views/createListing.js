@@ -50,8 +50,6 @@ class ListingFields extends React.Component {
             images: [],
             url: null 
         };
-        this.docID = { docID: null };
-        this.redirectState = { redirect: null };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);

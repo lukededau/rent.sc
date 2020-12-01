@@ -6,7 +6,7 @@ import firebase from '../firebase';
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 import { MdSmokeFree } from "react-icons/md";
-import { AiOutlineCar } from "react-icons/ai";
+import { AiOutlineCar, AiOutlineConsoleSql } from "react-icons/ai";
 import { withRouter } from 'react-router-dom'
 // import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
@@ -26,8 +26,9 @@ class ListingFields extends React.Component {
             uid: "",
             email: "",
             username: "",
-            imageUrl: null,
+            //imageUrl: null,
             reviews: [],
+            imageURL: []
         };
         this.tags = {
             'dogFriendly': false,
@@ -45,16 +46,20 @@ class ListingFields extends React.Component {
             'streetParking': false,
             'smokerFriendly': false
         };
-        this.imageState = { url: null };
+        this.imageState = { 
+            images: [],
+            url: null 
+        };
         this.docID = { docID: null };
         this.redirectState = { redirect: null };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
+        this.uploadTask = this.uploadTask.bind(this);
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
-        this.fullSubmit = this.fullSubmit.bind(this)
+        this.fullSubmit = this.fullSubmit.bind(this);
     }
 
     // apartment, house, townhouse, shared room, private room, pool,fireplace, AC, parkingspots, street parking, smoking allowed
@@ -64,39 +69,59 @@ class ListingFields extends React.Component {
         }
     }
 
-    // Handles image upload change
+    ///*
+    // Handles MULTIPLE image change
     handleChange(e) {
-        const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
+        // Specified file types
+        //const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
-        if (e.target.files[0] && imageTypes.includes(e.target.files[0].type)){
-            const image = e.target.files[0]
-            this.image = image
-        } else {
-            this.image = null
+        if(e.target.files) {
+            const filesArray = Array.from(e.target.files)
+            this.imageState.images = filesArray
+            //this.handleUpload()
+        }
+        else {
+            this.error = "Please select images to upload"
+        }
+    }
+    // Handle upload MULTPIPLE image upload
+    async handleUpload() {
+        const imageNames = Array.from(this.imageState.images)
+
+        for (var i = 0; i < imageNames.length; i++) {
+            await this.uploadTask(imageNames[i], imageNames.length)
+            console.log(imageNames[i].name)
         }
     }
 
-    // Handles image upload
-    handleUpload() {
-        const image = this.image
-        const storageRef = firebase.storage().ref(image.name)
-
-        storageRef.put(image).on('state_changed', snapshot => {
+    uploadTask(img, length) {
+        const storageRef = firebase.storage().ref(img.name)
+        
+        storageRef.put(img).on('state_changed', snapshot => {
             const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            this.progress = progress
         }, (err) => {
             this.error = err
         }, () => {
             storageRef.getDownloadURL()
             .then((url) => {
-                this.url = url
-                this.state.imageUrl = url
-                this.fullSubmit()
+                if(this.state.imageURL == null) {
+                    this.state.imageURL = url
+                    console.log(this.state.imageURL)
+                }
+                else if(this.state.imageURL != null) {
+                    this.state.imageURL.push(url)
+                    console.log(this.state.imageURL)
+                    //this.fullSubmit()
+                }
+                if(this.state.imageURL.length == length) {
+                    //console.log('full submit')
+                    this.fullSubmit()
+                }
             })
         })
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -115,18 +140,19 @@ class ListingFields extends React.Component {
         this.state["tags"] = this.tags
 
         // Handle photo upload
-        this.handleUpload()
+        await this.handleUpload()
+    }
+
+    async fullSubmit() {
+        await this.makeListing()
+        //this.props.history.push('/listings')
     }
 
     makeListing() {
         const db = firebase.firestore().collection('listing');
         db.doc().set(this.state)
-        this.redirectState.redirect = "/listings"
-    }
-
-    async fullSubmit() {
-        await this.makeListing()
-        this.props.history.push('/listings')
+        console.log(this.state)
+        //this.redirectState.redirect = "/listings"
     }
 
     render() {
@@ -138,7 +164,7 @@ class ListingFields extends React.Component {
                 {/* Image Fields */}
                 <Form.Group controlId="image">
                     <Form.Label> Images </Form.Label>
-                    <Form.Control type="file" onChange={this.handleChange}></Form.Control>
+                    <Form.Control type="file" multiple onChange={this.handleChange}></Form.Control>
                     {this.error && <Alert variant="danger">{this.error}</Alert>}
                 </Form.Group>                
                 {/* Text Fields */}

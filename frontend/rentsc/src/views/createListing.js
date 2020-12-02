@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Alert} from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase';
@@ -46,9 +46,9 @@ class ListingFields extends React.Component {
             'streetParking': false,
             'smokerFriendly': false
         };
-        this.imageState = { 
+        this.imageState = {
             images: [],
-            url: null 
+            url: null
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -72,7 +72,7 @@ class ListingFields extends React.Component {
         // Specified file types
         //const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
-        if(e.target.files) {
+        if (e.target.files) {
             const filesArray = Array.from(e.target.files)
             this.imageState.images = filesArray
         }
@@ -92,24 +92,24 @@ class ListingFields extends React.Component {
 
     uploadTask(img, length) {
         const storageRef = firebase.storage().ref(img.name)
-        
+
         storageRef.put(img).on('state_changed', snapshot => {
             const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
         }, (err) => {
             this.error = err
         }, () => {
             storageRef.getDownloadURL()
-            .then((url) => {
-                if(this.state.imageURL == null) {
-                    this.state.imageURL = url
-                }
-                else if(this.state.imageURL != null) {
-                    this.state.imageURL.push(url)
-                }
-                if(this.state.imageURL.length == length) {
-                    this.fullSubmit()
-                }
-            })
+                .then((url) => {
+                    if (this.state.imageURL == null) {
+                        this.state.imageURL = url
+                    }
+                    else if (this.state.imageURL != null) {
+                        this.state.imageURL.push(url)
+                    }
+                    if (this.state.imageURL.length == length) {
+                        this.fullSubmit()
+                    }
+                })
         })
     }
 
@@ -148,132 +148,132 @@ class ListingFields extends React.Component {
     }
 
     render() {
-        return (   
+        return (
             <div>
                 <NavigationBar></NavigationBar>
-         
-            <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '25%' }}>
-                {/* Image Fields */}
-                <Form.Group controlId="image">
-                    <Form.Label> Images </Form.Label>
-                    <Form.Control type="file" multiple onChange={this.handleChange}></Form.Control>
-                    {this.error && <Alert variant="danger">{this.error}</Alert>}
-                </Form.Group>                
-                {/* Text Fields */}
-                <Form.Group controlId="address">
-                    <Form.Label> Address </Form.Label>
-                    <Form.Control type="text" placeholder="Address" required/>
-                </Form.Group>
-                <Form.Group controlId="city">
-                    <Form.Label> City </Form.Label>
-                    <Form.Control type="text" placeholder="City" required/>
-                </Form.Group>
-                <Form.Group controlId="zip">
-                    <Form.Label> Zip </Form.Label>
-                    <Form.Control type="text" placeholder="Zip Code" required/>
-                </Form.Group>
-                <Form.Group controlId="price">
-                    <Form.Label> Price per Month </Form.Label>
-                    <Form.Control type="text" placeholder="Price" required/>
-                </Form.Group>
-                <Form.Group controlId="size">
-                    <Form.Label> Maximum No. of Tenants </Form.Label>
-                    <Form.Control type="number" placeholder="Max # Tenents" required/>
-                </Form.Group>
-                <Form.Group controlId="numBedrooms">
-                    <Form.Label> Number of Bedrooms </Form.Label>
-                    <Form.Control type="number" placeholder="# of Bedrooms" required/>
-                </Form.Group>
-                <Form.Group controlId="numBaths">
-                    <Form.Label> Number of Baths </Form.Label>
-                    <Form.Control type="number" placeholder="# of Bathrooms" required/>
-                </Form.Group>
-                <Form.Group controlId="description">
-                    <Form.Label> Description </Form.Label>
-                    <Form.Control required type="text" placeholder="Description" />
-                </Form.Group>
 
-                {/* Tags */}
-                <label> Type of Place: </label> <br></br>
-                {/* <ToggleButtonGroup type="checkbox" defaultValue={false} name="apartment">
+                <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '30%' }}>
+                    {/* Image Fields */}
+                    <Form.Group controlId="image">
+                        <Form.Label> Images </Form.Label>
+                        <Form.Control type="file" multiple onChange={this.handleChange}></Form.Control>
+                        {this.error && <Alert variant="danger">{this.error}</Alert>}
+                    </Form.Group>
+                    {/* Text Fields */}
+                    <Form.Group controlId="address">
+                        <Form.Label> Address </Form.Label>
+                        <Form.Control type="text" placeholder="Address" required />
+                    </Form.Group>
+                    <Form.Group controlId="city">
+                        <Form.Label> City </Form.Label>
+                        <Form.Control type="text" placeholder="City" required />
+                    </Form.Group>
+                    <Form.Group controlId="zip">
+                        <Form.Label> Zip </Form.Label>
+                        <Form.Control type="text" placeholder="Zip Code" required />
+                    </Form.Group>
+                    <Form.Group controlId="price">
+                        <Form.Label> Price per Month </Form.Label>
+                        <Form.Control type="text" placeholder="Price" required />
+                    </Form.Group>
+                    <Form.Group controlId="size">
+                        <Form.Label> Maximum No. of Tenants </Form.Label>
+                        <Form.Control type="number" placeholder="Max # Tenents" required />
+                    </Form.Group>
+                    <Form.Group controlId="numBedrooms">
+                        <Form.Label> Number of Bedrooms </Form.Label>
+                        <Form.Control type="number" placeholder="# of Bedrooms" required />
+                    </Form.Group>
+                    <Form.Group controlId="numBaths">
+                        <Form.Label> Number of Baths </Form.Label>
+                        <Form.Control type="number" placeholder="# of Bathrooms" required />
+                    </Form.Group>
+                    <Form.Group controlId="description">
+                        <Form.Label> Description </Form.Label>
+                        <Form.Control required type="text" placeholder="Description" />
+                    </Form.Group>
+
+                    {/* Tags */}
+                    <label> Type of Place: </label> <br></br>
+                    {/* <ToggleButtonGroup type="checkbox" defaultValue={false} name="apartment">
                     <ToggleButton value={false} variant="outline-primary" name="apartment" onClick={this.storeTag} value={0}>Apartment</ToggleButton>
                 </ToggleButtonGroup> */}
 
-                <Button type="button" name="apartment" onClick={this.storeTag}>
-                    Apartment
+                    <Button type="button" name="apartment" onClick={this.storeTag}>
+                        Apartment
                     </Button>
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                     <Button type="button" name="house" onClick={this.storeTag}>
-                    House
+                        House
                     </Button> {' '}
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                     <Button type="button" name="townhouse" onClick={this.storeTag}>
-                    Townhouse
+                        Townhouse
                     </Button> {' '}
-                <br></br>
+                    <br></br>
 
-                <label> Type of Rental: </label> <br></br>
-                <Button type="button" name="entirePlace" onClick={this.storeTag}>
-                    Entire Place
+                    <label> Type of Rental: </label> <br></br>
+                    <Button type="button" name="entirePlace" onClick={this.storeTag}>
+                        Entire Place
                     </Button> {' '}
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;
                 <Button type="button" name="sharedRoom" onClick={this.storeTag}>
-                    Shared Room
+                        Shared Room
                     </Button> {' '}
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;
                     <Button type="button" name="privateRoom" onClick={this.storeTag}>
-                    Private Room
+                        Private Room
                     </Button>
-                <br></br>
+                    <br></br>
 
-                <label> Amenities: </label> <br></br>
-                <Button type="button" name="furnished" onClick={this.storeTag}>
-                    Furnished
+                    <label> Amenities: </label> <br></br>
+                    <Button type="button" name="furnished" onClick={this.storeTag}>
+                        Furnished
                 </Button>
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                 <Button type="button" name="pool" onClick={this.storeTag}>
-                    Pool
+                        Pool
                     </Button>
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                 <Button type="button" name="fireplace" onClick={this.storeTag}>
-                    Fireplace
+                        Fireplace
                     </Button>
-                &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                 <Button type="button" name="AC" onClick={this.storeTag}>
-                    AC
+                        AC
                     </Button>
-                <br></br>
+                    <br></br>
 
-                <label> Pets: </label> <br></br>
-                <Button type="button" name="dogFriendly" onClick={this.storeTag}>
-                    Dog friendly <FaDog />
-                </Button> {' '}
-                &nbsp;&nbsp;&nbsp;
+                    <label> Pets: </label> <br></br>
+                    <Button type="button" name="dogFriendly" onClick={this.storeTag}>
+                        Dog friendly <FaDog />
+                    </Button> {' '}
+                    &nbsp;&nbsp;&nbsp;
                     <Button type="button" name="catFriendly" onClick={this.storeTag}>
-                    Cat friendly  <FaCat />
-                </Button>
-                <br></br>
+                        Cat friendly  <FaCat />
+                    </Button>
+                    <br></br>
 
-                <Form.Group controlId="parkingSpots">
-                    <Form.Label> Parking Spots on Premise:</Form.Label>
-                    <Form.Control type="text" placeholder="0 spots" />
-                </Form.Group>
+                    <Form.Group controlId="parkingSpots">
+                        <Form.Label> Parking Spots on Premise:</Form.Label>
+                        <Form.Control type="text" placeholder="0 spots" />
+                    </Form.Group>
 
-                <Button type="button" name="streetParking" onClick={this.storeTag}>
-                    Street Parking <AiOutlineCar />
-                </Button>
-                &nbsp;&nbsp;&nbsp;
+                    <Button type="button" name="streetParking" onClick={this.storeTag}>
+                        Street Parking <AiOutlineCar />
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
                 <Button type="button" name="smokerFriendly" onClick={this.storeTag}>
-                    Smoker Friendly <MdSmokeFree />
-                </Button>
+                        Smoker Friendly <MdSmokeFree />
+                    </Button>
 
-                <br></br>
-                <br></br>
+                    <br></br>
+                    <br></br>
 
-                <Button variant="primary" type="submit">Submit</Button>
-                <br></br>
-                <br></br>
-            </Form >
+                    <Button variant="primary" type="submit">Submit</Button>
+                    <br></br>
+                    <br></br>
+                </Form >
             </div>
         );
     }

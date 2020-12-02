@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap/Container';
+import { Container, Row, Col } from 'react-bootstrap';
 import Home from './Home.js'
 import NavigationBar from '../Components/navbar.js'
 import ListingList from '../Components/listingList.js'

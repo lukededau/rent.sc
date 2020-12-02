@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from '../firebase.js'
 import { Button, ListGroup } from 'react-bootstrap';
 import Calendar from 'react-calendar'
+import { withRouter } from 'react-router-dom';
 import 'react-calendar/dist/Calendar.css';
 
 const ListItem = ({value}) => (
@@ -63,7 +64,7 @@ class ChooseAvailability extends React.Component {
             const updateRes = await availabilityRef.doc(this.state.uid).set(this.state)
             console.log(updateRes);
         }
-        window.location.href='/userprofile';
+        this.props.history.push('/userprofile');
     }
 
     render() {
@@ -90,4 +91,4 @@ class ChooseAvailability extends React.Component {
     }
 }
 
-export default ChooseAvailability
+export default withRouter(ChooseAvailability)

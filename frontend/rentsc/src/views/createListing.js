@@ -1,12 +1,13 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert} from 'react-bootstrap';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import firebase from '../firebase.js';
+import firebase from '../firebase';
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 import { MdSmokeFree } from "react-icons/md";
-import { AiOutlineCar } from "react-icons/ai";
+import { AiOutlineCar, AiOutlineConsoleSql } from "react-icons/ai";
+import { withRouter } from 'react-router-dom'
 // import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 class ListingFields extends React.Component {
@@ -25,7 +26,9 @@ class ListingFields extends React.Component {
             uid: "",
             email: "",
             username: "",
+            //imageUrl: null,
             reviews: [],
+            imageURL: []
         };
         this.tags = {
             'dogFriendly': false,
@@ -43,28 +46,79 @@ class ListingFields extends React.Component {
             'streetParking': false,
             'smokerFriendly': false
         };
+        this.imageState = { 
+            images: [],
+            url: null 
+        };
+
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
+        this.uploadTask = this.uploadTask.bind(this);
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
-
-        //if(firebase.auth().currentUser != null)
-        //console.log(firebase.auth().currentUser.uid)
+        this.fullSubmit = this.fullSubmit.bind(this);
     }
 
+    // apartment, house, townhouse, shared room, private room, pool,fireplace, AC, parkingspots, street parking, smoking allowed
     storeTag(event) {
-
         if (event.target.name) {
             this.tags[event.target.name] = !this.tags[event.target.name];
         }
     }
-    // apartment, house, townhouse, shared room, private room, pool,fireplace, AC, parkingspots, street parking, smoking allowed
-    async handleSubmit(event) {
 
+    // Handles MULTIPLE image change
+    handleChange(e) {
+        // Specified file types
+        //const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
+
+        if(e.target.files) {
+            const filesArray = Array.from(e.target.files)
+            this.imageState.images = filesArray
+        }
+        else {
+            this.error = "Please select images to upload"
+        }
+    }
+
+    // Handle upload MULTPIPLE image upload
+    async handleUpload() {
+        const imageNames = Array.from(this.imageState.images)
+
+        for (var i = 0; i < imageNames.length; i++) {
+            await this.uploadTask(imageNames[i], imageNames.length)
+        }
+    }
+
+    uploadTask(img, length) {
+        const storageRef = firebase.storage().ref(img.name)
+        
+        storageRef.put(img).on('state_changed', snapshot => {
+            const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        }, (err) => {
+            this.error = err
+        }, () => {
+            storageRef.getDownloadURL()
+            .then((url) => {
+                if(this.state.imageURL == null) {
+                    this.state.imageURL = url
+                }
+                else if(this.state.imageURL != null) {
+                    this.state.imageURL.push(url)
+                }
+                if(this.state.imageURL.length == length) {
+                    this.fullSubmit()
+                }
+            })
+        })
+    }
+
+    async handleSubmit(event) {
         event.preventDefault();
+
         const form = event.currentTarget;
-        for (var i = 0; i < form.elements.length; i++) {
+        for (var i = 1; i < form.elements.length; i++) {
             var element = form.elements[i];
-            //console.log(element.id + " " + element.value);
             if (element.if !== "" && element.value !== "") {
                 this.state[element.id] = element.value
             }
@@ -75,47 +129,64 @@ class ListingFields extends React.Component {
         this.state.email = firebase.auth().currentUser.email
         this.state.username = firebase.auth().currentUser.displayName
 
-        this.state["tags"] = this.tags;
-        await this.makeListing();
+        this.state["tags"] = this.tags
+
+        // Handle photo upload
+        await this.handleUpload()
+    }
+
+    async fullSubmit() {
+        await this.makeListing()
+        setTimeout(() => {
+            this.props.history.push('/listings')
+        }, 1000)
     }
 
     makeListing() {
-        const db = firebase.firestore();
-        db.collection('listing').doc().set(this.state)
+        const db = firebase.firestore().collection('listing');
+        db.doc().set(this.state)
     }
 
     render() {
-        return (
-            <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '30%' }}>
-
+        return (   
+            <div>
+                <NavigationBar></NavigationBar>
+         
+            <Form onSubmit={this.handleSubmit} style={{ paddingTop: '100px', paddingLeft: '50px', width: '25%' }}>
+                {/* Image Fields */}
+                <Form.Group controlId="image">
+                    <Form.Label> Images </Form.Label>
+                    <Form.Control type="file" multiple onChange={this.handleChange}></Form.Control>
+                    {this.error && <Alert variant="danger">{this.error}</Alert>}
+                </Form.Group>                
                 {/* Text Fields */}
                 <Form.Group controlId="address">
                     <Form.Label> Address </Form.Label>
-                    <Form.Control required type="text" placeholder="Address" />
+                    <Form.Control type="text" placeholder="Address" required/>
                 </Form.Group>
                 <Form.Group controlId="city">
-                    <Form.Label> Address </Form.Label>
-                    <Form.Control type="text" placeholder="City" />
+                    <Form.Label> City </Form.Label>
+                    <Form.Control type="text" placeholder="City" required/>
                 </Form.Group>
                 <Form.Group controlId="zip">
-                    <Form.Label> Address </Form.Label>
-                    <Form.Control type="text" placeholder="Zip Code" />
+                    <Form.Label> Zip </Form.Label>
+                    <Form.Control type="text" placeholder="Zip Code" required/>
                 </Form.Group>
                 <Form.Group controlId="price">
                     <Form.Label> Price per Month </Form.Label>
-                    <Form.Control required type="text" placeholder="Price" />
+                    <Form.Control type="text" placeholder="Price" required/>
                 </Form.Group>
                 <Form.Group controlId="size">
                     <Form.Label> Maximum No. of Tenants </Form.Label>
-                    <Form.Control type="number" placeholder="Max # Tenents" />
+                    <Form.Control type="number" placeholder="Max # Tenents" required/>
                 </Form.Group>
                 <Form.Group controlId="numBedrooms">
                     <Form.Label> Number of Bedrooms </Form.Label>
-                    <Form.Control type="number" placeholder="# of Bedrooms" />
+                    <Form.Control type="number" placeholder="# of Bedrooms" required/>
                 </Form.Group>
                 <Form.Group controlId="numBaths">
                     <Form.Label> Number of Baths </Form.Label>
-                    <Form.Control type="number" placeholder="# of Bathrooms" />
+                    <Form.Control type="number" placeholder="# of Bathrooms" required/>
                 </Form.Group>
                 <Form.Group controlId="description">
                     <Form.Label> Description </Form.Label>
@@ -199,13 +270,11 @@ class ListingFields extends React.Component {
                 <br></br>
                 <br></br>
 
-
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
+                <Button variant="primary" type="submit">Submit</Button>
                 <br></br>
                 <br></br>
             </Form >
+            </div>
         );
     }
 }
@@ -220,13 +289,5 @@ class ListingFields extends React.Component {
 // 'parkingSpots': 0,
 // 'streetParking': false,
 // 'smokerFriendly': false
-function createListing() {
-    return (
-        <div>
-            <NavigationBar></NavigationBar>
-            <ListingFields />
-        </div>
-    );
-}
 
-export default createListing;
+export default withRouter(ListingFields);

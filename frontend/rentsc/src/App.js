@@ -1,4 +1,4 @@
-import React/*, { Component }*/ from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 
@@ -10,11 +10,10 @@ import Home from './views/Home';
 import PageNotFound from './views/PageNotFound';
 import createListing from './views/createListing';
 import Login from './views/Login';
-import Signup1 from './views/SignupB';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
-import Messages from './views/Messages'
+//import Messages from './views/Messages'
 import propertyReview from './views/propertyReview';
 import Review_Owner from './views/ownerReview';
 import MainListing from './views/MainListing';
@@ -30,7 +29,7 @@ function App() {
           <PrivateRoute exact path="/userprofile" component={UserProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
-          <Route path="/messages" component={Messages} />
+          {/*<Route path="/messages" component={Messages} />*/}
           <Route exact path="/create-listing" component={createListing} />
           <Route exact path="/listings" component={listing} />
           <Route exact path="/main-listing" component={MainListing} />
@@ -38,10 +37,10 @@ function App() {
           <Route exact path="/schedule-appointment" component={ScheduleAppointment} />
           <Route exact path="/view-appointments" component={ViewAppointments} />
           <Route exact path="/" component={Home} />
+          <Route path="/page-not-found" component={PageNotFound} />
           <Route exact path="/ReviewProperty" component={propertyReview} />
           <Route exact path="/ReviewOwner" component={Review_Owner} />
         </AuthProvider>
-        <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>
   );

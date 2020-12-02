@@ -7,62 +7,11 @@ import 'react-calendar/dist/Calendar.css';
 
 function ChooseAlert(props) {
 
-    // Should create 2 documents for landlord/user
+    // Creates 2 documents for landlord/user
     async function onButtonClick() {
-        const db = firebase.firestore();
-        const appointmentRef = db.collection('appointment');
+        await uploadAppointment(props.landlordID, props.renterID, props.renterName, props.renterEmail, props.listing, props.date);
+        await uploadAppointment(props.renterID, props.landlordID, props.landlordName, props.landlordEmail, props.listing, props.date);
 
-        // Upload appointment for landlord
-        const landlordAppointment = {
-            firstName: props.renterName.split(" ")[0],
-            lastName: props.renterName.split(" ")[1],
-            date: props.date,
-            uid: props.renterID,
-            email: props.renterEmail,
-            listing: props.listing,
-            index: 0,
-        };
-        var doc = await appointmentRef.doc(props.landlordID).get();
-        if (doc.exists) {
-            const appointmentData = doc.data();
-            const keys = Object.keys(appointmentData);
-            const nextKey = Number(keys[keys.length - 1]) + 1;
-            var formattedAppointment = {};
-            formattedAppointment[nextKey] = landlordAppointment;
-            formattedAppointment[nextKey]["index"] = nextKey;
-            const updateRes = await appointmentRef.doc(props.landlordID).update(formattedAppointment);
-            console.log(updateRes);
-        }
-        else {
-            const updateRes = await appointmentRef.doc(props.landlordID).set({0: landlordAppointment});
-            console.log(updateRes);
-        }
-
-        // Upload appointment for renter
-        const renterAppointment = {
-            firstName: props.landlordName.split(" ")[0],
-            lastName: props.landlordName.split(" ")[1],
-            date: props.date,
-            uid: props.landlordID,
-            email: props.landlordEmail,
-            listing: props.listing,
-            index: 0,
-        };
-        doc = await appointmentRef.doc(props.renterID).get();
-        if (doc.exists) {
-            const appointmentData = doc.data();
-            const keys = Object.keys(appointmentData);
-            const nextKey = Number(keys[keys.length - 1]) + 1;
-            var formattedAppointment = {};
-            formattedAppointment[nextKey] = renterAppointment;
-            formattedAppointment[nextKey]["index"] = nextKey;
-            const updateRes = await appointmentRef.doc(props.renterID).update(formattedAppointment);
-            console.log(updateRes);
-        }
-        else {
-            const updateRes = await appointmentRef.doc(props.renterID).set({0: renterAppointment});
-            console.log(updateRes);
-        }
         window.location.href='/userprofile';
     }
 
@@ -84,6 +33,36 @@ function ChooseAlert(props) {
     }
     else {
         return <Alert variant="danger">{firstName} is not available on {props.date}. Please select a different date.</Alert>
+    }
+}
+
+async function uploadAppointment(userID, contactID, contactName, contactEmail, listing, date) {
+    const db = firebase.firestore();
+    const appointmentRef = db.collection('appointment');
+
+    const appointment = {
+        firstName: contactName.split(" ")[0],
+        lastName: contactName.split(" ")[1],
+        date: date,
+        uid: contactID,
+        email: contactEmail,
+        listing: listing,
+        index: 0,
+    };
+    var doc = await appointmentRef.doc(userID).get();
+    if (doc.exists) {
+        const appointmentData = doc.data();
+        const keys = Object.keys(appointmentData);
+        const nextKey = Number(keys[keys.length - 1]) + 1;
+        var formattedAppointment = {};
+        formattedAppointment[nextKey] = appointment;
+        formattedAppointment[nextKey]["index"] = nextKey;
+        const updateRes = await appointmentRef.doc(userID).update(formattedAppointment);
+        console.log(updateRes);
+    }
+    else {
+        const updateRes = await appointmentRef.doc(userID).set({0: appointment});
+        console.log(updateRes);
     }
 }
 

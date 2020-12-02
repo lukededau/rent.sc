@@ -10,7 +10,8 @@ const AppointmentCard = ({value, remove}) => (
                 <Card.Title>{value.firstName} {value.lastName}</Card.Title>
                 <Card.Text>
                     Proposed date: {value.date} <br></br>
-                    Email: {value.email}
+                    Email: {value.email} <br></br>
+                    Listing: {value.listing}
                 </Card.Text>
                 <Button>Contact {value.firstName} {value.lastName}</Button>
                 <Button onClick={() => remove(value)} style={{ float: "right" }} variant="danger">

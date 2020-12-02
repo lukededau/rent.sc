@@ -48,12 +48,10 @@ class ListingFields extends React.Component {
             'streetParking': false,
             'smokerFriendly': false
         };
-        this.imageState = { 
+        this.imageState = {
             images: [],
             url: null 
         };
-        this.docID = { docID: null };
-        this.redirectState = { redirect: null };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -76,7 +74,7 @@ class ListingFields extends React.Component {
         // Specified file types
         //const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
-        if(e.target.files) {
+        if (e.target.files) {
             const filesArray = Array.from(e.target.files)
             this.imageState.images = filesArray
         }
@@ -96,24 +94,24 @@ class ListingFields extends React.Component {
 
     uploadTask(img, length) {
         const storageRef = firebase.storage().ref(img.name)
-        
+
         storageRef.put(img).on('state_changed', snapshot => {
             const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
         }, (err) => {
             this.error = err
         }, () => {
             storageRef.getDownloadURL()
-            .then((url) => {
-                if(this.state.imageURL == null) {
-                    this.state.imageURL = url
-                }
-                else if(this.state.imageURL != null) {
-                    this.state.imageURL.push(url)
-                }
-                if(this.state.imageURL.length == length) {
-                    this.fullSubmit()
-                }
-            })
+                .then((url) => {
+                    if (this.state.imageURL == null) {
+                        this.state.imageURL = url
+                    }
+                    else if (this.state.imageURL != null) {
+                        this.state.imageURL.push(url)
+                    }
+                    if (this.state.imageURL.length == length) {
+                        this.fullSubmit()
+                    }
+                })
         })
     }
 
@@ -152,7 +150,7 @@ class ListingFields extends React.Component {
     }
 
     render() {
-        return (   
+        return (
             <div>
                 <NavigationBar></NavigationBar>
 

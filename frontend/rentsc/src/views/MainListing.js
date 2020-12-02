@@ -18,6 +18,38 @@ const subtitleStyle = {
     color: "gray",
 }
 
+function AppointmentButton(props) {
+    if (props.landlordID === props.renterID) {
+        return (
+            // <Button href="/select-appointment-times" style={{marginTop: 2}}>
+            <Button onClick={() => gotoSelectAppointment(props)} style={{marginTop: 2}}>
+                Choose/Update Your Availability <BsCalendar />
+            </Button>
+        )
+    }
+    else {
+        return (
+            <Button onClick={() => gotoScheduleAppointment(props)} style={{marginTop: 2}}>
+                Schedule An Appointment <BsCalendar />
+            </Button>
+        )
+    }
+}
+
+function gotoSelectAppointment(props) {
+    props.history.push('/select-appointment-times');
+}
+
+function gotoScheduleAppointment(props) {
+    props.history.push({
+        pathname: '/schedule-appointment',
+        landlordID: props.landlordID,
+        landlordName: props.landlordName,
+        landlordEmail: props.landlordEmail,
+        listing: props.listing
+    });
+}
+
 class MainListing extends React.Component {
     constructor(props) {
         super(props);
@@ -36,6 +68,7 @@ class MainListing extends React.Component {
             description: "",
             username: "",
             email: "",
+            uid: "",
             numBaths: "",
             numBedrooms: "",
             price: "",
@@ -43,6 +76,9 @@ class MainListing extends React.Component {
             tags: [],
             zip: ""
         }
+        this.uid = firebase.auth().currentUser.uid;
+        this.email = firebase.auth().currentUser.email;
+        this.username = firebase.auth().currentUser.displayName;
     }
 
     componentDidMount() {
@@ -53,7 +89,7 @@ class MainListing extends React.Component {
         const db = firebase.firestore();
         const listings = await db.collection('listing').where("address", "==", this.state.address).where("city", "==", this.state.city).get();
         listings.forEach((listing) => {
-            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username} = listing.data();
+            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username, uid} = listing.data();
             // Create tag string
             var verifiedTags = [];
             Object.keys(tags).forEach(function (key) {
@@ -76,6 +112,7 @@ class MainListing extends React.Component {
                 tags: verifiedTags,
                 email: email,
                 username: username,
+                uid: uid,
             });
         });
     }
@@ -140,7 +177,14 @@ class MainListing extends React.Component {
                             </p>
                         </Col>
                         <Col>
-                            <Button href="/schedule-appointment" style={{marginTop: 2}}>Make An Appointment <BsCalendar /></Button>
+                            <AppointmentButton 
+                                landlordID={this.state.uid}
+                                landlordName={this.state.username}
+                                landlordEmail={this.state.email}
+                                renterID={this.uid}
+                                listing={this.state.address}
+                                history={this.props.history}
+                            />
                         </Col>
                     </Row>
                     <Row>

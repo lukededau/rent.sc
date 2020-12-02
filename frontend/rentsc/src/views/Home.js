@@ -1,7 +1,7 @@
 /*global google*/
 import React, { Component } from 'react';
 import firebase from '../firebase.js';
-import { withProps, compose, lifecycle } from 'recompose';
+import { withProps, compose } from 'recompose';
 import NavBar from '../common/NavBar';
 import Geocode from 'react-geocode';
 import { withRouter } from 'react-router-dom';
@@ -22,36 +22,12 @@ const InitialMap = compose(
     }),
     withScriptjs,
     withGoogleMap,
-    // lifecycle({
-    //     componentDidMount() {
-    //         const directionsService = new google.maps.DirectionsService();
-    //         const origin = { lat: 36.9741, lng: -122.0308 };
-    //         const destination = { lat: 36.9881, lng: -122.0582 };
-
-    //         directionsService.route(
-    //             {
-    //                 origin: origin,
-    //                 destination: destination,
-    //                 travelMode: google.maps.TravelMode.DRIVING
-    //             },
-    //             (result, status) => {
-    //                 if (status === google.maps.DirectionsStatus.OK) {
-    //                     this.setState({
-    //                         directions: result
-    //                     });
-    //                 } else {
-    //                     console.error(`error fetching directions ${result}`);
-    //                 }
-    //             }
-    //         );
-    //     }
-    //   })
     )(props => 
     <GoogleMap
         defaultCenter = { { lat: 36.9741, lng: -122.0308 } }
         defaultZoom = { 14 }
     >
-    {props.directions && <DirectionsRenderer
+    {<DirectionsRenderer
         directions={props.directions}
     />}
     {props.markers.map(marker => (
@@ -61,7 +37,7 @@ const InitialMap = compose(
                 lat: marker.position.lat,
                 lng: marker.position.lng
             }}
-            onClick={() => props.onMarkerClick(marker.id)}
+            onClick={() => props.onMarkerClick(marker.id, marker.position.lat, marker.position.lng)}
         >
             {
             props.selectedMarker === marker.id && 
@@ -87,7 +63,6 @@ const InitialMap = compose(
                     <p style={{fontSize: 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
                     <p style={{fontSize: 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
                     <p style={{fontSize: 15, margin: 5}}>Tags: {marker.tags}</p>
-                    {/* <p>Directions: {props.directions}</p> */}
                     <br></br>
                     <Button variant="outline-primary" size="sm" onClick={() => props.onViewButtonClick(marker.address, marker.city)}>
                         View Listing
@@ -103,6 +78,7 @@ const InitialMap = compose(
 export class Home extends Component {
 
     allListings = [];
+    directionsService = null;
 
     constructor(props) {
         super(props);
@@ -170,12 +146,14 @@ export class Home extends Component {
         });
     }
 
-    _renderDirections() {
-        const directionsService = new google.maps.DirectionsService();
-        const origin = { lat: 36.9741, lng: -122.0308 };
-        const destination = { lat: 36.9881, lng: -122.0582 };
+    _renderDirections(latitude, longitude) {
+        if(this.directionsService === null) {
+            this.directionsService = new google.maps.DirectionsService();
+        }
+        const origin = new google.maps.LatLng(latitude, longitude);
+        const destination = new google.maps.LatLng(36.9881, -122.0582);
 
-        directionsService.route(
+        this.directionsService.route(
             {
                 origin: origin,
                 destination: destination,
@@ -202,6 +180,7 @@ export class Home extends Component {
             // console.log("lat: " + lat + ", " + "lng: " + lng);
         }
         catch(e) {
+            console.log(address + ", " + city);
             console.error(e);
         }
         return { lat, lng };
@@ -218,7 +197,7 @@ export class Home extends Component {
         }); 
     }
 
-    onMarkerClick = (markerID) => {
+    onMarkerClick = (markerID, markerLat, markerLng) => {
         if(this.state.selectedMarker === markerID) {
             this.setState({
                 selectedMarker: 0
@@ -229,10 +208,7 @@ export class Home extends Component {
                 selectedMarker: markerID
             });
         }
-        this._renderDirections();
-        // this.setState({
-        //     directions: "hi"
-        // });
+        this._renderDirections(markerLat, markerLng);
     }
 
     onClose = () => {

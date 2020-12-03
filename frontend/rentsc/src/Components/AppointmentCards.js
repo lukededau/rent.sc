@@ -1,7 +1,7 @@
 import React from 'react'
 import firebase from '../firebase.js'
-import { Card, Button } from 'react-bootstrap';
-import { onRemoveClick } from './onRemoveClick.js';
+import { Card, Button } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
 
 
 const AppointmentCard = ({value, uid, remove}) => (
@@ -51,16 +51,27 @@ class AppointmentCards extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: firebase.auth().currentUser.uid,
-            email: firebase.auth().currentUser.email,
-            username: firebase.auth().currentUser.displayName,
+            uid: null,
+            email: null,
+            username: null,
         };
-
-        this.getState = this.getState.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this)
     }
 
-    componentDidMount() {
-        this.getAppointmentData();
+    getUserInfo() {
+        if(firebase.auth().currentUser != null) {
+            this.state.uid = firebase.auth().currentUser.uid
+            this.state.email = firebase.auth().currentUser.email
+            this.state.username = firebase.auth().currentUser.displayName
+            //console.log('user info set')
+        } else {
+            this.props.history.push('/login')
+        }
+    }
+
+    async componentDidMount() {
+        await this.getUserInfo()
+        if(this.state.uid != null){ this.getAppointmentData() }
     }
 
     getState() {
@@ -68,6 +79,7 @@ class AppointmentCards extends React.Component {
     }
 
     async getAppointmentData() {
+        //console.log(this.state.uid)
         this.allAppointments = [];
         const db = firebase.firestore();
         const appointmentRef = db.collection('appointment');
@@ -104,4 +116,4 @@ class AppointmentCards extends React.Component {
     }
 }
 
-export default AppointmentCards
+export default withRouter(AppointmentCards)

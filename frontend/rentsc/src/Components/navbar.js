@@ -48,22 +48,22 @@ class NavigationBar extends React.Component {
 
                         </Nav>
                         <Nav>
-                        <Nav.Link href="create-listing" >Create a Listing</Nav.Link>
-                        <Nav.Link href="signup">Create Account</Nav.Link>
-                        <NavDropdown 
-                            title={
-                                    <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
-                            }
-                            id="collapsible-nav-dropdown"
-                            alignRight
-                            flip="true"
-                        >
+                            <Nav.Link href="create-listing" >Create a Listing</Nav.Link>
+                            <Nav.Link href="signup">Create Account</Nav.Link>
+                            <NavDropdown
+                                title={
+                                    <Image src={defaultProfileImage} style={{ height: "25px" }} roundedCircle></Image>
+                                }
+                                id="collapsible-nav-dropdown"
+                                alignRight
+                                flip="true"
+                            >
 
-                            <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
-                            <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
-                            <NavDropdown.Divider/>
-                            <NavDropdown.Item href="userprofile">Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="#user/SignOut">Sign out</NavDropdown.Item>
+                                <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
+                                <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="userprofile">Profile</NavDropdown.Item>
+                                <NavDropdown.Item href="/login">Sign out</NavDropdown.Item>
 
                             </NavDropdown>
                         </Nav>

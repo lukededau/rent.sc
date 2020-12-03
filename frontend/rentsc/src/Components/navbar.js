@@ -54,7 +54,7 @@ class NavigationBar extends React.Component {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"></Navbar.Toggle>
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="#Nearby">Nearby <FaLocationArrow /></Nav.Link>
+                            <Nav.Link href="/#Nearby">Nearby <FaLocationArrow /></Nav.Link>
                             <Nav.Link href="#AddGuests">Add Guests <BsPersonPlus /></Nav.Link>
                             <Nav.Link href="#Rooms">Add Rooms <AiOutlinePlus /></Nav.Link>
 

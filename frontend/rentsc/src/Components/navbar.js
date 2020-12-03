@@ -38,7 +38,7 @@ class NavigationBar extends React.Component {
         function checkFunction() {
             var user = firebase.auth().currentUser
             var state
-            if(user != null){
+            if (user != null) {
                 u = firebase.auth().currentUser.displayName
                 state = true
             } else {
@@ -63,10 +63,11 @@ class NavigationBar extends React.Component {
 
                         </Nav>
                         <Nav>
-<<<<<<< HEAD
-                            <Nav.Link href="create-listing" >Create a Listing</Nav.Link>
-                            <Nav.Link href="signup">Create Account</Nav.Link>
-                            <NavDropdown
+                            {checkFunction() ? <Nav.Link href="create-listing">Create Listing</Nav.Link> : ''}
+                            {checkFunction() ? <Nav.Link href="view-appointments">Appointments</Nav.Link> : ''}
+                            {checkFunction() ? '' : <Nav.Link href="login">Login</Nav.Link>}
+
+                            {checkFunction() ? <NavDropdown
                                 title={
                                     <Image src={defaultProfileImage} style={{ height: "25px" }} roundedCircle></Image>
                                 }
@@ -78,31 +79,9 @@ class NavigationBar extends React.Component {
                                 <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
                                 <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="userprofile">Profile</NavDropdown.Item>
-                                <NavDropdown.Item href="/login">Sign out</NavDropdown.Item>
-
-                            </NavDropdown>
-=======
-                        {checkFunction() ? <Nav.Link href="create-listing">Create Listing</Nav.Link> : ''}
-                        {checkFunction() ? <Nav.Link href="view-appointments">Appointments</Nav.Link> : ''}
-                        {checkFunction() ? '' : <Nav.Link href="login">Login</Nav.Link>}
-                        
-                        {checkFunction() ? <NavDropdown
-                            title={
-                                    <Image src={defaultProfileImage} style={{height:"25px"}}roundedCircle></Image>
-                            }
-                            id="collapsible-nav-dropdown"
-                            alignRight
-                            flip="true"
-                        >
-
-                            <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
-                            <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
-                            <NavDropdown.Divider/>
-                            <NavDropdown.Item href="userprofile">{u}</NavDropdown.Item>
-                            <NavDropdown.Item href='#logout'>Logout</NavDropdown.Item>
+                                <NavDropdown.Item href="userprofile">{u}</NavDropdown.Item>
+                                <NavDropdown.Item href='#logout'>Logout</NavDropdown.Item>
                             </NavDropdown> : ''}
->>>>>>> 3f4d10690b14dbe9ef6fbd92207aaf1be5701f11
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

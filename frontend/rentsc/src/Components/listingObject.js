@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
+import firebase from '../firebase'
 // import {
 //     BrowserRouter as Router,
 //     Link,
@@ -81,6 +82,26 @@ class ListingObject extends React.Component {
     }
 
     render() {
+        function checkLoggedIn() {
+            let login
+            if(firebase.auth().currentUser != null) {
+                login = true
+            } else {
+                login = false
+            }
+            //console.log(login)
+            return login
+        }
+
+        function checkSameUser(uid) {
+            let user
+            if(firebase.auth().currentUser.uid == uid) {
+                user = true
+            } else {
+                user = false
+            }
+            return user
+        }
         return (
             <div>
 
@@ -113,9 +134,14 @@ class ListingObject extends React.Component {
 
                     </Row>
                     <br></br>
-                    <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">review place  {this.props.address}</Button>
+                    {checkLoggedIn() ? 
+                    checkSameUser(this.props.uid) ? '' : <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">Review {this.props.address}</Button> 
+                    : <Button variant="outline-info" size="sm" href='login'>Login to review</Button>}
                     &nbsp;&nbsp;&nbsp;
-                    <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">review owner {this.props.username} </Button>
+                    {checkLoggedIn() ? 
+                    checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
+                    : ''}
+                    {/*checkSameUser() ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>*/}
 
                     <div>
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}

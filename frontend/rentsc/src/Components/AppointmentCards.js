@@ -64,14 +64,13 @@ class AppointmentCards extends React.Component {
             this.state.uid = firebase.auth().currentUser.uid
             this.state.email = firebase.auth().currentUser.email
             this.state.username = firebase.auth().currentUser.displayName
-            //console.log('user info set')
         } else {
             this.props.history.push('/login')
         }
     }
 
-    async componentDidMount() {
-        await this.getUserInfo()
+    componentDidMount() {
+        this.getUserInfo()
         if(this.state.uid != null){ this.getAppointmentData() }
     }
 
@@ -80,7 +79,6 @@ class AppointmentCards extends React.Component {
     }
 
     async getAppointmentData() {
-        //console.log(this.state.uid)
         this.allAppointments = [];
         const db = firebase.firestore();
         const appointmentRef = db.collection('appointment');

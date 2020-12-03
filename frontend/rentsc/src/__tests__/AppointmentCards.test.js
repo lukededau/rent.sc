@@ -54,7 +54,7 @@ describe("Get Appointments from Firebase", () => {
             index: 0,
         }];
 
-        const wrapper = shallow(<AppointmentCards />);
+        const wrapper = shallow(<AppointmentCards.WrappedComponent />);
         await wrapper.instance().getAppointmentData();
         expect(firestoreMock.collection).toBeCalledWith('appointment');
         expect(firestoreMock.doc).toBeCalledWith(wrapper.instance().getState()["uid"]);
@@ -72,7 +72,7 @@ describe("Get Appointments from Firebase", () => {
 
         const finalState = [];
 
-        const wrapper = shallow(<AppointmentCards />);
+        const wrapper = shallow(<AppointmentCards.WrappedComponent />);
         await wrapper.instance().getAppointmentData();
         expect(firestoreMock.collection).toBeCalledWith('appointment');
         expect(firestoreMock.doc).toBeCalledWith(wrapper.instance().getState()["uid"]);

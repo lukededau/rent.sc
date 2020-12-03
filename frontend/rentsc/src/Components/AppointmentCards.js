@@ -1,7 +1,8 @@
 import React from 'react'
 import firebase from '../firebase.js'
-import { Card, Button } from 'react-bootstrap';
-import { onRemoveClick } from './onRemoveClick.js';
+import { Card, Button } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
+import { onRemoveClick } from './onRemoveClick'
 
 
 const AppointmentCard = ({value, uid, remove}) => (
@@ -51,16 +52,26 @@ class AppointmentCards extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: firebase.auth().currentUser.uid,
-            email: firebase.auth().currentUser.email,
-            username: firebase.auth().currentUser.displayName,
+            uid: null,
+            email: null,
+            username: null,
         };
+        this.getUserInfo = this.getUserInfo.bind(this)
+    }
 
-        this.getState = this.getState.bind(this);
+    getUserInfo() {
+        if(firebase.auth().currentUser != null) {
+            this.state.uid = firebase.auth().currentUser.uid
+            this.state.email = firebase.auth().currentUser.email
+            this.state.username = firebase.auth().currentUser.displayName
+        } else {
+            this.props.history.push('/login')
+        }
     }
 
     componentDidMount() {
-        this.getAppointmentData();
+        this.getUserInfo()
+        if(this.state.uid != null){ this.getAppointmentData() }
     }
 
     getState() {
@@ -104,4 +115,4 @@ class AppointmentCards extends React.Component {
     }
 }
 
-export default AppointmentCards
+export default withRouter(AppointmentCards)

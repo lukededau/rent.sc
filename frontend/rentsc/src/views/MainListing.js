@@ -74,7 +74,8 @@ class MainListing extends React.Component {
             price: "",
             size: "",
             tags: [],
-            zip: ""
+            zip: "",
+            images: [],
         }
         this.uid = firebase.auth().currentUser.uid;
         this.email = firebase.auth().currentUser.email;
@@ -89,7 +90,7 @@ class MainListing extends React.Component {
         const db = firebase.firestore();
         const listings = await db.collection('listing').where("address", "==", this.state.address).where("city", "==", this.state.city).get();
         listings.forEach((listing) => {
-            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username, uid} = listing.data();
+            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username, uid, imageURL} = listing.data();
             // Create tag string
             var verifiedTags = [];
             Object.keys(tags).forEach(function (key) {
@@ -102,6 +103,15 @@ class MainListing extends React.Component {
                 verifiedTags.push("None");
             }
 
+            // Handle missing image
+            var images;
+            if (imageURL == null) {
+                images = [];
+            }
+            else {
+                images = imageURL;
+            }
+
             this.setState({
                 zip: zip,
                 description: description,
@@ -112,6 +122,7 @@ class MainListing extends React.Component {
                 tags: verifiedTags,
                 email: email,
                 username: username,
+                images: images,
                 uid: uid,
             });
         });
@@ -138,31 +149,21 @@ class MainListing extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Carousel style={{height: 500, width: "100%", marginTop: 8}}>
-                            <Carousel.Item>
-                                <Image style={{height: 500, width: "100%"}}
-                                className="d-block w-100"
-                                src={Sample1}
-                                alt="First slide"
-                                fluid="true"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img style={{height: 500, width: "100%"}}
-                                className="d-block w-100"
-                                src={Sample2}
-                                alt="Third slide"
-                                fluid="true"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img style={{height: 500, width: "100%"}}
-                                className="d-block w-100"
-                                src={Sample3}
-                                alt="Third slide"
-                                fluid="true"
-                                />
-                            </Carousel.Item>
+                        <Carousel>
+                            {
+                                this.state.images.map((image, idx) => {
+                                    return (
+                                        <Carousel.Item>
+                                            <img 
+                                                src={image} 
+                                                style={{height: 500, width: "100%"}} 
+                                                className="d-block w-100"
+                                                alt={idx} 
+                                                fluid="true"/>
+                                        </Carousel.Item>
+                                    )
+                                })
+                            }
                         </Carousel>
                     </Row>
                     <Row style={{marginTop: 16}}>

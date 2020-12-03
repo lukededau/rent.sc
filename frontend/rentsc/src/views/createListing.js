@@ -52,6 +52,7 @@ class ListingFields extends React.Component {
             images: [],
             url: null 
         };
+        this.ifSignedIn = { ifSignedIn: false };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -60,6 +61,7 @@ class ListingFields extends React.Component {
         this.storeTag = this.storeTag.bind(this);
         this.makeListing = this.makeListing.bind(this);
         this.fullSubmit = this.fullSubmit.bind(this);
+        this.checkUser = this.checkUser.bind(this);
     }
 
     // apartment, house, townhouse, shared room, private room, pool,fireplace, AC, parkingspots, street parking, smoking allowed
@@ -149,11 +151,19 @@ class ListingFields extends React.Component {
         db.doc().set(this.state)
     }
 
+    checkUser() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user) { this.ifSignedIn = true }
+            else { this.props.history.push('/login') }
+        })
+    }
+
     render() {
+
         return (
             <div>
                 <NavigationBar></NavigationBar>
-
+                {this.checkUser()}
                 <Container style={{paddingTop: '100px'}}>
                     <Row style={{alignItems: 'center'}}>
                         <Col>

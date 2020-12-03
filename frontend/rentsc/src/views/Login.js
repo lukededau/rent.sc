@@ -3,6 +3,7 @@ import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
 import { FiLogIn } from "react-icons/fi";
+import NavigationBar from '../Components/navbar';
 
 
 export default function Login() {
@@ -24,14 +25,13 @@ export default function Login() {
         } catch {
             setError("Failed to login")
         }
-        //setLoading(false)
     }
 
     return (
         <>
-            <Card>
+            <NavigationBar></NavigationBar>
+            <Card style={{paddingTop: '100px'}}>
                 <Card.Body>
-                    <h2 className="text-center mb-3">Login</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form style={{ paddingLeft: "15px", paddingRight: "15px" }} onSubmit={handleSubmit}>
                         <Form.Group id="email">

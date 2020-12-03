@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from '../firebase.js'
 import { Card, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
+import { onRemoveClick } from './onRemoveClick'
 
 
 const AppointmentCard = ({value, uid, remove}) => (

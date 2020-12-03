@@ -4,7 +4,7 @@ import { Card, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 
 
-const AppointmentCard = ({value, remove}) => (
+const AppointmentCard = ({value, uid, remove}) => (
     <div style={{paddingLeft: "20px", paddingBottom: "15px", float: "left"}}>
         <Card style={{ width: '25rem' }}>
             <Card.Body>
@@ -15,7 +15,7 @@ const AppointmentCard = ({value, remove}) => (
                     Listing: {value.listing}
                 </Card.Text>
                 <Button>Contact {value.firstName} {value.lastName}</Button>
-                <Button onClick={() => remove(value)} style={{ float: "right" }} variant="danger">
+                <Button onClick={() => remove(value, uid)} style={{ float: "right" }} variant="danger">
                     Remove
                 </Button>
             </Card.Body>
@@ -24,10 +24,10 @@ const AppointmentCard = ({value, remove}) => (
 )
 
 
-const Cards = ({appointments, remove}) => (
+const Cards = ({appointments, uid, remove}) => (
     <div>
         {
-            appointments.map((appointment) => <AppointmentCard value={appointment} remove={remove}/>)
+            appointments.map((appointment) => <AppointmentCard value={appointment} uid={uid} remove={remove}/>)
         }
     </div>
 );
@@ -36,29 +36,13 @@ const Cards = ({appointments, remove}) => (
 function CreateCards(props) {
     if (props.appointments != null) {
         return (
-            <Cards appointments={props.appointments} remove={onRemoveClick}/>
+            <Cards appointments={props.appointments} uid={props.uid} remove={onRemoveClick}/>
         )
     }
     else {
         return (
             <div></div>
         )
-    }
-
-    async function onRemoveClick(values) {
-        const FieldValue = firebase.firestore.FieldValue;
-        const db = firebase.firestore();
-        const appointmentRef = db.collection('appointment');
-        const doc = await appointmentRef.doc(values.uid).get();
-        if (doc.exists) {
-            var temp = {};
-            temp[values.index] = FieldValue.delete();
-            const res = await appointmentRef.doc(values.uid).update(
-                temp
-            );
-            console.log(res);
-        }
-        window.location.reload(false);
     }
 }
 
@@ -90,6 +74,10 @@ class AppointmentCards extends React.Component {
         if(this.state.uid != null){ this.getAppointmentData() }
     }
 
+    getState() {
+        return this.state;
+    }
+
     async getAppointmentData() {
         //console.log(this.state.uid)
         this.allAppointments = [];
@@ -119,7 +107,10 @@ class AppointmentCards extends React.Component {
                 <h2 style={{paddingLeft: "20px", paddingBottom: "15px"}}>
                     Open Appointments
                 </h2>
-                <CreateCards appointments={this.state.appointments}/>
+                <CreateCards 
+                    appointments={this.state.appointments}
+                    uid={this.state.uid}
+                />
             </div>
         );
     }

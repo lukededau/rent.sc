@@ -2,7 +2,6 @@ import React from 'react'
 import firebase from '../firebase.js'
 import { Button, ListGroup } from 'react-bootstrap';
 import Calendar from 'react-calendar'
-import { withRouter } from 'react-router-dom';
 import 'react-calendar/dist/Calendar.css';
 
 const ListItem = ({value}) => (
@@ -23,13 +22,21 @@ class ChooseAvailability extends React.Component {
         this.state = {
             availableDates: {},
         }
-        this.state.uid = firebase.auth().currentUser.uid;
-        this.state.email = firebase.auth().currentUser.email;
-        this.state.username = firebase.auth().currentUser.displayName;
 
         this.onClickDay = this.onClickDay.bind(this);
         this.formatDate = this.formatDate.bind(this);
         this.onButtonClick = this.onButtonClick.bind(this);
+        this.getState = this.getState.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({uid: firebase.auth().currentUser.uid});
+        this.setState({email: firebase.auth().currentUser.email});
+        this.setState({username: firebase.auth().currentUser.displayName});
+    }
+
+    getState() {
+        return this.state;
     }
 
     formatDate(value) {
@@ -64,7 +71,7 @@ class ChooseAvailability extends React.Component {
             const updateRes = await availabilityRef.doc(this.state.uid).set(this.state)
             console.log(updateRes);
         }
-        this.props.history.push('/userprofile');
+        window.location.href='/userprofile';
     }
 
     render() {
@@ -91,4 +98,4 @@ class ChooseAvailability extends React.Component {
     }
 }
 
-export default withRouter(ChooseAvailability)
+export default ChooseAvailability

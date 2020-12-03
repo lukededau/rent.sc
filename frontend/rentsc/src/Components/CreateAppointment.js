@@ -1,6 +1,7 @@
 import React from 'react'
 import firebase from '../firebase.js'
 import { Alert, Button } from 'react-bootstrap';
+import { uploadAppointment } from './uploadAppointment.js';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 
@@ -36,35 +37,6 @@ function ChooseAlert(props) {
     }
 }
 
-async function uploadAppointment(userID, contactID, contactName, contactEmail, listing, date) {
-    const db = firebase.firestore();
-    const appointmentRef = db.collection('appointment');
-
-    const appointment = {
-        firstName: contactName.split(" ")[0],
-        lastName: contactName.split(" ")[1],
-        date: date,
-        uid: contactID,
-        email: contactEmail,
-        listing: listing,
-        index: 0,
-    };
-    var doc = await appointmentRef.doc(userID).get();
-    if (doc.exists) {
-        const appointmentData = doc.data();
-        const keys = Object.keys(appointmentData);
-        const nextKey = Number(keys[keys.length - 1]) + 1;
-        var formattedAppointment = {};
-        formattedAppointment[nextKey] = appointment;
-        formattedAppointment[nextKey]["index"] = nextKey;
-        const updateRes = await appointmentRef.doc(userID).update(formattedAppointment);
-        console.log(updateRes);
-    }
-    else {
-        const updateRes = await appointmentRef.doc(userID).set({0: appointment});
-        console.log(updateRes);
-    }
-}
 
 class CreateAppointment extends React.Component {
     constructor(props) {
@@ -83,6 +55,7 @@ class CreateAppointment extends React.Component {
 
         this.onClickDay = this.onClickDay.bind(this);
         this.formatDate = this.formatDate.bind(this);
+        this.getState = this.getState.bind(this);
     }
 
     formatDate(value) {
@@ -90,6 +63,10 @@ class CreateAppointment extends React.Component {
         var brokenDate = date.split(" ");
         brokenDate[2] = brokenDate[2] + ","
         return brokenDate.splice(1, 3).join(" ");
+    }
+
+    getState() {
+        return this.state;
     }
 
     async onClickDay(value) {

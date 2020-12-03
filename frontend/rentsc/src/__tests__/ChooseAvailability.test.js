@@ -80,7 +80,7 @@ describe('Update Availability', () => {
     });
 });
 
-describe('Availability Sent to Firebase', () => {
+describe('Upload Availability to Firebase', () => {
     global.window = Object.create(window);
     const url = "/userprofile";
     Object.defineProperty(window, 'location', {

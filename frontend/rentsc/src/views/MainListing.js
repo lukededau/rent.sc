@@ -18,6 +18,38 @@ const subtitleStyle = {
     color: "gray",
 }
 
+function AppointmentButton(props) {
+    if (props.landlordID === props.renterID) {
+        return (
+            // <Button href="/select-appointment-times" style={{marginTop: 2}}>
+            <Button onClick={() => gotoSelectAppointment(props)} style={{marginTop: 2}}>
+                Choose/Update Your Availability <BsCalendar />
+            </Button>
+        )
+    }
+    else {
+        return (
+            <Button onClick={() => gotoScheduleAppointment(props)} style={{marginTop: 2}}>
+                Schedule An Appointment <BsCalendar />
+            </Button>
+        )
+    }
+}
+
+function gotoSelectAppointment(props) {
+    props.history.push('/select-appointment-times');
+}
+
+function gotoScheduleAppointment(props) {
+    props.history.push({
+        pathname: '/schedule-appointment',
+        landlordID: props.landlordID,
+        landlordName: props.landlordName,
+        landlordEmail: props.landlordEmail,
+        listing: props.listing
+    });
+}
+
 class MainListing extends React.Component {
     constructor(props) {
         super(props);
@@ -36,13 +68,18 @@ class MainListing extends React.Component {
             description: "",
             username: "",
             email: "",
+            uid: "",
             numBaths: "",
             numBedrooms: "",
             price: "",
             size: "",
             tags: [],
-            zip: ""
+            zip: "",
+            images: [],
         }
+        this.uid = firebase.auth().currentUser.uid;
+        this.email = firebase.auth().currentUser.email;
+        this.username = firebase.auth().currentUser.displayName;
     }
 
     componentDidMount() {
@@ -53,7 +90,7 @@ class MainListing extends React.Component {
         const db = firebase.firestore();
         const listings = await db.collection('listing').where("address", "==", this.state.address).where("city", "==", this.state.city).get();
         listings.forEach((listing) => {
-            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username} = listing.data();
+            const {zip, description, numBaths, numBedrooms, price, size, tags, email, username, uid, imageURL} = listing.data();
             // Create tag string
             var verifiedTags = [];
             Object.keys(tags).forEach(function (key) {
@@ -66,6 +103,15 @@ class MainListing extends React.Component {
                 verifiedTags.push("None");
             }
 
+            // Handle missing image
+            var images;
+            if (imageURL == null) {
+                images = [];
+            }
+            else {
+                images = imageURL;
+            }
+
             this.setState({
                 zip: zip,
                 description: description,
@@ -76,6 +122,8 @@ class MainListing extends React.Component {
                 tags: verifiedTags,
                 email: email,
                 username: username,
+                images: images,
+                uid: uid,
             });
         });
     }
@@ -101,31 +149,21 @@ class MainListing extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Carousel style={{height: 500, width: "100%", marginTop: 8}}>
-                            <Carousel.Item>
-                                <Image style={{height: 500, width: "100%"}}
-                                className="d-block w-100"
-                                src={Sample1}
-                                alt="First slide"
-                                fluid="true"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img style={{height: 500, width: "100%"}}
-                                className="d-block w-100"
-                                src={Sample2}
-                                alt="Third slide"
-                                fluid="true"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img style={{height: 500, width: "100%"}}
-                                className="d-block w-100"
-                                src={Sample3}
-                                alt="Third slide"
-                                fluid="true"
-                                />
-                            </Carousel.Item>
+                        <Carousel>
+                            {
+                                this.state.images.map((image, idx) => {
+                                    return (
+                                        <Carousel.Item>
+                                            <img 
+                                                src={image} 
+                                                style={{height: 500, width: "100%"}} 
+                                                className="d-block w-100"
+                                                alt={idx} 
+                                                fluid="true"/>
+                                        </Carousel.Item>
+                                    )
+                                })
+                            }
                         </Carousel>
                     </Row>
                     <Row style={{marginTop: 16}}>
@@ -140,7 +178,14 @@ class MainListing extends React.Component {
                             </p>
                         </Col>
                         <Col>
-                            <Button href="/schedule-appointment" style={{marginTop: 2}}>Make An Appointment <BsCalendar /></Button>
+                            <AppointmentButton 
+                                landlordID={this.state.uid}
+                                landlordName={this.state.username}
+                                landlordEmail={this.state.email}
+                                renterID={this.uid}
+                                listing={this.state.address}
+                                history={this.props.history}
+                            />
                         </Col>
                     </Row>
                     <Row>

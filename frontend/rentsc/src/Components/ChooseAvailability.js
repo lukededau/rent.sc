@@ -22,13 +22,21 @@ class ChooseAvailability extends React.Component {
         this.state = {
             availableDates: {},
         }
-        this.state.uid = firebase.auth().currentUser.uid;
-        this.state.email = firebase.auth().currentUser.email;
-        this.state.username = firebase.auth().currentUser.displayName;
 
         this.onClickDay = this.onClickDay.bind(this);
         this.formatDate = this.formatDate.bind(this);
         this.onButtonClick = this.onButtonClick.bind(this);
+        this.getState = this.getState.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({uid: firebase.auth().currentUser.uid});
+        this.setState({email: firebase.auth().currentUser.email});
+        this.setState({username: firebase.auth().currentUser.displayName});
+    }
+
+    getState() {
+        return this.state;
     }
 
     formatDate(value) {

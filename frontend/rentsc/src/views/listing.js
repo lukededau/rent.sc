@@ -26,7 +26,7 @@ class listing extends React.Component {
                     <div style={{ width: "50%", display: "inline-block" }}>
                         <ListingList />
                     </div>
-                    <div style={{ top: "0px", position: "fixed", width: "50%", display: "inline-block" }}>
+                    <div style={{ top: "60px", position: "fixed", width: "50%", display: "inline-block" }}>
                         <Home />
                     </div>
 

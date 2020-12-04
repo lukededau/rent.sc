@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import firebase from '../firebase.js';
 import { withProps, compose } from 'recompose';
-import NavBar from '../common/NavBar';
 import Geocode from 'react-geocode';
 import { withRouter } from 'react-router-dom';
 import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs, DirectionsRenderer } from 'react-google-maps';
@@ -12,6 +11,19 @@ import Carousel from 'react-bootstrap/Carousel';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 Geocode.setApiKey(API_KEY);
+
+const transportPanelStyle = {
+    position: "absolute",
+    top: "10px",
+    left: "25%",
+    zIndex: 5,
+    backgroundColor: "#fff",
+    padding: 5,
+    border: "1px solid #999",
+    textAlign: "center",
+    lineHeight: "30px",
+    paddingLeft: "10px",
+}
 
 const InitialMap = compose(
     withProps({
@@ -27,9 +39,12 @@ const InitialMap = compose(
         defaultCenter = { { lat: 36.9741, lng: -122.0308 } }
         defaultZoom = { 14 }
     >
-    {<DirectionsRenderer
+    <DirectionsRenderer
         directions={props.directions}
-    />}
+        options={{
+            suppressMarkers: true
+        }}
+    />
     {props.markers.map(marker => (
         <Marker
             key={marker.id}
@@ -39,8 +54,7 @@ const InitialMap = compose(
             }}
             onClick={() => props.onMarkerClick(marker.id, marker.position.lat, marker.position.lng)}
         >
-            {
-            props.selectedMarker === marker.id && 
+            {props.selectedMarker === marker.id && 
             <InfoWindow onCloseClick={() => props.onClose()}>
                 <div style={{width: 250, height: 300}}>
                     <h4>{marker.address}</h4>
@@ -86,6 +100,7 @@ export class Home extends Component {
             selectedMarker: 0,
             markers:[],
             directions: null,
+            transportMode: "DRIVING",
         };
     }
 
@@ -151,13 +166,20 @@ export class Home extends Component {
             this.directionsService = new google.maps.DirectionsService();
         }
         const origin = new google.maps.LatLng(latitude, longitude);
-        const destination = new google.maps.LatLng(36.9881, -122.0582);
-
+        var destination;
+        var selectedMode = document.getElementById("mode").value;
+        if(selectedMode === "DRIVING"){
+            destination = new google.maps.LatLng(36.990984, -122.053040);
+        }
+        else {
+            destination = new google.maps.LatLng(36.998829, -122.060826);
+        }
+        
         this.directionsService.route(
             {
                 origin: origin,
                 destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING
+                travelMode: google.maps.TravelMode[selectedMode]
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
@@ -220,7 +242,15 @@ export class Home extends Component {
     render() {
         return (
             <div>
-                <NavBar />
+                <div style={transportPanelStyle}>
+                    <b>Mode of Travel: </b>
+                    <select id="mode">
+                        <option value="DRIVING">Driving</option>
+                        <option value="WALKING">Walking</option>
+                        <option value="BICYCLING">Bicycling</option>
+                        <option value="TRANSIT">Transit</option>
+                    </select>
+                </div>
                 <InitialMap
                     selectedMarker={this.state.selectedMarker}
                     markers={this.state.markers}

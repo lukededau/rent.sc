@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import  { Redirect } from 'react-router-dom'
-import MessageObject from './messageObject'
 
 import defaultProfileImage from '../Images/Default_profile_image.jpg'
 
@@ -25,9 +24,7 @@ class Message extends React.Component{
                 return () =>
                 {return <Redirect to='/listings'  />}
             } else {
-                console.log(user.uid)
                 this.setState({user_id: user.uid})    
-                console.log(this.props.room_id)
                 this.setState({room_id: this.props.room_id})
             }
         })   
@@ -39,18 +36,17 @@ class Message extends React.Component{
     render(){
         return(
             <div>
-            <Container fluid
-                >
+            <Container>
                     <Row onClick={() => console.log(this.props.room_id)}>
-                        <Col sm={1}>
+                        <Col md={2}>
                             <Image src={defaultProfileImage} style={{height:"50px"}} roundedCircle />
                         </Col>
-                        <Col sm={8}>
+                        <Col md={8}>
                             {this.props.user_id}
                         </Col>
                     </Row>
-                </Container>
-                <hr></hr>
+            </Container>
+            <hr></hr>
             </div>
         );
     }

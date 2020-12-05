@@ -5,8 +5,8 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button';
 import firebase from '../firebase.js';
-import Message1 from './message.js'
 import  { Redirect } from 'react-router-dom'
+import Form from 'react-bootstrap/Form';
 
 
 import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons";
@@ -30,15 +30,20 @@ class MessageObject extends React.Component{
             is_typing: false,
             time_stamp: "00:00",
             room_id: 0,
-            user_id: 0
+            user_id: 0,
+            inputMsg: ""
+        }
+    }
+    handleSubmit(event){
+        event.preventDefault();
+        const submit = event.currentTarget;
+        if(submit.elements[0].value.length >= 0){
+            this.sendMessage(submit.elements[0].value)
         }
     }
     componentDidMount() {
         console.log("Checking message object");
         if(this.props.room_id != this.state.room_id){
-            console.log("In messageObject");
-            console.log(this.props.room_id);
-            console.log(this.state.room_id);
             this.listener = firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
                     return () =>
@@ -58,7 +63,6 @@ class MessageObject extends React.Component{
     }
     componentDidUpdate(){
         if(this.props.room_id != this.state.room_id){
-            console.log("In component did update for message object")
             this.setState({room_id: this.props.room_id});
            this.getMessages(this.state.room_id);
         }
@@ -67,25 +71,40 @@ class MessageObject extends React.Component{
         this.listener();
     }
     async getMessages(){
-        console.log("Getting messages")
         var res = []
+        var res1 = []
+        var resTime = []
         const db = firebase.firestore();
-        console.log(this.props.room_id);
         const room_a_ref = db.collection('rooms').doc(this.props.room_id)
         const message_ref = room_a_ref.collection('messages')
         var docs = await message_ref.get() 
-            
+        
         docs.forEach((doc) => {
             console.log(doc.data())
-            res.push(new Message({id: doc.data()['sender'], senderName: doc.data()['sender'],message: doc.data()['msg'], timestamp:doc.data()['time']}))
+            res.push({id: doc.data()['sender'], senderName: doc.data()['sender'],message: doc.data()['msg'], time_stamp: doc.data()['time']})
         });
-        res.sort((a,b) => (a.time > b.time) ? 1: -1)
+        console.log(res)
+        res.sort((a,b) => (new Date(a.time_stamp) - new Date(b.time_stamp)))
         console.log(res);
+        for (var i = 0; i < res.length; i++){
+            res1.push(new Message({id: res[i]['id'], senderName: res[i]['senderName'],message: res[i]['message'], time_stamp: res[i]['time_stamp']}))
+        }
         this.setState({messages: res})
+    }
+    async sendMessage(inputM){
+        debugger
+        const db = firebase.firestore();
+        var data = {
+            'sender': this.state.user_id,
+            'room_id': this.props.room_id,
+            'msg': inputM,
+            'time': (new Date()).toString()
+        }
+        var newMsgRef = db.collection('rooms').doc(this.props.room_id)
+        newMsgRef.collection('messages').doc().set(data)
     }
     renderMessages(list){
         var output = [];
-        //this.sortMessages();
         output.push(<ChatFeed
             messages={this.state.messages} // Array: list of message objects
             isTyping={this.state.is_typing} // Boolean: is the recipient typing
@@ -96,11 +115,11 @@ class MessageObject extends React.Component{
             bubbleStyles={
             {
                 text: {
-                    fontSize: 30
+                    fontSize: 15
                 },
                 chatbubble: {
-                    borderRadius: 70,
-                    padding: 40
+                    borderRadius: 35,
+                    padding: 20
                 }
             }
             }
@@ -112,19 +131,23 @@ class MessageObject extends React.Component{
         return(
             <div>
                 {this.renderMessages()}
-                <hr></hr>      
-                <InputGroup className="mb-3">
-                    <FormControl
-                        placeholder="Hoiii"
-                        aria-label="Message box"
-                        aria-describedby="basic-addon2"
-                        />
-                    <InputGroup.Append>
-                        <Button>
-                            <FontAwesomeIcon icon={faArrowCircleUp} style={{height: "100%"}}/>
-                        </Button>
-                    </InputGroup.Append>
-                </InputGroup>
+                <hr></hr>    
+                <Form onSubmit={(event) => this.handleSubmit(event)}>
+                    <InputGroup className="mb-3" controlId="msg">
+                        <FormControl
+                            placeholder="Hoiii"
+                            aria-label="Message box"
+                            aria-describedby="basic-addon2"
+                            inputRef={(ref) => {this.setState({inputMsg: ref})}}
+                            type="text"
+                            />
+                        <InputGroup.Append>
+                            <Button variant="primary" type="submit">
+                                <FontAwesomeIcon icon={faArrowCircleUp} style={{height: "100%"}}/>
+                            </Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                </Form>  
             </div>
         );
     }

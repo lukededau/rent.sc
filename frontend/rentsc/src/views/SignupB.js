@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import  { Redirect } from 'react-router-dom'
 import 'firebase/auth';
 
 class Signup extends React.Component {
@@ -11,7 +12,8 @@ class Signup extends React.Component {
     handleSubmit(event) {
         const form = event.currentTarget;
         this.createUser(form.elements.formBasicEmail.value, form.elements.formBasicPassword.value,
-            form.elements.formFirstName.value + " " + form.elements.formLastName.value)
+            form.elements.formFirstName.value + " " + form.elements.formLastName.value).then(() =>
+        {return <Redirect to='/listings'  />})
 
 
     }

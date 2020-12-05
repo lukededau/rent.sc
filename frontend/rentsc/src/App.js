@@ -13,7 +13,7 @@ import Login from './views/Login';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
-//import Messages from './views/Messages'
+import Messages from './views/Messages'
 import propertyReview from './views/propertyReview';
 import Review_Owner from './views/ownerReview';
 import MainListing from './views/MainListing';
@@ -29,7 +29,7 @@ function App() {
           <PrivateRoute exact path="/userprofile" component={UserProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
-          {/*<Route path="/messages" component={Messages} />*/}
+          <Route path="/messages" component={Messages} />
           <Route exact path="/create-listing" component={createListing} />
           <Route exact path="/listings" component={listing} />
           <Route exact path="/main-listing" component={MainListing} />

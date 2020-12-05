@@ -1,9 +1,11 @@
 import React from 'react'
 import firebase from '../firebase.js'
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
+import { onRemoveClick } from './onRemoveClick'
 
 
-const AppointmentCard = ({value, remove}) => (
+const AppointmentCard = ({value, uid, remove}) => (
     <div style={{paddingLeft: "20px", paddingBottom: "15px", float: "left"}}>
         <Card style={{ width: '25rem' }}>
             <Card.Body>
@@ -14,7 +16,7 @@ const AppointmentCard = ({value, remove}) => (
                     Listing: {value.listing}
                 </Card.Text>
                 <Button>Contact {value.firstName} {value.lastName}</Button>
-                <Button onClick={() => remove(value)} style={{ float: "right" }} variant="danger">
+                <Button onClick={() => remove(value, uid)} style={{ float: "right" }} variant="danger">
                     Remove
                 </Button>
             </Card.Body>
@@ -23,10 +25,10 @@ const AppointmentCard = ({value, remove}) => (
 )
 
 
-const Cards = ({appointments, remove}) => (
+const Cards = ({appointments, uid, remove}) => (
     <div>
         {
-            appointments.map((appointment) => <AppointmentCard value={appointment} remove={remove}/>)
+            appointments.map((appointment) => <AppointmentCard value={appointment} uid={uid} remove={remove}/>)
         }
     </div>
 );
@@ -35,29 +37,13 @@ const Cards = ({appointments, remove}) => (
 function CreateCards(props) {
     if (props.appointments != null) {
         return (
-            <Cards appointments={props.appointments} remove={onRemoveClick}/>
+            <Cards appointments={props.appointments} uid={props.uid} remove={onRemoveClick}/>
         )
     }
     else {
         return (
             <div></div>
         )
-    }
-
-    async function onRemoveClick(values) {
-        const FieldValue = firebase.firestore.FieldValue;
-        const db = firebase.firestore();
-        const appointmentRef = db.collection('appointment');
-        const doc = await appointmentRef.doc(values.uid).get();
-        if (doc.exists) {
-            var temp = {};
-            temp[values.index] = FieldValue.delete();
-            const res = await appointmentRef.doc(values.uid).update(
-                temp
-            );
-            console.log(res);
-        }
-        window.location.reload(false);
     }
 }
 
@@ -66,14 +52,30 @@ class AppointmentCards extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uid: firebase.auth().currentUser.uid,
-            email: firebase.auth().currentUser.email,
-            username: firebase.auth().currentUser.displayName,
+            uid: null,
+            email: null,
+            username: null,
         };
+        this.getUserInfo = this.getUserInfo.bind(this)
+    }
+
+    getUserInfo() {
+        if(firebase.auth().currentUser != null) {
+            this.state.uid = firebase.auth().currentUser.uid
+            this.state.email = firebase.auth().currentUser.email
+            this.state.username = firebase.auth().currentUser.displayName
+        } else {
+            this.props.history.push('/login')
+        }
     }
 
     componentDidMount() {
-        this.getAppointmentData();
+        this.getUserInfo()
+        if(this.state.uid != null){ this.getAppointmentData() }
+    }
+
+    getState() {
+        return this.state;
     }
 
     async getAppointmentData() {
@@ -104,10 +106,13 @@ class AppointmentCards extends React.Component {
                 <h2 style={{paddingLeft: "20px", paddingBottom: "15px"}}>
                     Open Appointments
                 </h2>
-                <CreateCards appointments={this.state.appointments}/>
+                <CreateCards 
+                    appointments={this.state.appointments}
+                    uid={this.state.uid}
+                />
             </div>
         );
     }
 }
 
-export default AppointmentCards
+export default withRouter(AppointmentCards)

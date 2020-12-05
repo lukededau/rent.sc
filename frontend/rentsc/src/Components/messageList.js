@@ -25,7 +25,6 @@ async function getAllRooms(user_id){
 
         docs.forEach(async (doc) => {
             i = i + 1;
-            console.log(doc.id, "=>", doc.data()['user_id'])
             var query_ref1 = room_ref.where('room_id', '==', doc.data()['room_id']);
             docs1 = await query_ref1.get();
             docs1.forEach(async(doc1) => {
@@ -63,26 +62,17 @@ class MessageList extends React.Component {
         }
     }
     componentDidMount() {
-        console.log("Checking messageList")
-        if(this.props.room_id != this.state.room_id || this.state.room_id == ""){
-            console.log("In component did mount in message list")
+        if((this.props.room_id != this.state.room_id) || this.state.room_id == ""){
             this.listener = firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
                     return () =>
                     {return <Redirect to='/listings'  />}
                 } else {
-                    //console.log(user.uid)
                         this.setState({user_id: user.uid})  
                         var messages_stream = getAllRooms(this.state.user_id).then((messages)=>{
-                        //console.log("In will mount ");
-                        //console.log(messages[0]);
                         this.setState({ messages: messages });
                         this.setState({room_id: messages[0].room_id})
-                        console.log("Set state of room id to" + messages[0].room_id);
                         this.props.changeRoomIdState(this.state.room_id);
-                        console.log(this.state.room_id);
-                        //console.log(this.state.messages);
-                        //console.log("Mount length: " + this.state.messages.length);
                     });     
     
                 }
@@ -102,9 +92,6 @@ class MessageList extends React.Component {
     }
     renderRoom() {
         var output = [];
-        //console.log("In renderRoom")
-        //console.log(this.state.messages)
-        //console.log(this.state.messages.size)
 
         for (var i = 0; i < this.state.messages.length; i++) {
             var message = this.state.messages[i];
@@ -116,7 +103,7 @@ class MessageList extends React.Component {
 
     render() {
         return(
-            <div style={{paddingTop: "50px"}}>
+            <div>
                 {this.renderRoom()}
             </div>
         );

@@ -16,7 +16,10 @@
     "firebase-admin": "^9.4.1",
     "geocode": "0.0.3",
     "google-maps-react": "2.0.6",
+    "jest": "^24.9.0",
+    "jest-puppeteer": "^4.4.0",
     "prop-types": "^15.7.2",
+    "puppeteer": "^5.5.0",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.0",
     "react-calendar": "^3.2.1",
@@ -34,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -68,7 +68,7 @@ npm start
 
 # Notes
 
-You may need to replace pip with pip3 with some commands and python with python3 so don't panick if they don't work at first! 
+You may need to replace pip with pip3 with some commands and python with python3 so don't panic if they don't work at first! 
 
 
 

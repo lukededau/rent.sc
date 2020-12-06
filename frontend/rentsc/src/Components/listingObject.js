@@ -4,7 +4,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
+// import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import firebase from '../firebase'
@@ -49,23 +49,7 @@ class ListingObject extends React.Component {
         this.ownerReview = "ReviewOwner"
     }
     handleC(p) {
-        // console.log(this.props.imageURL[0])
-        // console.log(this.props.imageURL[1])
-        console.log(this.props.tags['house'])
-        if (this.props.imageURL) {
-            this.props.imageURL.map((image, idx) => {
-                console.log(image, idx)
-                // <Carousel.Item>
-                //     <img 
-                //         src={image} 
-                //         style={{height: 500, width: "100%"}} 
-                //         className="d-block w-100"
-                //         alt={idx} 
-                //         fluid="true"/>
-                // </Carousel.Item>
 
-            })
-        }
         this.setState(state => ({
             showPropertyReview: !state.showPropertyReview
         }));
@@ -74,15 +58,13 @@ class ListingObject extends React.Component {
         }));
     }
     handleR(p) {
-        // var l = <PropertyReview {...p} />
+
         this.setState(state => ({
             showOwnerReview: !state.showOwnerReview
         }));
         this.setState(state => ({
             showPropertyReview: false
         }));
-        // <PropertyReview/>
-        // console.log("lol", l)
     }
 
     renderPropertyReview(p) {
@@ -114,7 +96,6 @@ class ListingObject extends React.Component {
             } else {
                 login = false
             }
-            //console.log(login)
             return login
         }
 

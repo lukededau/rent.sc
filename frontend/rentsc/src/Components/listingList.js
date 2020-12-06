@@ -3,10 +3,7 @@ import 'firebase/auth';
 import ListingObject from './listingObject.js'
 import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';
-// import Button from 'react-bootstrap/Button'
-// import { useState, ToggleButton, ButtonGroup } from 'react';
-// import { FcBiohazard } from 'react-icons/fc';
-// import { GrSort } from 'react-icons/gr';
+
 import { GiMoneyStack } from "react-icons/gi";
 import { BiBed } from "react-icons/bi";
 import { IoIosPeople } from "react-icons/io";
@@ -14,7 +11,6 @@ import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 import { ToggleButton, ButtonGroup } from 'react-bootstrap';
 import { MdSmokeFree } from "react-icons/md";
-// import ReactDOM from 'react-dom'
 
 class ListingList extends React.Component {
     constructor(props) {
@@ -55,7 +51,6 @@ class ListingList extends React.Component {
         this.sortStreetParking = this.sortStreetParking.bind(this);
         this.sortParkingSpots = this.sortParkingSpots.bind(this);
 
-
         this.handlePriceCheck = this.handlePriceCheck.bind(this);
         this.handleBedroomsCheck = this.handleBedroomsCheck.bind(this);
         this.handleTenantsCheck = this.handleTenantsCheck.bind(this);
@@ -91,6 +86,7 @@ class ListingList extends React.Component {
             })
 
     }
+
     sortPrice() {
         var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
@@ -157,9 +153,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (Number(this.state.listings[k].parkingSpots) < Number(this.state.listings[k + 1].parkingSpots)) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -168,8 +161,6 @@ class ListingList extends React.Component {
             }
         }
     }
-
-
 
     sortDogsFriendly() {
         var tempList = this.state.listings
@@ -207,9 +198,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.apartment) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -225,9 +213,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.house) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -243,9 +228,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.townhouse) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -254,15 +236,13 @@ class ListingList extends React.Component {
             }
         }
     }
+
     sortEntirePlace() {
         var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.entirePlace) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -271,15 +251,13 @@ class ListingList extends React.Component {
             }
         }
     }
+
     sortSharedRoom() {
         var tempList = this.state.listings
         for (var j = 0; j < this.state.listings.length; j++) {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.sharedRoom) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -295,9 +273,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.privateRoom) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -313,9 +288,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.furnished) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -331,9 +303,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.pool) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -349,9 +318,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.fireplace) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -367,9 +333,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.AC) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -385,9 +348,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.streetParking) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -403,9 +363,6 @@ class ListingList extends React.Component {
             for (var k = 0; k < this.state.listings.length - j - 1; k++) {
 
                 if (!this.state.listings[k].tags.smokerFriendly) {
-                    // var temp = this.state.listings[k]
-                    // this.state.listings[k] = this.state.listings[k + 1]
-                    // this.state.listings[k + 1] = temp
                     var temp1 = tempList[k]
                     tempList[k] = tempList[k + 1]
                     tempList[k + 1] = temp1
@@ -469,7 +426,6 @@ class ListingList extends React.Component {
         }));
         this.sortHouse();
     }
-
 
     handleTownhouse() {
         this.setState(state => ({
@@ -550,36 +506,24 @@ class ListingList extends React.Component {
 
     renderListing(list) {
         var output = [];
-        // debugger;
 
-        // console.log("response", this.state.listings)
         for (var i = 0; i < this.state.listings.length; i++) {
             var listing = this.state.listings[i];
-
             output.push(<ListingObject {...listing} />)
         }
-
 
         return output
     }
 
-
     render() {
-        // debugger;
         return (
             <div>
                 <h2 style={{ paddingTop: "10px", paddingLeft: "15px" }}>Listings in Santa Cruz</h2>
-
-                <div>
-
-                    {/* <Button variant="outline-dark" onClick={() => this.unCheck()}>Dog Friendly</Button> */}
-                </div>
 
                 <div style={{ width: "100%", paddingLeft: "15px", display: "table" }}>
 
                     <div style={{ display: "table-row", height: "100 %" }}>
                         <div style={{ backgroundColor: "", display: "table-cell" }}>
-                            {/* <h3><FcBiohazard /> </h3> */}
 
                             <text>Sort By: </text>
                             <br></br>
@@ -630,37 +574,6 @@ class ListingList extends React.Component {
 
                             <br></br>
 
-
-                            {/* <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.dogChecked} onChange={this.handleDogCheck} value="1">
-                                    Dog Friendly <FaDog />
-                                </ToggleButton>
-                                <ToggleButton type="checkbox" variant="outline-dark" checked={this.state.catChecked} onChange={this.handleCatCheck} value="1">
-                                    Cat Friendly <FaCat />
-                                </ToggleButton> */}
-                            {/* <Button disabled variant="outline-dark" id="dropdown-basic">
-                                Sort By <GrSort /> :
-                            </Button> */}
-                            {/* <ToggleButton>here</ToggleButton> */}
-                            {/* <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <GiMoneyStack /> : 'Price'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <BiBed /> : 'Bedrooms'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <IoIosPeople /> : 'Tenants'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <FaDog /> : 'Dog Friendly'}
-                            </Button>
-                            <span> </span>
-                            <Button onClick={this.handleClick}>
-                                {this.state.isToggleOn ? <FaCat /> : 'Cat Friendly'}
-                            </Button> */}
                             <div className="mb-2">
 
                                 <Dropdown drop={'right'}>
@@ -681,19 +594,7 @@ class ListingList extends React.Component {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
-                            {/* <div>
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="outline-dark" id="dropdown-basic">
-                                        Other
-                                </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item onClick={this.sortDogsFriendly}>Dog Friendly <FaDog /></Dropdown.Item>
-                                        <Dropdown.Item onClick={this.sortCatFriendly}>Cat Friendly <FaCat /></Dropdown.Item>
-                                        <Dropdown.Item onClick={this.sortCatFriendly}>Smoker Friendly <MdSmokeFree /></Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
 
-                            </div> */}
                         </div>
 
                     </div>

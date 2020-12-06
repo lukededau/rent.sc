@@ -12,10 +12,6 @@ import firebase from '../firebase'
 import PropertyReview from '../views/propertyReview.js'
 import Review_Owner from '../views/ownerReview';
 
-// import homeland from '../Images/tiananmen_square.jpeg'
-// import homeland_master from '../Images/tiananmen_square_master.jpg'
-// import homeland_ceiling from '../Images/tiananmen_square_ceiling.jpeg'
-
 import sampleHouse from '../Images/sampleHouse.gif'
 import house1 from '../Images/house1.gif'
 import house2 from '../Images/house2.png'
@@ -44,6 +40,7 @@ class ListingObject extends React.Component {
             index: 0,
             showPropertyReview: false,
             showOwnerReview: false,
+            imageURL: []
         }
         this.propertyReview = "ReviewProperty"
         this.ownerReview = "ReviewOwner"
@@ -87,7 +84,6 @@ class ListingObject extends React.Component {
         }
         return tags
     }
-
     render() {
         function checkLoggedIn() {
             let login
@@ -218,11 +214,9 @@ class ListingObject extends React.Component {
                         checkSameUser(this.props.uid) ? '' : <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">Review {this.props.address}</Button>
                         : <Button variant="outline-info" size="sm" href='login'>Login to review</Button>}
                     &nbsp;&nbsp;&nbsp;
-                    {checkLoggedIn() ?
-                        checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
-                        : ''}
-                    {/*checkSameUser() ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>*/}
-
+                    {checkLoggedIn() ? 
+                    checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
+                    : ''}
                     <div>
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
                         {this.state.showOwnerReview ? this.renderOwnerReview(this.props) : ''}

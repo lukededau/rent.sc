@@ -7,9 +7,6 @@ import { BsStar, BsGeoAlt, BsFillPersonFill, BsCursorFill, BsStarFill, BsCalenda
 import firebase from '../firebase.js';
 import NavigationBar from '../Components/navbar.js';
 import { withRouter } from 'react-router-dom';
-import Sample1 from '../Images/tiananmen_square_ceiling.jpeg';
-import Sample2 from '../Images/tiananmen_square_master.jpg';
-import Sample3 from '../Images/tiananmen_square.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const subtitleStyle = {

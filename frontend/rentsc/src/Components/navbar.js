@@ -25,12 +25,10 @@ class NavigationBar extends React.Component {
 
     logout() {
         console.log('logout successful')
-        //return firebase.auth().signOut()
     }
 
     async handleLogout() {
         await this.logout()
-        //this.props.history.push('/login')
     }
 
     render() {

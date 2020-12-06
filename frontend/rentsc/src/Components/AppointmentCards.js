@@ -15,7 +15,7 @@ const AppointmentCard = ({value, uid, remove}) => (
                     Email: {value.email} <br></br>
                     Listing: {value.listing}
                 </Card.Text>
-                <Button>Contact {value.firstName} {value.lastName}</Button>
+                <Button onClick={() => {window.location.href='/messages'}}>Contact {value.firstName} {value.lastName}</Button>
                 <Button onClick={() => remove(value, uid)} style={{ float: "right" }} variant="danger">
                     Remove
                 </Button>

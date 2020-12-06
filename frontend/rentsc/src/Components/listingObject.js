@@ -84,29 +84,6 @@ class ListingObject extends React.Component {
         }
         return tags
     }
-    renderListingImages(){
-        var output = [];
-        if(this.props.imageURL){
-            for (var i = 0; i < this.props.imageURL.length; i++) {
-                var image = this.props.imageURL[i];
-                output.push(
-                    <Carousel.Item interval={100000}>
-                        <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={image} />
-                    </Carousel.Item>
-                )
-                
-            }
-        }
-        else{
-            output.push(
-                <Carousel.Item interval={100000}>
-                    <FontAwesomeIcon icon={faImage} style={{height: "100%", display: "block",
-                        marginLeft: "auto", marginRight: "auto", paddingTop: "50px"}}/>
-                </Carousel.Item>
-            )
-        }
-        return output
-    }
     render() {
         function checkLoggedIn() {
             let login

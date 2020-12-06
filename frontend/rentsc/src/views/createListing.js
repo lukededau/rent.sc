@@ -159,7 +159,6 @@ class ListingFields extends React.Component {
     }
 
     render() {
-
         return (
             <div>
                 <NavigationBar></NavigationBar>

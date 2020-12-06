@@ -58,7 +58,7 @@ class NavigationBar extends React.Component {
                             <Nav.Link href="#AddGuests">Add Guests <BsPersonPlus /></Nav.Link>
                             <Nav.Link href="#Rooms">Add Rooms <AiOutlinePlus /></Nav.Link>
 
-                            <Nav.Link href="#explore">Future Listings  <HiViewList /></Nav.Link>
+                            <Nav.Link href="myListings#myPham">My Listings  <HiViewList /></Nav.Link>
 
 
                         </Nav>

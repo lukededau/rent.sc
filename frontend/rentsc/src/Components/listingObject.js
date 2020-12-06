@@ -4,18 +4,26 @@ import Carousel from 'react-bootstrap/Carousel'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
+// import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import firebase from '../firebase'
-// import {
-//     BrowserRouter as Router,
-//     Link,
-// } from 'react-router-dom';
+
 import PropertyReview from '../views/propertyReview.js'
 import Review_Owner from '../views/ownerReview';
-import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import sampleHouse from '../Images/sampleHouse.gif'
+import house1 from '../Images/house1.gif'
+import house2 from '../Images/house2.png'
+
+import townhouse from '../Images/townhouse.gif'
+import townhouse1 from '../Images/townhouse1.png'
+import townhouse2 from '../Images/townhouse2.jpg'
+
+import apartment from '../Images/apartment.png'
+import apartment2 from '../Images/apartment2.jpeg'
+
+
 
 class ListingObject extends React.Component {
     constructor(props) {
@@ -47,14 +55,13 @@ class ListingObject extends React.Component {
         }));
     }
     handleR(p) {
-        // var l = <PropertyReview {...p} />
+
         this.setState(state => ({
             showOwnerReview: !state.showOwnerReview
         }));
         this.setState(state => ({
             showPropertyReview: false
         }));
-        // <PropertyReview/>
     }
 
     renderPropertyReview(p) {
@@ -103,7 +110,7 @@ class ListingObject extends React.Component {
     render() {
         function checkLoggedIn() {
             let login
-            if(firebase.auth().currentUser != null) {
+            if (firebase.auth().currentUser != null) {
                 login = true
             } else {
                 login = false
@@ -113,7 +120,7 @@ class ListingObject extends React.Component {
 
         function checkSameUser(uid) {
             let user
-            if(firebase.auth().currentUser.uid == uid) {
+            if (firebase.auth().currentUser.uid == uid) {
                 user = true
             } else {
                 user = false
@@ -123,13 +130,95 @@ class ListingObject extends React.Component {
         return (
             <div>
 
-                <Container fluid
-                    style={{ paddingTop: "20px" }}
-                >
+                <Container fluid style={{ paddingTop: "18px" }}>
                     <Row>
                         <Col>
                             <Carousel style={{ maxWidth: "100%", maxHeight: "100%", margin: "auto" }}>
-                                {this.renderListingImages()}
+                                {this.props.imageURL ? this.props.imageURL.map((image, idx) => {
+                                    return (
+                                        <Carousel.Item interval={5000}>
+                                            <img
+                                                src={image}
+                                                style={{ height: '100%', width: "100%" }}
+                                                className="d-block w-100"
+                                                alt={idx}
+                                                fluid="true" />
+                                        </Carousel.Item>
+                                    )
+                                }) : this.props.tags['house'] ?
+
+                                        <Carousel.Item interval={5000}>
+                                            <img
+                                                src={sampleHouse}
+                                                style={{ height: '400px', width: "100%" }}
+                                                className="d-block w-100"
+                                                fluid="true"
+                                            />
+                                        </Carousel.Item>
+
+                                        : this.props.tags['townhouse'] ?
+                                            <Carousel.Item interval={5000}>
+                                                <img
+                                                    src={townhouse1}
+                                                    style={{ height: '100%', width: "100%" }}
+                                                    className="d-block w-100"
+                                                    fluid="true"
+                                                />
+                                            </Carousel.Item>
+
+                                            : this.props.tags['apartment'] ?
+                                                <Carousel.Item interval={5000}>
+                                                    <img
+                                                        src={apartment}
+                                                        style={{ height: '100%', width: "100%" }}
+                                                        className="d-block w-100"
+                                                        fluid="true"
+                                                    />
+                                                </Carousel.Item>
+                                                : ''}
+
+
+                                {this.props.tags['house'] && !this.props.imageURL ?
+                                    <Carousel.Item interval={5000}>
+                                        <img
+                                            src={house2}
+                                            style={{ height: '80%', width: "80%" }}
+                                            className="d-block w-100"
+                                            fluid="true"
+                                        />
+                                    </Carousel.Item>
+                                    : ''}
+                                {this.props.tags['house'] && !this.props.imageURL ?
+                                    <Carousel.Item interval={5000}>
+                                        <img
+                                            src={house1}
+                                            style={{ height: '100%', width: "100%" }}
+                                            className="d-block w-100"
+                                            fluid="true"
+                                        />
+                                    </Carousel.Item>
+                                    : ''}
+
+                                {this.props.tags['apartment'] && !this.props.imageURL ?
+                                    <Carousel.Item interval={5000}>
+                                        <img
+                                            src={apartment2}
+                                            style={{ height: '80%', width: "80%" }}
+                                            className="d-block w-100"
+                                            fluid="true"
+                                        />
+                                    </Carousel.Item>
+                                    : ''}
+
+                                {/* <Carousel.Item interval={100000} style={{ maxWidth: "100%", maxHeight: "100%" }}>
+                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={this.props.imageURL ? this.props.imageURL : homeland} />
+                                </Carousel.Item>
+                                <Carousel.Item interval={100000}>
+                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={this.props.imageURL ? this.props.imageURL : homeland_master} />
+                                </Carousel.Item>
+                                <Carousel.Item interval={100000}>
+                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={this.props.imageURL ? this.props.imageURL : homeland_ceiling} />
+                                </Carousel.Item> */}
                             </Carousel>
                         </Col>
                         <Col style={{ fontFamily: "sans-serif", position: "relative" }}>
@@ -144,13 +233,13 @@ class ListingObject extends React.Component {
 
                     </Row>
                     <br></br>
-                    {checkLoggedIn() ? 
-                    checkSameUser(this.props.uid) ? '' : <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">Review {this.props.address}</Button> 
-                    : <Button variant="outline-info" size="sm" href='login'>Login to review</Button>}
+                    {checkLoggedIn() ?
+                        checkSameUser(this.props.uid) ? '' : <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">Review {this.props.address}</Button>
+                        : <Button variant="outline-info" size="sm" href='login'>Login to review</Button>}
                     &nbsp;&nbsp;&nbsp;
-                    {checkLoggedIn() ? 
-                    checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
-                    : ''}
+                    {checkLoggedIn() ?
+                        checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
+                        : ''}
                     {/*checkSameUser() ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>*/}
 
                     <div>

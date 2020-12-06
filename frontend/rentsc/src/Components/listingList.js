@@ -663,7 +663,7 @@ class ListingList extends React.Component {
                             </Button> */}
                             <div className="mb-2">
 
-                                <Dropdown>
+                                <Dropdown drop={'right'}>
                                     <Dropdown.Toggle variant="outline-dark" id="dropdown-basic" >
                                         Amenities
                                 </Dropdown.Toggle>

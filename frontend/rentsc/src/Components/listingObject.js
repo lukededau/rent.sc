@@ -79,8 +79,54 @@ class ListingObject extends React.Component {
 
         for (const tag in this.props.tags) {
             if (this.props.tags[tag] === true) {
-                tags = tags + " " + tag;
+                // tags = tags + " " + tag;
+                if (tag === 'dogFriendly') {
+                    tags = tags + ", " + 'Dog Friendly';
+                }
+                if (tag === 'catFriendly') {
+                    tags = tags + ", " + 'Cat Friendly';
+                }
+                if (tag === 'apartment') {
+                    tags = tags + ", " + 'Apartment';
+                }
+                if (tag === 'house') {
+                    tags = tags + ", " + 'House';
+                }
+                if (tag === 'townhouse') {
+                    tags = tags + ", " + 'Townhouse';
+                }
+                if (tag === 'entirePlace') {
+                    tags = tags + ", " + 'Entire Place';
+                }
+                if (tag === 'sharedRoom') {
+                    tags = tags + ", " + 'Shared Room';
+                }
+                if (tag === 'privateRoom') {
+                    tags = tags + ", " + 'Private Room';
+                }
+                if (tag === 'furnished') {
+                    tags = tags + ", " + 'Furnished';
+                }
+                if (tag === 'pool') {
+                    tags = tags + ", " + 'Pool';
+                }
+                if (tag === 'fireplace') {
+                    tags = tags + ", " + 'Fireplace';
+                }
+                if (tag === 'streetParking') {
+                    tags = tags + ", " + 'Street Parking';
+                }
+                if (tag === 'smokerFriendly') {
+                    tags = tags + ", " + 'Smoker Friendly';
+                }
+                if (tag === 'AC') {
+                    tags = tags + ", " + 'AC';
+                }
             }
+        }
+        // tags = tags.substring(2)
+        if (tags) {
+            tags = tags.slice(2)
         }
         return tags
     }
@@ -214,9 +260,9 @@ class ListingObject extends React.Component {
                         checkSameUser(this.props.uid) ? '' : <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">Review {this.props.address}</Button>
                         : <Button variant="outline-info" size="sm" href='login'>Login to review</Button>}
                     &nbsp;&nbsp;&nbsp;
-                    {checkLoggedIn() ? 
-                    checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
-                    : ''}
+                    {checkLoggedIn() ?
+                        checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
+                        : ''}
                     <div>
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
                         {this.state.showOwnerReview ? this.renderOwnerReview(this.props) : ''}

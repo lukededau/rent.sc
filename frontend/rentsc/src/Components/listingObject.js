@@ -14,11 +14,8 @@ import firebase from '../firebase'
 // } from 'react-router-dom';
 import PropertyReview from '../views/propertyReview.js'
 import Review_Owner from '../views/ownerReview';
-
-import homeland from '../Images/tiananmen_square.jpeg'
-import homeland_master from '../Images/tiananmen_square_master.jpg'
-import homeland_ceiling from '../Images/tiananmen_square_ceiling.jpeg'
-
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ListingObject extends React.Component {
     constructor(props) {
@@ -35,6 +32,7 @@ class ListingObject extends React.Component {
             index: 0,
             showPropertyReview: false,
             showOwnerReview: false,
+            imageURL: []
         }
         this.propertyReview = "ReviewProperty"
         this.ownerReview = "ReviewOwner"
@@ -57,7 +55,6 @@ class ListingObject extends React.Component {
             showPropertyReview: false
         }));
         // <PropertyReview/>
-        // console.log("lol", l)
     }
 
     renderPropertyReview(p) {
@@ -80,7 +77,29 @@ class ListingObject extends React.Component {
         }
         return tags
     }
-
+    renderListingImages(){
+        var output = [];
+        if(this.props.imageURL){
+            for (var i = 0; i < this.props.imageURL.length; i++) {
+                var image = this.props.imageURL[i];
+                output.push(
+                    <Carousel.Item interval={100000}>
+                        <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={image} />
+                    </Carousel.Item>
+                )
+                
+            }
+        }
+        else{
+            output.push(
+                <Carousel.Item interval={100000}>
+                    <FontAwesomeIcon icon={faImage} style={{height: "100%", display: "block",
+                        marginLeft: "auto", marginRight: "auto", paddingTop: "50px"}}/>
+                </Carousel.Item>
+            )
+        }
+        return output
+    }
     render() {
         function checkLoggedIn() {
             let login
@@ -89,7 +108,6 @@ class ListingObject extends React.Component {
             } else {
                 login = false
             }
-            //console.log(login)
             return login
         }
 
@@ -111,15 +129,7 @@ class ListingObject extends React.Component {
                     <Row>
                         <Col>
                             <Carousel style={{ maxWidth: "100%", maxHeight: "100%", margin: "auto" }}>
-                                <Carousel.Item interval={100000} style={{ maxWidth: "100%", maxHeight: "100%" }}>
-                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={homeland} />
-                                </Carousel.Item>
-                                <Carousel.Item interval={100000}>
-                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={homeland_master} />
-                                </Carousel.Item>
-                                <Carousel.Item interval={100000}>
-                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={homeland_ceiling} />
-                                </Carousel.Item>
+                                {this.renderListingImages()}
                             </Carousel>
                         </Col>
                         <Col style={{ fontFamily: "sans-serif", position: "relative" }}>

@@ -550,9 +550,6 @@ class ListingList extends React.Component {
 
     renderListing(list) {
         var output = [];
-        // debugger;
-
-        // console.log("response", this.state.listings)
         for (var i = 0; i < this.state.listings.length; i++) {
             var listing = this.state.listings[i];
 
@@ -565,7 +562,6 @@ class ListingList extends React.Component {
 
 
     render() {
-        // debugger;
         return (
             <div>
                 <h2 style={{ paddingTop: "10px", paddingLeft: "15px" }}>Listings in Santa Cruz</h2>

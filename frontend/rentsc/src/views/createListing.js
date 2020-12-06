@@ -68,6 +68,32 @@ class ListingFields extends React.Component {
         if (event.target.name) {
             this.tags[event.target.name] = !this.tags[event.target.name];
         }
+        if (event.target.name === 'house') {
+            this.tags['townhouse'] = false
+            this.tags['apartment'] = false
+        }
+        else if (event.target.name === 'townhouse') {
+            this.tags['house'] = false
+            this.tags['apartment'] = false
+        }
+        else if (event.target.name === 'apartment') {
+            this.tags['house'] = false
+            this.tags['townhouse'] = false
+        }
+
+        if (event.target.name === 'entirePlace') {
+            this.tags['privateRoom'] = false
+            this.tags['sharedRoom'] = false
+        }
+        else if (event.target.name === 'sharedRoom') {
+            this.tags['entirePlace'] = false
+            this.tags['privateRoom'] = false
+        }
+        else if (event.target.name === 'privateRoom') {
+            this.tags['entirePlace'] = false
+            this.tags['sharedRoom'] = false
+        }
+
         this.setState(this.state);
     }
 
@@ -361,7 +387,7 @@ class ListingFields extends React.Component {
                                 <br></br>
 
                                 <Form.Row>
-                                    <Col sm={3}>Parking spots on premise:</Col>
+                                    <Col sm={5}>Parking spots on premise:</Col>
                                     <Form.Group controlId="parkingSpots">
                                         <Form.Control type="text" placeholder="0 spots" />
                                     </Form.Group>

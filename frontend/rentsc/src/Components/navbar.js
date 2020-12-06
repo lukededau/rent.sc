@@ -25,12 +25,10 @@ class NavigationBar extends React.Component {
 
     logout() {
         console.log('logout successful')
-        //return firebase.auth().signOut()
     }
 
     async handleLogout() {
         await this.logout()
-        //this.props.history.push('/login')
     }
 
     render() {
@@ -55,8 +53,6 @@ class NavigationBar extends React.Component {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/#Nearby">Nearby <FaLocationArrow /></Nav.Link>
-                            <Nav.Link href="#AddGuests">Add Guests <BsPersonPlus /></Nav.Link>
-                            <Nav.Link href="#Rooms">Add Rooms <AiOutlinePlus /></Nav.Link>
 
                             <Nav.Link href="myListings#myPham">My Listings  <HiViewList /></Nav.Link>
 

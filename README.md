@@ -54,8 +54,6 @@ The private json key should be shared with you via my google drive
 ```
 $ python3 manage.py runserver
 ```
-From here, you should be able to go to http://127.0.0.1:8000/app/hello and should see a Json Response that looks like this:
-Note: When running this make sure that you are in the right directory where manage.py is located
 
 
 # Frontend

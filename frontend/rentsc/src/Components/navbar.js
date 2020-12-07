@@ -14,6 +14,7 @@ import { RiMenuAddFill } from "react-icons/ri";
 import { GoSignOut } from "react-icons/go";
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
+import { RiStarLine, RiStarFill } from "react-icons/ri";
 
 
 class NavigationBar extends React.Component {
@@ -53,7 +54,7 @@ class NavigationBar extends React.Component {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/#Nearby">Nearby <FaLocationArrow /></Nav.Link>
-
+                            <Nav.Link href="myfavorites#Micheal_lil_Wang">Favorites <RiStarFill /></Nav.Link>
                             <Nav.Link href="myListings#myPham">My Listings  <HiViewList /></Nav.Link>
 
 
@@ -73,7 +74,7 @@ class NavigationBar extends React.Component {
                             >
 
                                 <NavDropdown.Item href="#user/Messages">Messages</NavDropdown.Item>
-                                <NavDropdown.Item href="#user/Favorites">Favorites</NavDropdown.Item>
+                                <NavDropdown.Item href="myfavorites">Favorites</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="userprofile">{u}</NavDropdown.Item>
                                 <NavDropdown.Item href='#logout'>Logout</NavDropdown.Item>

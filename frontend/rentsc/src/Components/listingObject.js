@@ -16,14 +16,15 @@ import sampleHouse from '../Images/sampleHouse.gif'
 import house1 from '../Images/house1.gif'
 import house2 from '../Images/house2.png'
 
-import townhouse from '../Images/townhouse.gif'
+// import townhouse from '../Images/townhouse.gif'
 import townhouse1 from '../Images/townhouse1.png'
-import townhouse2 from '../Images/townhouse2.jpg'
+// import townhouse2 from '../Images/townhouse2.jpg'
 
 import apartment from '../Images/apartment.png'
 import apartment2 from '../Images/apartment2.jpeg'
 
-
+import { RiStarLine, RiStarFill } from "react-icons/ri";
+import { ToggleButton, ButtonGroup } from 'react-bootstrap';
 
 class ListingObject extends React.Component {
     constructor(props) {
@@ -42,9 +43,33 @@ class ListingObject extends React.Component {
             showOwnerReview: false,
             imageURL: []
         }
+
+        this.favorited = {
+            fav: false,
+        }
+
         this.propertyReview = "ReviewProperty"
         this.ownerReview = "ReviewOwner"
     }
+
+    componentDidMount() {
+        this.checkFavorited();
+    }
+
+    _saveFavorite = async () => {
+
+        const ref = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).get()
+        await firebase.firestore().collection('users').doc(ref.docs[0].id).update({ 'favorites': firebase.firestore.FieldValue.arrayUnion(this.props.address) })
+
+        this.checkFavorited();
+    }
+
+    checkFavorited = async () => {
+        const ref = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).where("favorites", "array-contains", this.props.address).get()
+        this.favorited['fav'] = !ref.empty;
+        this.setState(this.state);
+    }
+
     handleC(p) {
 
         this.setState(state => ({
@@ -54,6 +79,12 @@ class ListingObject extends React.Component {
             showOwnerReview: false
         }));
     }
+
+    yes() {
+        console.log("yes")
+        return true;
+    }
+
     handleR(p) {
 
         this.setState(state => ({
@@ -81,46 +112,46 @@ class ListingObject extends React.Component {
             if (this.props.tags[tag] === true) {
                 // tags = tags + " " + tag;
                 if (tag === 'dogFriendly') {
-                    tags = tags + ", " + 'Dog Friendly';
+                    tags = tags.concat(", Dog Friendly")
                 }
                 if (tag === 'catFriendly') {
-                    tags = tags + ", " + 'Cat Friendly';
+                    tags = tags.concat(", Cat Friendly")
                 }
                 if (tag === 'apartment') {
-                    tags = tags + ", " + 'Apartment';
+                    tags = tags.concat(", Apartment")
                 }
                 if (tag === 'house') {
-                    tags = tags + ", " + 'House';
+                    tags = tags.concat(", House")
                 }
                 if (tag === 'townhouse') {
-                    tags = tags + ", " + 'Townhouse';
+                    tags = tags.concat(", Townhouse")
                 }
                 if (tag === 'entirePlace') {
-                    tags = tags + ", " + 'Entire Place';
+                    tags = tags.concat(", Entire Place")
                 }
                 if (tag === 'sharedRoom') {
-                    tags = tags + ", " + 'Shared Room';
+                    tags = tags.concat(", Shared Room")
                 }
                 if (tag === 'privateRoom') {
-                    tags = tags + ", " + 'Private Room';
+                    tags = tags.concat(", Private Room")
                 }
                 if (tag === 'furnished') {
-                    tags = tags + ", " + 'Furnished';
+                    tags = tags.concat(", Furnished")
                 }
                 if (tag === 'pool') {
-                    tags = tags + ", " + 'Pool';
+                    tags = tags.concat(", Pool")
                 }
                 if (tag === 'fireplace') {
-                    tags = tags + ", " + 'Fireplace';
+                    tags = tags.concat(", Fireplace")
                 }
                 if (tag === 'streetParking') {
-                    tags = tags + ", " + 'Street Parking';
+                    tags = tags.concat(", Street Parking")
                 }
                 if (tag === 'smokerFriendly') {
-                    tags = tags + ", " + 'Smoker Friendly';
+                    tags = tags.concat(", Smoker Friendly")
                 }
                 if (tag === 'AC') {
-                    tags = tags + ", " + 'AC';
+                    tags = tags.concat(", AC")
                 }
             }
         }
@@ -132,6 +163,7 @@ class ListingObject extends React.Component {
     }
     render() {
         function checkLoggedIn() {
+
             let login
             if (firebase.auth().currentUser != null) {
                 login = true
@@ -256,13 +288,27 @@ class ListingObject extends React.Component {
 
                     </Row>
                     <br></br>
+
+
                     {checkLoggedIn() ?
                         checkSameUser(this.props.uid) ? '' : <Button variant="outline-info" onClick={() => this.handleC(this.props)} size="sm">Review {this.props.address}</Button>
                         : <Button variant="outline-info" size="sm" href='login'>Login to review</Button>}
                     &nbsp;&nbsp;&nbsp;
+
                     {checkLoggedIn() ?
                         checkSameUser(this.props.uid) ? '' : <Button variant="outline-success" onClick={() => this.handleR(this.props)} size="sm">Review {this.props.username} </Button>
                         : ''}
+                    &nbsp;&nbsp;&nbsp;
+
+                    {checkLoggedIn() ?
+                        checkSameUser(this.props.uid) ? '' :
+                            <ButtonGroup toggle >
+                                <ToggleButton type="checkbox" variant="outline-warning" checked={this.favorited.fav} onClick={() => this._saveFavorite(this.props)} size="sm">
+                                    Favorite {this.favorited.fav ? <RiStarFill /> : <RiStarLine />}
+                                </ToggleButton>
+                            </ButtonGroup>
+                        : ''}
+
                     <div>
                         {this.state.showPropertyReview ? this.renderPropertyReview(this.props) : ''}
                         {this.state.showOwnerReview ? this.renderOwnerReview(this.props) : ''}

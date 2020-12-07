@@ -62,6 +62,7 @@ class ListingObject extends React.Component {
         await firebase.firestore().collection('users').doc(ref.docs[0].id).update({ 'favorites': firebase.firestore.FieldValue.arrayUnion(this.props.address) })
 
         this.checkFavorited();
+        this.setState(this.state);
     }
 
     checkFavorited = async () => {
@@ -78,11 +79,6 @@ class ListingObject extends React.Component {
         this.setState(state => ({
             showOwnerReview: false
         }));
-    }
-
-    yes() {
-        console.log("yes")
-        return true;
     }
 
     handleR(p) {

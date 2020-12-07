@@ -10,6 +10,7 @@ class MyFavListingList extends React.Component {
         super(props);
         this.state = {
             listings: [],
+            listings1: [],
             favListings: [],
         }
     }
@@ -24,14 +25,14 @@ class MyFavListingList extends React.Component {
                         myListings.push(i)
                     }
                 }
-                this.setState({ listings: myListings })
+                this.setState({ listings1: myListings })
                 this.checkFavorited();
             })
     }
 
     checkFavorited = async () => {
         var myListings = []
-        for (const i of this.state.listings) {
+        for (const i of this.state.listings1) {
             const ref = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).where("favorites", "array-contains", i.address).get()
             if (!ref.empty) {
                 myListings.push(i)

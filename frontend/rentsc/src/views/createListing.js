@@ -6,7 +6,7 @@ import firebase from '../firebase';
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 import { MdSmokeFree } from "react-icons/md";
-import { AiOutlineCar, AiOutlineConsoleSql } from "react-icons/ai";
+import { AiOutlineCar } from "react-icons/ai";
 import { withRouter } from 'react-router-dom'
 import { ToggleButton, ButtonGroup } from 'react-bootstrap';
 
@@ -134,7 +134,7 @@ class ListingFields extends React.Component {
                     else if (this.state.imageURL != null) {
                         this.state.imageURL.push(url)
                     }
-                    if (this.state.imageURL.length == length) {
+                    if (this.state.imageURL.length === length) {
                         this.fullSubmit()
                     }
                 })

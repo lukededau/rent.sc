@@ -2,7 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Carousel, Image, Badge, Card, Button } from 'react-bootstrap';
+import { Carousel, Badge, Card, Button } from 'react-bootstrap';
 import { BsStar, BsGeoAlt, BsFillPersonFill, BsCursorFill, BsStarFill, BsCalendar } from 'react-icons/bs';
 import firebase from '../firebase.js';
 import NavigationBar from '../Components/navbar.js';
@@ -171,20 +171,20 @@ class MainListing extends React.Component {
                             <p style={{ marginTop: 8 }}>
                                 Tags: {this.state.tags.map(tag => (
                                     <Badge key={tag} style={{ fontSize: 16, marginRight: 4 }} variant="success">
-                                        {tag == 'catFriendly' ? 'Cat Friendly' : ''}
-                                        {tag == 'dogFriendly' ? 'Dog Friendly' : ''}
-                                        {tag == 'apartment' ? 'Apartment' : ''}
-                                        {tag == 'townhouse' ? 'Townhouse' : ''}
-                                        {tag == 'house' ? 'House' : ''}
-                                        {tag == 'entirePlace' ? 'Entire Place' : ''}
-                                        {tag == 'sharedRoom' ? 'Shared Room' : ''}
-                                        {tag == 'privateRoom' ? 'Private Room' : ''}
-                                        {tag == 'furnished' ? 'Furnished' : ''}
-                                        {tag == 'pool' ? 'Pool' : ''}
-                                        {tag == 'fireplace' ? 'Fireplace' : ''}
-                                        {tag == 'streetParking' ? 'Street Parking' : ''}
-                                        {tag == 'smokerFriendly' ? 'Smoker Friendly' : ''}
-                                        {tag == 'AC' ? 'AC' : ''}
+                                        {tag === 'catFriendly' ? 'Cat Friendly' : ''}
+                                        {tag === 'dogFriendly' ? 'Dog Friendly' : ''}
+                                        {tag === 'apartment' ? 'Apartment' : ''}
+                                        {tag === 'townhouse' ? 'Townhouse' : ''}
+                                        {tag === 'house' ? 'House' : ''}
+                                        {tag === 'entirePlace' ? 'Entire Place' : ''}
+                                        {tag === 'sharedRoom' ? 'Shared Room' : ''}
+                                        {tag === 'privateRoom' ? 'Private Room' : ''}
+                                        {tag === 'furnished' ? 'Furnished' : ''}
+                                        {tag === 'pool' ? 'Pool' : ''}
+                                        {tag === 'fireplace' ? 'Fireplace' : ''}
+                                        {tag === 'streetParking' ? 'Street Parking' : ''}
+                                        {tag === 'smokerFriendly' ? 'Smoker Friendly' : ''}
+                                        {tag === 'AC' ? 'AC' : ''}
                                     </Badge>
                                 ))}
                             </p>

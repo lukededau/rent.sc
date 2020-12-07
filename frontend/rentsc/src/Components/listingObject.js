@@ -175,7 +175,7 @@ class ListingObject extends React.Component {
 
         function checkSameUser(uid) {
             let user
-            if (firebase.auth().currentUser.uid == uid) {
+            if (firebase.auth().currentUser.uid === uid) {
                 user = true
             } else {
                 user = false
@@ -208,6 +208,7 @@ class ListingObject extends React.Component {
                                                 style={{ height: '400px', width: "100%" }}
                                                 className="d-block w-100"
                                                 fluid="true"
+                                                alt="sampleHouse"
                                             />
                                         </Carousel.Item>
 
@@ -218,6 +219,7 @@ class ListingObject extends React.Component {
                                                     style={{ height: '100%', width: "100%" }}
                                                     className="d-block w-100"
                                                     fluid="true"
+                                                    alt="sample townhouse"
                                                 />
                                             </Carousel.Item>
 
@@ -228,6 +230,7 @@ class ListingObject extends React.Component {
                                                         style={{ height: '100%', width: "100%" }}
                                                         className="d-block w-100"
                                                         fluid="true"
+                                                        alt="sample apartment"
                                                     />
                                                 </Carousel.Item>
                                                 : ''}
@@ -240,6 +243,7 @@ class ListingObject extends React.Component {
                                             style={{ height: '80%', width: "80%" }}
                                             className="d-block w-100"
                                             fluid="true"
+                                            alt="sample house 2"
                                         />
                                     </Carousel.Item>
                                     : ''}
@@ -250,6 +254,7 @@ class ListingObject extends React.Component {
                                             style={{ height: '100%', width: "100%" }}
                                             className="d-block w-100"
                                             fluid="true"
+                                            alt="sample house 2"
                                         />
                                     </Carousel.Item>
                                     : ''}
@@ -261,6 +266,7 @@ class ListingObject extends React.Component {
                                             style={{ height: '80%', width: "80%" }}
                                             className="d-block w-100"
                                             fluid="true"
+                                            alt="sample apartment 2"
                                         />
                                     </Carousel.Item>
                                     : ''}

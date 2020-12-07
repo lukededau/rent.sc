@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import firebase from '../firebase'
-import { Container, Card } from 'react-bootstrap'
+// import { Container, Card } from 'react-bootstrap'
 
 function UserListing() {
-    const [listings, setListings] = useState([])
+    const [setListings] = useState([])
 
     const uid = firebase.auth().currentUser.uid
     const db = firebase.firestore()
@@ -13,7 +13,7 @@ function UserListing() {
         const list = []
         await listingRef.get().then((snapshot) => {
             snapshot.forEach((doc) => {
-                if(doc.exists) {
+                if (doc.exists) {
                     const data = doc.data()
                     list.push(data)
                 }
@@ -23,7 +23,7 @@ function UserListing() {
         setListings(list)
     }
 
-    function renderList(){
+    function renderList() {
         getListings()
         //console.log(listings)
     }

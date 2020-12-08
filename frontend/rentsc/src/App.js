@@ -13,7 +13,9 @@ import Login from './views/Login';
 import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
-//import Messages from './views/Messages'
+import myListing from './views/myListing';
+import myFavListing from './views/myFavListing';
+import Messages from './views/Messages'
 import propertyReview from './views/propertyReview';
 import Review_Owner from './views/ownerReview';
 import MainListing from './views/MainListing';
@@ -29,9 +31,11 @@ function App() {
           <PrivateRoute exact path="/userprofile" component={UserProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
-          {/*<Route path="/messages" component={Messages} />*/}
+          <Route path="/messages" component={Messages} />
           <Route exact path="/create-listing" component={createListing} />
           <Route exact path="/listings" component={listing} />
+          <Route exact path="/myListings" component={myListing} />
+          <Route exact path="/myfavorites" component={myFavListing} />
           <Route exact path="/main-listing" component={MainListing} />
           <Route exact path="/select-appointment-times" component={SelectAppointmentTimes} />
           <Route exact path="/schedule-appointment" component={ScheduleAppointment} />

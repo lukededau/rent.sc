@@ -1,12 +1,12 @@
 import React from 'react'
 import 'firebase/auth';
-import {ChatFeed, Message} from 'react-chat-ui'
+import { ChatFeed, Message } from 'react-chat-ui'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button';
 import firebase from '../firebase.js';
-import Message1 from './message.js'
-import  { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import Form from 'react-bootstrap/Form';
 
 
 import { faArrowCircleUp } from "@fortawesome/free-solid-svg-icons";
@@ -14,78 +14,96 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 
-class MessageObject extends React.Component{
-    constructor(props){
+class MessageObject extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             senderName: "Jim Halpert",
             messagesInfo: [],
             messages: [
                 new Message({
-                  id: 1,
-                  message: "I'm the recipient! (The person you're talking to)",
+                    id: 1,
+                    message: "I'm the recipient! (The person you're talking to)",
                 }), // Gray bubble
                 new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-              ],
+            ],
             is_typing: false,
             time_stamp: "00:00",
             room_id: 0,
-            user_id: 0
+            user_id: 0,
+            inputMsg: ""
+        }
+    }
+    handleSubmit(event) {
+        event.preventDefault();
+        const submit = event.currentTarget;
+        if (submit.elements[0].value.length >= 0) {
+            this.sendMessage(submit.elements[0].value)
         }
     }
     componentDidMount() {
         console.log("Checking message object");
-        if(this.props.room_id != this.state.room_id){
-            console.log("In messageObject");
-            console.log(this.props.room_id);
-            console.log(this.state.room_id);
+        if (this.props.room_id !== this.state.room_id) {
             this.listener = firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
-                    return () =>
-                    {return <Redirect to='/listings'  />}
+                    return () => { return <Redirect to='/listings' /> }
                 } else {
-                    this.setState({user_id: user.uid})  
+                    this.setState({ user_id: user.uid })
                     console.log(this.props)
-                    this.setState({room_id: this.props.room_id})  
-                    var messages_stream = this.getMessages(this.state.room_id).then((messages)=>{
+                    this.setState({ room_id: this.props.room_id })
+                    this.getMessages(this.state.room_id).then((messages) => {
                         this.setState({ messages: messages });
-                    });     
-    
+                    });
+
                 }
-            })  
+            })
         }
-              
+
     }
-    componentDidUpdate(){
-        if(this.props.room_id != this.state.room_id){
-            console.log("In component did update for message object")
-            this.setState({room_id: this.props.room_id});
-           this.getMessages(this.state.room_id);
+    componentDidUpdate() {
+        if (this.props.room_id !== this.state.room_id) {
+            this.setState({ room_id: this.props.room_id });
+            this.getMessages(this.state.room_id);
         }
     }
     componentWillUnmount() {
         this.listener();
     }
-    async getMessages(){
-        console.log("Getting messages")
+    async getMessages() {
         var res = []
+        var res1 = []
+        // var resTime = []
         const db = firebase.firestore();
-        console.log(this.props.room_id);
         const room_a_ref = db.collection('rooms').doc(this.props.room_id)
         const message_ref = room_a_ref.collection('messages')
-        var docs = await message_ref.get() 
-            
+        var docs = await message_ref.get()
+
         docs.forEach((doc) => {
             console.log(doc.data())
-            res.push(new Message({id: doc.data()['sender'], senderName: doc.data()['sender'],message: doc.data()['msg'], timestamp:doc.data()['time']}))
+            res.push({ id: doc.data()['sender'], senderName: doc.data()['sender'], message: doc.data()['msg'], time_stamp: doc.data()['time'] })
         });
-        res.sort((a,b) => (a.time > b.time) ? 1: -1)
+        console.log(res)
+        res.sort((a, b) => (new Date(a.time_stamp) - new Date(b.time_stamp)))
         console.log(res);
-        this.setState({messages: res})
+        for (var i = 0; i < res.length; i++) {
+            res1.push(new Message({ id: res[i]['id'], senderName: res[i]['senderName'], message: res[i]['message'], time_stamp: res[i]['time_stamp'] }))
+        }
+        this.setState({ messages: res })
     }
-    renderMessages(list){
+    async sendMessage(inputM) {
+        debugger
+        const db = firebase.firestore();
+        var data = {
+            'sender': this.state.user_id,
+            'room_id': this.props.room_id,
+            'msg': inputM,
+            'time': (new Date()).toString()
+        }
+        var newMsgRef = db.collection('rooms').doc(this.props.room_id)
+        newMsgRef.collection('messages').doc().set(data)
+    }
+    renderMessages(list) {
         var output = [];
-        //this.sortMessages();
         output.push(<ChatFeed
             messages={this.state.messages} // Array: list of message objects
             isTyping={this.state.is_typing} // Boolean: is the recipient typing
@@ -94,37 +112,41 @@ class MessageObject extends React.Component{
             bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
             // JSON: Custom bubble styles
             bubbleStyles={
-            {
-                text: {
-                    fontSize: 30
-                },
-                chatbubble: {
-                    borderRadius: 70,
-                    padding: 40
+                {
+                    text: {
+                        fontSize: 15
+                    },
+                    chatbubble: {
+                        borderRadius: 35,
+                        padding: 20
+                    }
                 }
-            }
             }
         />)
         return output;
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 {this.renderMessages()}
-                <hr></hr>      
-                <InputGroup className="mb-3">
-                    <FormControl
-                        placeholder="Hoiii"
-                        aria-label="Message box"
-                        aria-describedby="basic-addon2"
+                <hr></hr>
+                <Form onSubmit={(event) => this.handleSubmit(event)}>
+                    <InputGroup className="mb-3" controlId="msg">
+                        <FormControl
+                            placeholder="Hoiii"
+                            aria-label="Message box"
+                            aria-describedby="basic-addon2"
+                            inputRef={(ref) => { this.setState({ inputMsg: ref }) }}
+                            type="text"
                         />
-                    <InputGroup.Append>
-                        <Button>
-                            <FontAwesomeIcon icon={faArrowCircleUp} style={{height: "100%"}}/>
-                        </Button>
-                    </InputGroup.Append>
-                </InputGroup>
+                        <InputGroup.Append>
+                            <Button variant="primary" type="submit">
+                                <FontAwesomeIcon icon={faArrowCircleUp} style={{ height: "100%" }} />
+                            </Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                </Form>
             </div>
         );
     }

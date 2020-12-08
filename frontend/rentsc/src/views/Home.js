@@ -77,6 +77,7 @@ const InitialMap = compose(
                     <p style={{fontSize: 15, margin: 5}}>Number of Baths: {marker.numBaths}</p>
                     <p style={{fontSize: 15, margin: 5}}>Number of Bedrooms: {marker.numBedrooms}</p>
                     <p style={{fontSize: 15, margin: 5}}>Tags: {marker.tags}</p>
+                    <p style={{fontSize: 15, margin: 5}}>Travel Time: {props.travelTime}</p>
                     <br></br>
                     <Button variant="outline-primary" size="sm" onClick={() => props.onViewButtonClick(marker.address, marker.city)}>
                         View Listing
@@ -100,6 +101,8 @@ export class Home extends Component {
             selectedMarker: 0,
             markers:[],
             directions: null,
+            currentTravelTime: "",
+            calcTravelTimes: [],
             transportMode: "DRIVING",
         };
     }
@@ -118,7 +121,7 @@ export class Home extends Component {
         listings.forEach((listing) => {
             responses.push(new Promise(async (resolve) => {
                 const {address, city, zip, description, numBaths, numBedrooms, price, size, tags} = listing.data();
-                // console.log(address + " " + city);
+
                 // Create tag string
                 var verifiedTags = [];
                 Object.keys(tags).forEach(function (key) {
@@ -129,7 +132,6 @@ export class Home extends Component {
                 var tagString = verifiedTags.join(", ");
 
                 const coordinates = await this._convertAddressToCoordinates(address, city);
-                // console.log(coordinates);
                 if(coordinates.lat !== 0 && coordinates.lng !== 0) {
                     this.allListings.push({
                         'id': id++,
@@ -154,7 +156,6 @@ export class Home extends Component {
         });
 
         Promise.all(responses).then(() => {
-            // console.log(this.allListings);
             this.setState({
                 markers: this.allListings
             });
@@ -184,7 +185,8 @@ export class Home extends Component {
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
                     this.setState({
-                        directions: result
+                        directions: result,
+                        currentTravelTime: result.routes[0].legs[0].duration.text
                     });
                 } else {
                     console.error(`error fetching directions ${result}`);
@@ -199,7 +201,6 @@ export class Home extends Component {
             const response = await Geocode.fromAddress(address + ", " + city);
             lat = response.results[0].geometry.location.lat;
             lng = response.results[0].geometry.location.lng;
-            // console.log("lat: " + lat + ", " + "lng: " + lng);
         }
         catch(e) {
             console.log(address + ", " + city);
@@ -208,13 +209,58 @@ export class Home extends Component {
         return { lat, lng };
     }
 
+    _calculateDrivingTransitTravelTime(latitude, longitude) {
+        if(this.directionsService === null) {
+            this.directionsService = new google.maps.DirectionsService();
+        }
+        const origin = new google.maps.LatLng(latitude, longitude);
+        var destination;
+        var selectedMode = ["DRIVING", "TRANSIT"];
+        var travelTimeResults = [];
+        const responses = [];
+        selectedMode.forEach(mode => {
+            responses.push(new Promise(async (resolve) => {
+                if(mode === "DRIVING"){
+                    destination = new google.maps.LatLng(36.990984, -122.053040);
+                }
+                else {
+                    destination = new google.maps.LatLng(36.998829, -122.060826);
+                }
+                
+                this.directionsService.route(
+                    {
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.TravelMode[mode]
+                    },
+                    (result, status) => {
+                        if (status === google.maps.DirectionsStatus.OK) {
+                            travelTimeResults.push(result.routes[0].legs[0].duration.text);
+                        } else {
+                            console.error(`error fetching directions ${result}`);
+                        }
+                        resolve();
+                    }
+                );
+            }));
+        });
+
+        Promise.all(responses).then(() => {
+            this.setState({
+                calcTravelTimes: travelTimeResults
+            });
+        });
+    }
+
     _handleViewListingButtonClick = (address, city) => {
         const { history } = this.props;
         history.push({
             pathname: '/main-listing',
             state: {
                 selectedAddress: address,
-                selectedCity: city
+                selectedCity: city,
+                drivingTravelTime: this.state.calcTravelTimes[0],
+                transitTravelTime: this.state.calcTravelTimes[1]
             }
         }); 
     }
@@ -230,6 +276,7 @@ export class Home extends Component {
                 selectedMarker: markerID
             });
         }
+        this._calculateDrivingTransitTravelTime(markerLat, markerLng);
         this._renderDirections(markerLat, markerLng);
     }
 
@@ -255,6 +302,7 @@ export class Home extends Component {
                     selectedMarker={this.state.selectedMarker}
                     markers={this.state.markers}
                     directions={this.state.directions}
+                    travelTime={this.state.currentTravelTime}
                     onMarkerClick={this.onMarkerClick}
                     onClose={this.onClose}
                     onViewButtonClick={this._handleViewListingButtonClick}

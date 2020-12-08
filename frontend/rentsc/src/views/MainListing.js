@@ -19,20 +19,29 @@ const subtitleStyle = {
 }
 
 class MainListing extends React.Component {
+
+    directionsService = null;
+
     constructor(props) {
         super(props);
         let selectedAddress = "";
         let selectedCity = "";
+        let drivingTravelTime = "";
+        let transitTravelTime = "";
         if(this.props.location.state === undefined) {
             this.props.history.push("/page-not-found"); 
         }
         else {
             selectedAddress = this.props.location.state.selectedAddress;
             selectedCity = this.props.location.state.selectedCity;
+            drivingTravelTime = this.props.location.state.drivingTravelTime;
+            transitTravelTime = this.props.location.state.transitTravelTime;
         }
         this.state = {
             address: selectedAddress,
             city: selectedCity,
+            drivingTime: drivingTravelTime,
+            transitTime: transitTravelTime,
             description: "",
             username: "",
             email: "",
@@ -41,7 +50,7 @@ class MainListing extends React.Component {
             price: "",
             size: "",
             tags: [],
-            zip: ""
+            zip: "",
         }
     }
 
@@ -166,11 +175,11 @@ class MainListing extends React.Component {
                                 <Card.Body>
                                     <Card.Title>Bus</Card.Title>
                                     <Card.Text>
-                                        Takes X minutes to the nearest bus stop
+                                        {this.state.transitTime} to UCSC Science Hill
                                     </Card.Text>
                                     <Card.Title>Car</Card.Title>
                                     <Card.Text>
-                                        Takes X minutes to UC Santa Cruz
+                                        {this.state.drivingTime} to UCSC East Remote Parking Lot
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

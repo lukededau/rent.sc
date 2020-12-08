@@ -25,6 +25,7 @@ import apartment2 from '../Images/apartment2.jpeg'
 
 import { RiStarLine, RiStarFill } from "react-icons/ri";
 import { ToggleButton, ButtonGroup } from 'react-bootstrap';
+import { reference } from '@popperjs/core';
 
 class ListingObject extends React.Component {
     constructor(props) {
@@ -59,8 +60,13 @@ class ListingObject extends React.Component {
     _saveFavorite = async () => {
 
         const ref = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).get()
-        await firebase.firestore().collection('users').doc(ref.docs[0].id).update({ 'favorites': firebase.firestore.FieldValue.arrayUnion(this.props.address) })
-
+        const reference = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).where("favorites", "array-contains", this.props.address).get()
+        if (!reference.empty) {
+            await firebase.firestore().collection('users').doc(ref.docs[0].id).update({ 'favorites': firebase.firestore.FieldValue.arrayRemove(this.props.address) })
+        }
+        else {
+            await firebase.firestore().collection('users').doc(ref.docs[0].id).update({ 'favorites': firebase.firestore.FieldValue.arrayUnion(this.props.address) })
+        }
         this.checkFavorited();
         this.setState(this.state);
     }

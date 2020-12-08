@@ -60,15 +60,15 @@ const InitialMap = compose(
                     <h4>{marker.address}</h4>
                     <div style={{textAlign: 'center'}}>
                     <Carousel>
-                        <Carousel.Item>
-                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 1"></img>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 2"></img>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img src={marker.image} style={{width: 250, height: 200, padding: 10}} alt="listing 3"></img>
-                        </Carousel.Item>
+                        {
+                            marker.imageURL.map((image, idx) => {
+                                return (
+                                    <Carousel.Item>
+                                        <img src={image} style={{width: 250, height: 200, padding: 10}} alt={idx}/>
+                                    </Carousel.Item>
+                                )
+                            })
+                        }
                     </Carousel>
                     </div>
                     <p style={{fontSize: 15, margin: 5}}>Description: {marker.description}</p>
@@ -120,8 +120,8 @@ export class Home extends Component {
         const responses = [];
         listings.forEach((listing) => {
             responses.push(new Promise(async (resolve) => {
-                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags} = listing.data();
-
+                const {address, city, zip, description, numBaths, numBedrooms, price, size, tags, imageURL} = listing.data();
+              
                 // Create tag string
                 var verifiedTags = [];
                 Object.keys(tags).forEach(function (key) {
@@ -130,6 +130,15 @@ export class Home extends Component {
                     }
                 })
                 var tagString = verifiedTags.join(", ");
+
+                // Handle missing image
+                var images;
+                if (imageURL == null) {
+                    images = [];
+                }
+                else {
+                    images = imageURL;
+                }
 
                 const coordinates = await this._convertAddressToCoordinates(address, city);
                 if(coordinates.lat !== 0 && coordinates.lng !== 0) {
@@ -143,7 +152,7 @@ export class Home extends Component {
                         'numBedrooms': numBedrooms,
                         'price': price,
                         'size': size,
-                        'image': require('./../Images/default_listing.png'),
+                        'imageURL': images,
                         'tags': tagString,
                         'position': {
                             'lat': coordinates.lat,

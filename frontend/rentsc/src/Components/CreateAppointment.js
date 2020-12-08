@@ -1,43 +1,22 @@
 import React from 'react'
 import firebase from '../firebase.js'
 import { Alert, Button } from 'react-bootstrap';
+import { uploadAppointment } from './uploadAppointment.js';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 
 
 function ChooseAlert(props) {
 
-    // Should create 2 documents for landlord/user
+    // Creates 2 documents for landlord/user
     async function onButtonClick() {
-        const db = firebase.firestore();
-        const appointmentRef = db.collection('appointment');
-        const appointment = {
-            firstName: props.name.split(" ")[0],
-            lastName: props.name.split(" ")[1],
-            date: props.date,
-            uid: props.uid,
-            email: props.email,
-            index: 0,
-        };
-        const doc = await appointmentRef.doc(props.uid).get();
-        if (doc.exists) {
-            const appointmentData = doc.data();
-            const keys = Object.keys(appointmentData);
-            const nextKey = Number(keys[keys.length - 1]) + 1;
-            var formattedAppointment = {};
-            formattedAppointment[nextKey] = appointment;
-            formattedAppointment[nextKey]["index"] = nextKey;
-            const updateRes = await appointmentRef.doc(props.uid).update(formattedAppointment);
-            console.log(updateRes);
-        }
-        else {
-            const updateRes = await appointmentRef.doc(props.uid).set({0: appointment});
-            console.log(updateRes);
-        }
+        await uploadAppointment(props.landlordID, props.renterID, props.renterName, props.renterEmail, props.listing, props.date);
+        await uploadAppointment(props.renterID, props.landlordID, props.landlordName, props.landlordEmail, props.listing, props.date);
+
         window.location.href='/userprofile';
     }
 
-    const firstName = props.name.split(" ")[0];
+    const firstName = props.landlordName.split(" ")[0];
     
     if (props.isDateAvailable == null) {
         return <Alert variant="secondary">No date has been selected.</Alert>
@@ -58,6 +37,7 @@ function ChooseAlert(props) {
     }
 }
 
+
 class CreateAppointment extends React.Component {
     constructor(props) {
         super(props);
@@ -68,9 +48,14 @@ class CreateAppointment extends React.Component {
             availableDate: null,
             date: null,
         };
+        this.landlordID = props.landlordID;
+        this.landlordName = props.landlordName;
+        this.landlordEmail = props.landlordEmail;
+        this.listing = props.listing;
 
         this.onClickDay = this.onClickDay.bind(this);
         this.formatDate = this.formatDate.bind(this);
+        this.getState = this.getState.bind(this);
     }
 
     formatDate(value) {
@@ -80,13 +65,17 @@ class CreateAppointment extends React.Component {
         return brokenDate.splice(1, 3).join(" ");
     }
 
+    getState() {
+        return this.state;
+    }
+
     async onClickDay(value) {
         this.state.date = this.formatDate(value);
         const db = firebase.firestore();
         const availabilityRef = db.collection('availability')
 
         var availability = null;
-        const doc = await availabilityRef.doc(this.state.uid).get();
+        const doc = await availabilityRef.doc(this.landlordID).get();
         if (doc.exists) {
             availability = doc.data();
             if (this.state.date in availability["availableDates"]) {
@@ -116,9 +105,13 @@ class CreateAppointment extends React.Component {
                     <ChooseAlert 
                         isDateAvailable={this.state.availableDate} 
                         date={this.state.date} 
-                        name={this.state.username}
-                        uid={this.state.uid}
-                        email={this.state.email}
+                        renterName={this.state.username}
+                        renterID={this.state.uid}
+                        renterEmail={this.state.email}
+                        landlordName={this.landlordName}
+                        landlordID={this.landlordID}
+                        landlordEmail={this.landlordEmail}
+                        listing={this.listing}
                     />
                 </div>
             </div>

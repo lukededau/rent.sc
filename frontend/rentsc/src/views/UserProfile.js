@@ -20,16 +20,6 @@ export default function UserProfile() {
         }
     }
 
-    function createListing() {
-        history.push("/create-listing")
-    }
-
-    function viewAppointments() {
-        history.push("/view-appointments")
-    }
-
-    //console.log("current user: " + currentUser.uid)
-
     return (
         <>
         <NavigationBar></NavigationBar>
@@ -46,16 +36,6 @@ export default function UserProfile() {
                 <Button variant="link" onClick={handleLogout}>
                     Logout
                 </Button>
-                <div>
-                    <Button onClick={createListing}>
-                        Create Listing
-                    </Button>
-                </div>
-                <div style={{paddingTop: "15px"}}>
-                    <Button onClick={viewAppointments}>
-                        Open Appointments
-                    </Button>
-                </div>
             </div>
         </>
     )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap/Container';
+import { Container, Row, Col } from 'react-bootstrap';
 import Home from './Home.js'
 import NavigationBar from '../Components/navbar.js'
 import ListingList from '../Components/listingList.js'
@@ -21,7 +21,7 @@ class listing extends React.Component {
         //document.body.style.overflow = 'hidden'; // disable pagewise scroll
         return (
             <div>
-                <NavigationBar />
+                <NavigationBar></NavigationBar>
                 <div style={{ paddingTop: "60px" }}>
                     <div style={{ width: "50%", display: "inline-block" }}>
                         <ListingList />

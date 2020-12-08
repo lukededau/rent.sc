@@ -42,17 +42,17 @@ class MessageObject extends React.Component {
         }
     }
     componentDidMount() {
-        console.log("Checking message object");
         if (this.props.room_id !== this.state.room_id) {
             this.listener = firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
                     return () => { return <Redirect to='/listings' /> }
                 } else {
                     this.setState({ user_id: user.uid })
-                    console.log(this.props)
                     this.setState({ room_id: this.props.room_id })
                     this.getMessages(this.state.room_id).then((messages) => {
-                        this.setState({ messages: messages });
+                        if(messages){
+                            this.setState({ messages: messages });
+                        }
                     });
 
                 }
@@ -72,23 +72,22 @@ class MessageObject extends React.Component {
     async getMessages() {
         var res = []
         var res1 = []
-        // var resTime = []
         const db = firebase.firestore();
+        if(this.props.room_id == ""){
+            return;
+        }
         const room_a_ref = db.collection('rooms').doc(this.props.room_id)
         const message_ref = room_a_ref.collection('messages')
         var docs = await message_ref.get()
 
         docs.forEach((doc) => {
-            console.log(doc.data())
             res.push({ id: doc.data()['sender'], senderName: doc.data()['sender'], message: doc.data()['msg'], time_stamp: doc.data()['time'] })
         });
-        console.log(res)
         res.sort((a, b) => (new Date(a.time_stamp) - new Date(b.time_stamp)))
-        console.log(res);
         for (var i = 0; i < res.length; i++) {
             res1.push(new Message({ id: res[i]['id'], senderName: res[i]['senderName'], message: res[i]['message'], time_stamp: res[i]['time_stamp'] }))
         }
-        this.setState({ messages: res })
+        this.setState({ messages: res1 })
     }
     async sendMessage(inputM) {
         debugger
@@ -134,7 +133,7 @@ class MessageObject extends React.Component {
                 <Form onSubmit={(event) => this.handleSubmit(event)}>
                     <InputGroup className="mb-3" controlId="msg">
                         <FormControl
-                            placeholder="Hoiii"
+                            placeholder=""
                             aria-label="Message box"
                             aria-describedby="basic-addon2"
                             inputRef={(ref) => { this.setState({ inputMsg: ref }) }}

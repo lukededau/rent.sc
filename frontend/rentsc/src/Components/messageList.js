@@ -1,48 +1,37 @@
 import React from 'react'
 import 'firebase/auth';
 import  { Redirect } from 'react-router-dom'
-
 import firebase from '../firebase.js';
 import Message from './message.js'
-import { FaDiceSix } from 'react-icons/fa';
 
 async function getAllRooms(user_id){
     return new Promise(async(resolve, reject) => {
-        //console.log('Initial');
         var res = [];
         var i = 0;
         var j = 0;
         const db = firebase.firestore();
         const room_ref = db.collection('userToRoom');
-        
         const query_ref = room_ref.where('user_id', '==', user_id);
         const docs = await query_ref.get();
         var docs1 = "";
-        if (docs.empty){
-            //console.log("No matching doc");
-            //console.log(user_id)
-        }
-
+        if (docs.empty){}
+        // room number
         docs.forEach(async (doc) => {
             i = i + 1;
             var query_ref1 = room_ref.where('room_id', '==', doc.data()['room_id']);
             docs1 = await query_ref1.get();
+            j = 0;
+            // ppl im the room
             docs1.forEach(async(doc1) => {
                 j = j + 1;
-                //console.log(doc1.id, "=>", doc1.data()['user_id'])
                 await doc1.data();
                 if (doc1.data()['user_id'] !== user_id){
                     var dic = {"doc_id": doc1.id};
                     dic = Object.assign(dic, doc1.data());
                     res.push(dic);
-                    //console.log("Length is")
-                    //console.log(res.length)
                 }
-                //console.log(i +" vs " +(docs.size));
-                //console.log(j +" vs " +(docs1.size));
-                if ((i === docs.size) && (j === docs1.size)){
-                    //console.log("returning response")
-                    //console.log(res)
+                if (res.length === (docs.size)){
+                    debugger;
                     resolve(res);
                 }
             })
@@ -61,6 +50,9 @@ class MessageList extends React.Component {
             room_id: ""
         }
     }
+    componentDidUpdate(){
+
+    }
     componentDidMount() {
         if((this.props.room_id != this.state.room_id) || this.state.room_id == ""){
             this.listener = firebase.auth().onAuthStateChanged(user => {
@@ -71,7 +63,7 @@ class MessageList extends React.Component {
                         this.setState({user_id: user.uid})  
                         var messages_stream = getAllRooms(this.state.user_id).then((messages)=>{
                         this.setState({ messages: messages });
-                        this.setState({room_id: messages[0].room_id})
+                        this.setState({room_id: messages[0] ? messages[0].room_id : ""})
                         this.props.changeRoomIdState(this.state.room_id);
                     });     
     
@@ -92,10 +84,11 @@ class MessageList extends React.Component {
     }
     renderRoom() {
         var output = [];
-
+        debugger;
         for (var i = 0; i < this.state.messages.length; i++) {
             var message = this.state.messages[i];
-            output.push(<Message {...message} />)
+            message['onClick'] = this.props.changeRoomIdState;
+            output.push(<Message {...message}/>)
         }
         return output
     }

@@ -33,6 +33,7 @@ class Messages extends React.Component{
                             <MessageList room_id={this.state.room_id} changeRoomIdState={(room_id) => {this.changeRoomIdState(room_id)}}/>
                         </Col>
                         <Col id="MessageObjectCol" style={{height: "100%", display: "inline-block", paddingTop: "60px"}}>
+                            {console.log("Messages room_id: "+ this.state.room_id)}
                             <MessageObject room_id={this.state.room_id}/>      
                         </Col>
                     </Row>

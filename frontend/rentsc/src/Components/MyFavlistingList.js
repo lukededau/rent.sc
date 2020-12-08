@@ -43,11 +43,12 @@ class MyFavListingList extends React.Component {
 
     renderListing() {
         var output = [];
-
+        this.setState()
         for (var i = 0; i < this.state.listings.length; i++) {
             var listing = this.state.listings[i];
             output.push(<ListingObject {...listing} />)
         }
+
         return output
     }
 

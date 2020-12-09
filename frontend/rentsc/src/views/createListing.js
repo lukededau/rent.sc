@@ -1,16 +1,15 @@
 import React from 'react';
-import { Button, Form, Row, Col, Container, Image} from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import NavigationBar from '../Components/navbar.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase';
 import { FaDog } from "react-icons/fa";
 import { FaCat } from "react-icons/fa";
 import { MdSmokeFree } from "react-icons/md";
-import { AiOutlineCar, AiOutlineConsoleSql } from "react-icons/ai";
+import { AiOutlineCar } from "react-icons/ai";
 import { withRouter } from 'react-router-dom'
-// import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { ToggleButton, ButtonGroup } from 'react-bootstrap';
 
-import defaultImage from '../Images/SantaCruz.jpg'
 
 class ListingFields extends React.Component {
     constructor(props) {
@@ -50,7 +49,7 @@ class ListingFields extends React.Component {
         };
         this.imageState = {
             images: [],
-            url: null 
+            url: null
         };
         this.ifSignedIn = { ifSignedIn: false };
 
@@ -69,12 +68,37 @@ class ListingFields extends React.Component {
         if (event.target.name) {
             this.tags[event.target.name] = !this.tags[event.target.name];
         }
+        if (event.target.name === 'house') {
+            this.tags['townhouse'] = false
+            this.tags['apartment'] = false
+        }
+        else if (event.target.name === 'townhouse') {
+            this.tags['house'] = false
+            this.tags['apartment'] = false
+        }
+        else if (event.target.name === 'apartment') {
+            this.tags['house'] = false
+            this.tags['townhouse'] = false
+        }
+
+        if (event.target.name === 'entirePlace') {
+            this.tags['privateRoom'] = false
+            this.tags['sharedRoom'] = false
+        }
+        else if (event.target.name === 'sharedRoom') {
+            this.tags['entirePlace'] = false
+            this.tags['privateRoom'] = false
+        }
+        else if (event.target.name === 'privateRoom') {
+            this.tags['entirePlace'] = false
+            this.tags['sharedRoom'] = false
+        }
+
+        this.setState(this.state);
     }
 
     // Handles MULTIPLE image change
     handleChange(e) {
-        // Specified file types
-        //const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
         if (e.target.files) {
             const filesArray = Array.from(e.target.files)
@@ -110,7 +134,7 @@ class ListingFields extends React.Component {
                     else if (this.state.imageURL != null) {
                         this.state.imageURL.push(url)
                     }
-                    if (this.state.imageURL.length == length) {
+                    if (this.state.imageURL.length === length) {
                         this.fullSubmit()
                     }
                 })
@@ -121,9 +145,12 @@ class ListingFields extends React.Component {
         event.preventDefault();
 
         const form = event.currentTarget;
-        for (var i = 1; i < form.elements.length; i++) {
+
+        var neededElems = ['address', 'description', 'unit', 'price', 'city', 'size', 'zip', 'numBaths', 'numBedrooms', 'parkingSpots']
+        for (var i = 0; i < form.elements.length; i++) {
             var element = form.elements[i];
-            if (element.if !== "" && element.value !== "") {
+
+            if (element.if !== "" && neededElems.includes(element.id) && element.value !== "") {
                 this.state[element.id] = element.value
             }
         }
@@ -153,212 +180,246 @@ class ListingFields extends React.Component {
 
     checkUser() {
         firebase.auth().onAuthStateChanged((user) => {
-            if(user) { this.ifSignedIn = true }
+            if (user) { this.ifSignedIn = true }
             else { this.props.history.push('/login') }
         })
     }
 
     render() {
-
         return (
             <div>
                 <NavigationBar></NavigationBar>
                 {this.checkUser()}
-                <Container style={{paddingTop: '100px'}}>
-                    <Row style={{alignItems: 'center'}}>
+
+                <div style={{ paddingTop: '5%', paddingLeft: '3%' }}>
+                    <Row style={{ alignItems: 'center' }}>
                         <Col>
-                <Form onSubmit={this.handleSubmit} style={{width: '45%'}}>
-                    {/* Image Fields */}
-                    <Form.Group controlId="image">
-                        <Form.Label> Images </Form.Label>
-                        <Form.File type="file" multiple onChange={this.handleChange} required/>
-                    </Form.Group>
+                            <Form onSubmit={this.handleSubmit} style={{ width: '35%' }}>
 
-                    {/* Text Fields */}
-                    <Form.Row>
-                        <Form.Group as={Col} controlId="address">
-                            <Form.Label> Address </Form.Label>
-                            <Form.Control type="text" placeholder="Address" required/>
-                        </Form.Group>
-                        <Form.Group as={Col} controlId="unit">
-                            <Form.Label> Unit Number </Form.Label>
-                            <Form.Control type="text" placeholder="(optional)"/>
-                        </Form.Group>
-                    </Form.Row>
+                                {/* Text Fields */}
+                                <Form.Row>
+                                    <Form.Group as={Col} controlId="address">
+                                        <Form.Label> Address </Form.Label>
+                                        <Form.Control type="text" placeholder="Address" required />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="unit">
+                                        <Form.Label> Unit Number </Form.Label>
+                                        <Form.Control type="text" placeholder="(optional)" />
+                                    </Form.Group>
+                                </Form.Row>
 
-                    <Form.Row>
-                        <Form.Group as={Col} controlId="city">
-                            <Form.Label> City </Form.Label>
-                            <Form.Control type="text" placeholder="City" required/>
-                        </Form.Group>
-                        <Form.Group as={Col} controlId="zip">
-                            <Form.Label> Zip </Form.Label>
-                            <Form.Control type="text" placeholder="Zip Code" required/>
-                        </Form.Group>
-                    </Form.Row>
+                                <Form.Row>
+                                    <Form.Group as={Col} controlId="city">
+                                        <Form.Label> City </Form.Label>
+                                        <Form.Control type="text" placeholder="City" required />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="zip">
+                                        <Form.Label> Zip </Form.Label>
+                                        <Form.Control type="text" placeholder="Zip Code" required />
+                                    </Form.Group>
+                                </Form.Row>
 
-                    <Form.Group controlId="price">
-                        <Form.Label> Price per Month </Form.Label>
-                        <Form.Control type="text" placeholder="Price" required/>
-                    </Form.Group>
-                    <Form.Group controlId="size">
-                        <Form.Label> Maximum No. of Tenants </Form.Label>
-                        <Form.Control as="select" size="sm" required>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                        </Form.Control>
-                    </Form.Group>
+                                <Form.Group controlId="price">
+                                    <Form.Label> Price per Month </Form.Label>
+                                    <Form.Control type="text" placeholder="Price" required />
+                                </Form.Group>
+                                <Form.Group controlId="size">
+                                    <Form.Label> Maximum No. of Tenants </Form.Label>
+                                    <Form.Control as="select" size="sm" required>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </Form.Control>
+                                </Form.Group>
 
-                    <Form.Row>
-                        <Form.Group as={Col} controlId="numBedrooms">
-                            <Form.Label> Bedrooms </Form.Label>
-                            <Form.Control as="select" size="sm" required>
-                                <option>0</option>                     
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group as={Col} controlId="numBaths">
-                            <Form.Label> Bathrooms </Form.Label>
-                            <Form.Control as="select" size="sm" required>
-                                <option>0</option>                       
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Form.Row>
+                                <Form.Row>
+                                    <Form.Group as={Col} controlId="numBedrooms">
+                                        <Form.Label> Bedrooms </Form.Label>
+                                        <Form.Control as="select" size="sm" required>
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="numBaths">
+                                        <Form.Label> Bathrooms </Form.Label>
+                                        <Form.Control as="select" size="sm" required>
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Form.Row>
 
-                    <Form.Group controlId="description">
-                        <Form.Label> Description </Form.Label>
-                        <Form.Control as="textarea" rows={4} required placeholder="Description" />
-                    </Form.Group>
+                                <Form.Group controlId="description">
+                                    <Form.Label> Description </Form.Label>
+                                    <Form.Control as="textarea" rows={4} required placeholder="Description" />
+                                </Form.Group>
 
-                    {/* Tags */}
-                    <label> Type of Place: </label> <br></br>
-                    {/* <ToggleButtonGroup type="checkbox" defaultValue={false} name="apartment">
-                        <ToggleButton value={false} variant="outline-primary" name="apartment" onClick={this.storeTag} value={0}>Apartment</ToggleButton>
-                    </ToggleButtonGroup> */}
+                                {/* Image Fields */}
+                                <Form.Group controlId="image">
+                                    <Form.Label> Images </Form.Label>
+                                    <Form.File type="file" multiple onChange={this.handleChange} required />
+                                </Form.Group>
 
-                    <Button type="button" name="apartment" onClick={this.storeTag}>
-                        Apartment
-                        </Button>
-                    &nbsp;&nbsp;&nbsp;
-                        <Button type="button" name="house" onClick={this.storeTag}>
-                        House
-                        </Button> {' '}
-                    &nbsp;&nbsp;&nbsp;
-                        <Button type="button" name="townhouse" onClick={this.storeTag}>
-                        Townhouse
-                        </Button> {' '}
-                    <br></br>
 
-                    <label> Type of Rental: </label> <br></br>
-                    <Button type="button" name="entirePlace" onClick={this.storeTag}>
-                        Entire Place
-                        </Button> {' '}
-                    &nbsp;&nbsp;&nbsp;
-                    <Button type="button" name="sharedRoom" onClick={this.storeTag}>
-                        Shared Room
-                        </Button> {' '}
-                    &nbsp;&nbsp;&nbsp;
-                        <Button type="button" name="privateRoom" onClick={this.storeTag}>
-                        Private Room
-                        </Button>
-                    <br></br>
+                                {/* Tags */}
+                                <label> Type of Place: </label> <br></br>
 
-                    <label> Amenities: </label> <br></br>
-                    <Button type="button" name="furnished" onClick={this.storeTag}>
-                        Furnished
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    <Button type="button" name="pool" onClick={this.storeTag}>
-                        Pool
-                        </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    <Button type="button" name="fireplace" onClick={this.storeTag}>
-                        Fireplace
-                        </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    <Button type="button" name="AC" onClick={this.storeTag}>
-                        AC
-                        </Button>
-                    <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="apartment" type="checkbox" variant="outline-primary" checked={this.tags['apartment']} onChange={this.storeTag} >
+                                        Apartment
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
 
-                    <label> Pets: </label> <br></br>
-                    <Button type="button" name="dogFriendly" onClick={this.storeTag}>
-                        Dog friendly <FaDog />
-                    </Button> {' '}
-                    &nbsp;&nbsp;&nbsp;
-                        <Button type="button" name="catFriendly" onClick={this.storeTag}>
-                        Cat friendly  <FaCat />
-                    </Button>
-                    <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="house" type="checkbox" variant="outline-primary" checked={this.tags['house']} onChange={this.storeTag} >
+                                        House
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
 
-                    <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="townhouse" type="checkbox" variant="outline-primary" checked={this.tags['townhouse']} onChange={this.storeTag} >
+                                        Townhouse
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
 
-                    <Form.Row>
-                        <Col>Parking spots on premise:</Col>
-                        <Form.Group as={Col} controlId="parkingSpots">
-                            <Form.Control type="text" placeholder="0 spots" />
-                        </Form.Group>
-                    </Form.Row>
+                                <br></br>
 
-                    <Button type="button" name="streetParking" onClick={this.storeTag}>
-                        Street Parking <AiOutlineCar />
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    <Button type="button" name="smokerFriendly" onClick={this.storeTag}>
-                        Smoker Friendly <MdSmokeFree />
-                    </Button>
+                                <label> Type of Rental: </label> <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="entirePlace" type="checkbox" variant="outline-info" checked={this.tags['entirePlace']} onChange={this.storeTag} >
+                                        Entire Place
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
 
-                    <br></br>
-                    <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="sharedRoom" type="checkbox" variant="outline-info" checked={this.tags['sharedRoom']} onChange={this.storeTag} >
+                                        Shared Room
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
 
-                    <Button variant="primary" type="submit">Submit</Button>
-                    <br></br>
-                    <br></br>
-                </Form>
-                </Col>
-                </Row>
-                </Container>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="privateRoom" type="checkbox" variant="outline-info" checked={this.tags['privateRoom']} onChange={this.storeTag} >
+                                        Private Room
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <br></br>
+
+                                <label> Amenities: </label> <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="furnished" type="checkbox" variant="outline-dark" checked={this.tags['furnished']} onChange={this.storeTag} >
+                                        Furnished
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="pool" type="checkbox" variant="outline-dark" checked={this.tags['pool']} onChange={this.storeTag} >
+                                        Pool
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="fireplace" type="checkbox" variant="outline-dark" checked={this.tags['fireplace']} onChange={this.storeTag}>
+                                        Fireplace
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                 <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="AC" type="checkbox" variant="outline-dark" checked={this.tags['AC']} onChange={this.storeTag} >
+                                        AC
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <br></br>
+
+                                <label> Pets: </label> <br></br>
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="dogFriendly" type="checkbox" variant="outline-success" checked={this.tags['dogFriendly']} onChange={this.storeTag} >
+                                        Dog friendly <FaDog />
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="catFriendly" type="checkbox" variant="outline-success" checked={this.tags['catFriendly']} onChange={this.storeTag} >
+                                        Cat friendly  <FaCat />
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <br></br>
+
+                                <br></br>
+
+                                <Form.Row>
+                                    <Col sm={5}>Parking spots on premise:</Col>
+                                    <Form.Group controlId="parkingSpots">
+                                        <Form.Control type="text" placeholder="0 spots" />
+                                    </Form.Group>
+                                </Form.Row>
+
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="streetParking" type="checkbox" variant="outline-primary" checked={this.tags['streetParking']} onChange={this.storeTag} >
+                                        Street Parking <AiOutlineCar />
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <ButtonGroup toggle className="mb-2">
+                                    <ToggleButton name="smokerFriendly" type="checkbox" variant="outline-danger" checked={this.tags['smokerFriendly']} onChange={this.storeTag} >
+                                        Smoker Friendly <MdSmokeFree />
+                                    </ToggleButton>
+                                </ButtonGroup>
+                                &nbsp;&nbsp;&nbsp;
+
+                                <br></br>
+                                <br></br>
+
+                                <Button variant="primary" type="submit">Submit</Button>
+                                <br></br>
+                                <br></br>
+                            </Form>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         );
     }
 }
-// 'apartment': false,
-// 'house': false,
-// 'townhouse': false,
-// 'sharedRoom': false,
-// 'privateRoom': false,
-// 'pool': false,
-// 'fireplace': false,
-// 'AC': false,
-// 'parkingSpots': 0,
-// 'streetParking': false,
-// 'smokerFriendly': false
 
 export default withRouter(ListingFields);

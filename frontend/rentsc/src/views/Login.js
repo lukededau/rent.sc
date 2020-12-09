@@ -21,7 +21,7 @@ export default function Login() {
             setError("")
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
-            history.push("/userprofile")
+            history.push("/listings")
         } catch {
             setError("Failed to login")
         }

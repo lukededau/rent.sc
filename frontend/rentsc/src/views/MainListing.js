@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Carousel, Badge, Card, Button } from 'react-bootstrap';
-import { BsGeoAlt, BsFillPersonFill, BsCursorFill, BsCalendar } from 'react-icons/bs';
+import { BsStar, BsStarFill, BsGeoAlt, BsFillPersonFill, BsCursorFill, BsCalendar } from 'react-icons/bs';
 import firebase from '../firebase.js';
 import NavigationBar from '../Components/navbar.js';
 import { withRouter } from 'react-router-dom';
@@ -56,8 +56,10 @@ class MainListing extends React.Component {
         let selectedCity = "";
         let drivingTravelTime = "";
         let transitTravelTime = "";
-        if(this.props.location.state === undefined) {
-            this.props.history.push("/page-not-found"); 
+        let reviews = [];
+        let rating = 0;
+        if (this.props.location.state === undefined) {
+            this.props.history.push("/page-not-found");
         }
         else {
             selectedAddress = this.props.location.state.selectedAddress;
@@ -82,7 +84,7 @@ class MainListing extends React.Component {
             zip: "",
             images: [],
         }
-        if(firebase.auth().currentUser != null) {
+        if (firebase.auth().currentUser != null) {
             this.uid = firebase.auth().currentUser.uid;
             this.email = firebase.auth().currentUser.email;
             this.username = firebase.auth().currentUser.displayName;
@@ -91,6 +93,25 @@ class MainListing extends React.Component {
 
     componentDidMount() {
         this._queryListing();
+        this._getReviews();
+    }
+
+    _getReviews = async () => {
+        var revs = []
+        const ref = await firebase.firestore().collection('propertyReviews').where("postingAddress", "==", this.state.address).get()
+        let totalRev = 0;
+        let count = ref.docs.length * 20;
+        for (const doc1 of ref.docs) {
+
+            totalRev += parseInt(doc1.data().accuracy) + parseInt(doc1.data().value) + parseInt(doc1.data().location) + parseInt(doc1.data().clean);
+            revs.push(doc1.data().review, '- ' + doc1.data().username)
+        }
+
+        if (totalRev !== 0) {
+            this.rating = (totalRev / count) * 5.0
+            this.rating = this.rating.toFixed(2)
+        }
+        this.setState(this.reviews = revs)
     }
 
     _queryListing = async () => {
@@ -137,7 +158,7 @@ class MainListing extends React.Component {
 
     checkFunction() {
         var user
-        if(firebase.auth().currentUser != null) {
+        if (firebase.auth().currentUser != null) {
             user = true
         } else {
             user = false
@@ -166,7 +187,7 @@ class MainListing extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Carousel style={{width: "100%"}}>
+                        <Carousel style={{ width: "100%" }}>
                             {
                                 this.state.images.map((image, idx) => {
                                     return (
@@ -210,15 +231,15 @@ class MainListing extends React.Component {
                             </p>
                         </Col>
                         <Col>
-                            {this.checkFunction() ? 
+                            {this.checkFunction() ?
                                 <AppointmentButton
-                                landlordID={this.state.uid}
-                                landlordName={this.state.username}
-                                landlordEmail={this.state.email}
-                                renterID={this.uid}
-                                listing={this.state.address}
-                                history={this.props.history}
-                            /> : ''}
+                                    landlordID={this.state.uid}
+                                    landlordName={this.state.username}
+                                    landlordEmail={this.state.email}
+                                    renterID={this.uid}
+                                    listing={this.state.address}
+                                    history={this.props.history}
+                                /> : ''}
                         </Col>
                     </Row>
                     <Row>
@@ -253,8 +274,28 @@ class MainListing extends React.Component {
                                 </Card.Body>
                             </Card>
                         </Col>
+                        <Col>
+                            <Card style={{ height: "100%", width: "100%" }}>
+                                <Card.Header style={{ fontSize: 20 }}><b>Ratings</b> <BsStarFill /></Card.Header>
+                                <Card.Body>
+                                    <Card.Title><BsStar style={{ marginBottom: 4 }} /> {this.rating ? this.rating : '0'} </Card.Title>
+                                    {this.reviews ? this.reviews.map(rev => (
+                                        <Card.Text>
+                                            {rev}
+                                        </Card.Text>
+
+                                    ))
+                                        : ''}
+
+                                    {this.rating ? '' : 'No reviews'}
+
+                                </Card.Body>
+                            </Card>
+                        </Col>
                     </Row>
-                    <Row style={{height: 30}}/>
+                    <Row>
+                    </Row>
+                    <Row style={{ height: 30 }} />
                 </Container>
             </div>
         );

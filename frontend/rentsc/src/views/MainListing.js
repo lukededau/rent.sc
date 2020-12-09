@@ -2,14 +2,11 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Carousel, Image, Badge, Card, Button } from 'react-bootstrap';
-import { BsStar, BsGeoAlt, BsFillPersonFill, BsCursorFill, BsStarFill, BsCalendar } from 'react-icons/bs';
+import { Carousel, Badge, Card, Button } from 'react-bootstrap';
+import { BsGeoAlt, BsFillPersonFill, BsCursorFill, BsCalendar } from 'react-icons/bs';
 import firebase from '../firebase.js';
 import NavigationBar from '../Components/navbar.js';
 import { withRouter } from 'react-router-dom';
-import Sample1 from '../Images/tiananmen_square_ceiling.jpeg';
-import Sample2 from '../Images/tiananmen_square_master.jpg';
-import Sample3 from '../Images/tiananmen_square.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const subtitleStyle = {
@@ -158,7 +155,7 @@ class MainListing extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Carousel>
+                        <Carousel style={{width: "100%"}}>
                             {
                                 this.state.images.map((image, idx) => {
                                     return (
@@ -229,20 +226,8 @@ class MainListing extends React.Component {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col>
-                            <Card style={{height: "100%", width: "100%"}}>
-                                <Card.Header style={{fontSize: 20}}><b>Ratings</b> <BsStarFill /></Card.Header>
-                                <Card.Body>
-                                    <Card.Title><BsStar style={{marginBottom: 4}} /> 1.52</Card.Title>
-                                    <Card.Text>
-                                        This place is so awesome that I am going to stay here for the rest of my life
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
                     </Row>
-                    <Row>
-                    </Row>
+                    <Row style={{height: 30}}/>
                 </Container>
             </div>
         );

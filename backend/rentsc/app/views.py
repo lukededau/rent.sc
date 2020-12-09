@@ -33,9 +33,6 @@ def index(request):
 @csrf_exempt
 def createUser(request):
     body = json.loads(request.body.decode('utf-8'))
-    print(body)
-    print(request.body)
-    print(body.keys())
     fullName = "{} {}".format(body['firstName'], body['lastName']) 
     auth.create_user(email=body['email'], display_name=fullName, 
         password=body['password'], uid=body['email'])
@@ -102,9 +99,11 @@ def createMessage(request):
 
     return HttpResponse("Created Msg Successfully")
 
-@csrf_exempt
 def getAllRooms(request):
     body = json.loads(request.body.decode('utf-8'))
+    if body['user_id'] is None:
+        return  HttpResponse("No user ID")
+    print(body)
     res = []
     room_ref = db.collection(u'userToRoom')
     user_id = body['user_id']
@@ -141,7 +140,8 @@ def getMessages(request):
         res.append(doc.to_dict())
     res.sort(key = lambda x : x["time"])
     response = JsonResponse(res, safe=False)
-    response['Access-Control-Allow-Origin'] = '*'
+    response["Access-Control-Allow-Origin"] = '*'
+    response["Access-Control-Allow-Credentials"] = 'True'
     response["Access-Control-Allow-Methods"] = '*'
     response["Access-Control-Allow-Headers"] = '*'
     return response

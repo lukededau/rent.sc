@@ -77,7 +77,7 @@ class MessageObject extends React.Component {
         var res = []
         var res1 = []
         const db = firebase.firestore();
-        if(this.props.room_id == ""){
+        if(this.props.room_id === ""){
             return;
         }
         const room_a_ref = db.collection('rooms').doc(this.props.room_id)

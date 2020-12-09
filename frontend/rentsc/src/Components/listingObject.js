@@ -4,7 +4,6 @@ import Carousel from 'react-bootstrap/Carousel'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import Image from 'react-bootstrap/Image';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import firebase from '../firebase'
@@ -16,16 +15,13 @@ import sampleHouse from '../Images/sampleHouse.gif'
 import house1 from '../Images/house1.gif'
 import house2 from '../Images/house2.png'
 
-// import townhouse from '../Images/townhouse.gif'
 import townhouse1 from '../Images/townhouse1.png'
-// import townhouse2 from '../Images/townhouse2.jpg'
 
 import apartment from '../Images/apartment.png'
 import apartment2 from '../Images/apartment2.jpeg'
 
 import { RiStarLine, RiStarFill } from "react-icons/ri";
 import { ToggleButton, ButtonGroup } from 'react-bootstrap';
-import { reference } from '@popperjs/core';
 
 class ListingObject extends React.Component {
     constructor(props) {

@@ -57,8 +57,10 @@ class MainListing extends React.Component {
         let selectedCity = "";
         let drivingTravelTime = "";
         let transitTravelTime = "";
-        if(this.props.location.state === undefined) {
-            this.props.history.push("/page-not-found"); 
+        let reviews = [];
+        let rating = 0;
+        if (this.props.location.state === undefined) {
+            this.props.history.push("/page-not-found");
         }
         else {
             selectedAddress = this.props.location.state.selectedAddress;
@@ -90,6 +92,25 @@ class MainListing extends React.Component {
 
     componentDidMount() {
         this._queryListing();
+        this._getReviews();
+    }
+
+    _getReviews = async () => {
+        var revs = []
+        const ref = await firebase.firestore().collection('propertyReviews').where("postingAddress", "==", this.state.address).get()
+        let totalRev = 0;
+        let count = ref.docs.length * 20;
+        for (const doc1 of ref.docs) {
+
+            totalRev += parseInt(doc1.data().accuracy) + parseInt(doc1.data().value) + parseInt(doc1.data().location) + parseInt(doc1.data().clean);
+            revs.push(doc1.data().review, '- ' + doc1.data().username)
+        }
+
+        if (totalRev !== 0) {
+            this.rating = (totalRev / count) * 5.0
+            this.rating = this.rating.toFixed(2)
+        }
+        this.setState(this.reviews = revs)
     }
 
     _queryListing = async () => {
@@ -245,10 +266,17 @@ class MainListing extends React.Component {
                             <Card style={{ height: "100%", width: "100%" }}>
                                 <Card.Header style={{ fontSize: 20 }}><b>Ratings</b> <BsStarFill /></Card.Header>
                                 <Card.Body>
-                                    <Card.Title><BsStar style={{ marginBottom: 4 }} /> 1.52</Card.Title>
-                                    <Card.Text>
-                                        This place is so awesome that I am going to stay here for the rest of my life
-                                    </Card.Text>
+                                    <Card.Title><BsStar style={{ marginBottom: 4 }} /> {this.rating ? this.rating : '0'} </Card.Title>
+                                    {this.reviews ? this.reviews.map(rev => (
+                                        <Card.Text>
+                                            {rev}
+                                        </Card.Text>
+
+                                    ))
+                                        : ''}
+
+                                    {this.rating ? '' : 'No reviews'}
+
                                 </Card.Body>
                             </Card>
                         </Col>

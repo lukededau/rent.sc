@@ -72,8 +72,10 @@ class ListingObject extends React.Component {
     }
 
     checkFavorited = async () => {
-        const ref = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).where("favorites", "array-contains", this.props.address).get()
-        this.favorited['fav'] = !ref.empty;
+        if(firebase.auth().currentUser != null) {
+            const ref = await firebase.firestore().collection('users').where("email", "==", firebase.auth().currentUser.email).where("favorites", "array-contains", this.props.address).get()
+            this.favorited['fav'] = !ref.empty;
+        }
         this.setState(this.state);
     }
 

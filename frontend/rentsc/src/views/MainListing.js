@@ -18,7 +18,6 @@ const subtitleStyle = {
 function AppointmentButton(props) {
     if (props.landlordID === props.renterID) {
         return (
-            // <Button href="/select-appointment-times" style={{marginTop: 2}}>
             <Button onClick={() => gotoSelectAppointment(props)} style={{ marginTop: 2 }}>
                 Choose/Update Your Availability <BsCalendar />
             </Button>
@@ -83,9 +82,11 @@ class MainListing extends React.Component {
             zip: "",
             images: [],
         }
-        this.uid = firebase.auth().currentUser.uid;
-        this.email = firebase.auth().currentUser.email;
-        this.username = firebase.auth().currentUser.displayName;
+        if(firebase.auth().currentUser != null) {
+            this.uid = firebase.auth().currentUser.uid;
+            this.email = firebase.auth().currentUser.email;
+            this.username = firebase.auth().currentUser.displayName;
+        }
     }
 
     componentDidMount() {
@@ -132,6 +133,16 @@ class MainListing extends React.Component {
                 uid: uid,
             });
         });
+    }
+
+    checkFunction() {
+        var user
+        if(firebase.auth().currentUser != null) {
+            user = true
+        } else {
+            user = false
+        }
+        return user
     }
 
     render() {
@@ -199,14 +210,15 @@ class MainListing extends React.Component {
                             </p>
                         </Col>
                         <Col>
-                            <AppointmentButton
+                            {this.checkFunction() ? 
+                                <AppointmentButton
                                 landlordID={this.state.uid}
                                 landlordName={this.state.username}
                                 landlordEmail={this.state.email}
                                 renterID={this.uid}
                                 listing={this.state.address}
                                 history={this.props.history}
-                            />
+                            /> : ''}
                         </Col>
                     </Row>
                     <Row>

@@ -55,6 +55,20 @@ def getAllListings(request):
     response["Access-Control-Allow-Headers"] = '*'
     return response
 
+def getOwnerReviews(request):
+    res = []
+    owner_review_ref = db.collection(u'ownerReviews')
+    docs = owner_review_ref.stream()
+
+    for doc in docs:
+        res.append(doc.to_dict())
+    response = JsonResponse(res, safe=False)
+  
+    response['Access-Control-Allow-Origin'] = '*'
+    response["Access-Control-Allow-Methods"] = '*'
+    response["Access-Control-Allow-Headers"] = '*'
+    return response
+
 @csrf_exempt
 def createRooms(request):
     body = json.loads(request.body.decode('utf-8'))

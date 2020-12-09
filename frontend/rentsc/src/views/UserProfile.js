@@ -3,9 +3,9 @@ import { Card, Button, Alert, Container, Col, Row } from 'react-bootstrap'
 import NavigationBar from '../Components/navbar'
 import { useAuth } from '../Contexts/AuthContext'
 import { useHistory } from 'react-router-dom'
-import UserListing from '../Components/UserListing'
 import firebase from '../firebase'
 import MyListingList from '../Components/MylistingList.js'
+import ReviewList from '../Components/ReviewList'
 
 export default function UserProfile() {
     const [error, setError] = useState("")
@@ -42,7 +42,6 @@ export default function UserProfile() {
 
     function renderName() {
         getFirstName()
-        //console.log(name)
     }
 
     return (
@@ -71,7 +70,12 @@ export default function UserProfile() {
                     </Card>
                 </Col>
                 <Col sm={8}>
-                    <MyListingList></MyListingList>
+                    <Card>
+                        <Card.Body>
+                            <MyListingList></MyListingList>
+                            <ReviewList></ReviewList>
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </Container>

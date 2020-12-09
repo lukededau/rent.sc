@@ -7,6 +7,7 @@ urlpatterns = [
     path('hello', views.index, name='index'),
     path('createUser', views.createUser, name='createUser'),
     path('getAllListings', views.getAllListings, name='getAllListings'),
+    path('getOwnerReviews', views.getOwnerReviews, name='getOwnerReviews'),
     path('getAllRooms', views.getAllRooms, name='getAllRooms'),
     path('getMessages', views.getMessages, name='getMessages'),
     path('createRooms', views.createRooms, name='createRooms'),

@@ -65,11 +65,9 @@ class ChooseAvailability extends React.Component {
         const doc = await availabilityRef.doc(this.state.uid).get();
         if (doc.exists) {
             const updateRes = await availabilityRef.doc(this.state.uid).update(this.state);
-            console.log(updateRes);
         }
         else {
             const updateRes = await availabilityRef.doc(this.state.uid).set(this.state)
-            console.log(updateRes);
         }
         window.location.href='/userprofile';
     }

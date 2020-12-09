@@ -6,7 +6,6 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/mypham/Desktop/apikey.json'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rentsc.settings')
     try:
         from django.core.management import execute_from_command_line

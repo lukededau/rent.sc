@@ -22,3 +22,4 @@ frontend/rentsc/package-lock.json
 frontend/rentsc/get-pip.py
 backend/rentsc/rentsc/__pycache__/wsgi.cpython-37.pyc
 backend/rentsc/manage.py
+backend/rentsc/manage.py

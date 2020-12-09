@@ -36,6 +36,7 @@ export function AuthProvider({ children }) {
             return firebase.auth().signInWithEmailAndPassword(email, password)
         })
         .catch(function (error){
+            return error()
         })
     }
 

@@ -4,6 +4,7 @@ import { useAuth } from '../Contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
 import { FiLogIn } from "react-icons/fi";
 import NavigationBar from '../Components/navbar';
+import firebase from '../firebase'
 
 
 export default function Login() {
@@ -21,7 +22,9 @@ export default function Login() {
             setError("")
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
-            history.push("/listings")
+            if(firebase.auth().currentUser != null) {
+                history.push('/listings')
+            }
         } catch {
             setError("Failed to login")
         }

@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Carousel, Badge, Card, Button } from 'react-bootstrap';
-import { BsStar, BsGeoAlt, BsFillPersonFill, BsCursorFill, BsStarFill, BsCalendar } from 'react-icons/bs';
+import { BsGeoAlt, BsFillPersonFill, BsCursorFill, BsCalendar } from 'react-icons/bs';
 import firebase from '../firebase.js';
 import NavigationBar from '../Components/navbar.js';
 import { withRouter } from 'react-router-dom';
@@ -18,7 +18,6 @@ const subtitleStyle = {
 function AppointmentButton(props) {
     if (props.landlordID === props.renterID) {
         return (
-            // <Button href="/select-appointment-times" style={{marginTop: 2}}>
             <Button onClick={() => gotoSelectAppointment(props)} style={{ marginTop: 2 }}>
                 Choose/Update Your Availability <BsCalendar />
             </Button>
@@ -83,9 +82,11 @@ class MainListing extends React.Component {
             zip: "",
             images: [],
         }
-        this.uid = firebase.auth().currentUser.uid;
-        this.email = firebase.auth().currentUser.email;
-        this.username = firebase.auth().currentUser.displayName;
+        if(firebase.auth().currentUser != null) {
+            this.uid = firebase.auth().currentUser.uid;
+            this.email = firebase.auth().currentUser.email;
+            this.username = firebase.auth().currentUser.displayName;
+        }
     }
 
     componentDidMount() {
@@ -134,6 +135,16 @@ class MainListing extends React.Component {
         });
     }
 
+    checkFunction() {
+        var user
+        if(firebase.auth().currentUser != null) {
+            user = true
+        } else {
+            user = false
+        }
+        return user
+    }
+
     render() {
         return (
             <div>
@@ -155,7 +166,7 @@ class MainListing extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Carousel>
+                        <Carousel style={{width: "100%"}}>
                             {
                                 this.state.images.map((image, idx) => {
                                     return (
@@ -199,14 +210,15 @@ class MainListing extends React.Component {
                             </p>
                         </Col>
                         <Col>
-                            <AppointmentButton
+                            {this.checkFunction() ? 
+                                <AppointmentButton
                                 landlordID={this.state.uid}
                                 landlordName={this.state.username}
                                 landlordEmail={this.state.email}
                                 renterID={this.uid}
                                 listing={this.state.address}
                                 history={this.props.history}
-                            />
+                            /> : ''}
                         </Col>
                     </Row>
                     <Row>
@@ -241,20 +253,8 @@ class MainListing extends React.Component {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col>
-                            <Card style={{ height: "100%", width: "100%" }}>
-                                <Card.Header style={{ fontSize: 20 }}><b>Ratings</b> <BsStarFill /></Card.Header>
-                                <Card.Body>
-                                    <Card.Title><BsStar style={{ marginBottom: 4 }} /> 1.52</Card.Title>
-                                    <Card.Text>
-                                        This place is so awesome that I am going to stay here for the rest of my life
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
                     </Row>
-                    <Row>
-                    </Row>
+                    <Row style={{height: 30}}/>
                 </Container>
             </div>
         );

@@ -212,7 +212,6 @@ export class Home extends Component {
             lng = response.results[0].geometry.location.lng;
         }
         catch(e) {
-            console.log(address + ", " + city);
             console.error(e);
         }
         return { lat, lng };

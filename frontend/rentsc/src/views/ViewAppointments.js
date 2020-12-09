@@ -19,7 +19,6 @@ class ViewAppointments extends React.Component {
                     login = false
                 }
             })
-            //console.log(login)
             return login
         }
         return (
@@ -28,7 +27,7 @@ class ViewAppointments extends React.Component {
                 {checkUser() ?
                 <div style={{ paddingTop: "100px" }}>
                     <AppointmentCards />
-                </div> : this.props.push.history('/login')}
+                </div> : this.props.history.push('/login')}
             </div> 
         );
     }

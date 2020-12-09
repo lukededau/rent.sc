@@ -9,10 +9,9 @@ export async function onRemoveClick(values, uid) {
         var temp = {};
         try {
             temp[values.index] = FieldValue.delete();
-            const res = await appointmentRef.doc(uid).update(
+            await appointmentRef.doc(uid).update(
                 temp
             );
-            console.log(res);
         } catch {
             window.location.reload(false);
         }

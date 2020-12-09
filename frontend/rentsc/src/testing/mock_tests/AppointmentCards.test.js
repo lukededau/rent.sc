@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, configure } from 'enzyme';
-import AppointmentCards from '../Components/AppointmentCards';
-import { onRemoveClick } from '../Components/onRemoveClick.js';
+import AppointmentCards from '../../Components/AppointmentCards';
+import { onRemoveClick } from '../../Components/onRemoveClick.js';
 import Adapter from 'enzyme-adapter-react-16';
-import firebase from '../firebase.js';
+import firebase from '../../firebase.js';
 
 configure({adapter: new Adapter()});
 

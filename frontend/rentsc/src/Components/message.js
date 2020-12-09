@@ -26,7 +26,6 @@ class Message extends React.Component{
                 return () =>
                 {return <Redirect to='/listings'  />}
             } else {
-                console.log(this.props)
                 this.setState({user_id: user.uid})    
                 this.setState({room_id: this.props.room_id})
                 this.setState({firstname: this.props.firstname})

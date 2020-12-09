@@ -8,6 +8,7 @@ import { GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs, DirectionsR
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
+import NavigationBar from '../Components/navbar'
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 Geocode.setApiKey(API_KEY);
@@ -297,6 +298,7 @@ export class Home extends Component {
     render() {
         return (
             <div>
+                <NavigationBar></NavigationBar>
                 <div style={transportPanelStyle}>
                     <b>Mode of Travel: </b>
                     <select id="mode">

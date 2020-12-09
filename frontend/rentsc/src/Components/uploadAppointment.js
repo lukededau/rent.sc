@@ -21,11 +21,9 @@ export async function uploadAppointment(userID, contactID, contactName, contactE
         var formattedAppointment = {};
         formattedAppointment[nextKey] = appointment;
         formattedAppointment[nextKey]["index"] = nextKey;
-        const updateRes = await appointmentRef.doc(userID).update(formattedAppointment);
-        console.log(updateRes);
+        await appointmentRef.doc(userID).update(formattedAppointment);
     }
     else {
-        const updateRes = await appointmentRef.doc(userID).set({0: appointment});
-        console.log(updateRes);
+        await appointmentRef.doc(userID).set({0: appointment});
     }
 }

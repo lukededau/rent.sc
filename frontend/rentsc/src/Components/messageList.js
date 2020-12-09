@@ -31,7 +31,6 @@ async function getAllRooms(user_id){
                     res.push(dic);
                 }
                 if (res.length === (docs.size)){
-                    debugger;
                     resolve(res);
                 }
             })
@@ -84,7 +83,6 @@ class MessageList extends React.Component {
     }
     renderRoom() {
         var output = [];
-        debugger;
         for (var i = 0; i < this.state.messages.length; i++) {
             var message = this.state.messages[i];
             message['onClick'] = this.props.changeRoomIdState;

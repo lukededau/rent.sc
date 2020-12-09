@@ -53,14 +53,14 @@ class MessageList extends React.Component {
 
     }
     componentDidMount() {
-        if((this.props.room_id != this.state.room_id) || this.state.room_id == ""){
+        if((this.props.room_id !== this.state.room_id) || this.state.room_id === ""){
             this.listener = firebase.auth().onAuthStateChanged(user => {
                 if (!user) {
                     return () =>
                     {return <Redirect to='/listings'  />}
                 } else {
                         this.setState({user_id: user.uid})  
-                        var messages_stream = getAllRooms(this.state.user_id).then((messages)=>{
+                        getAllRooms(this.state.user_id).then((messages)=>{
                         this.setState({ messages: messages });
                         this.setState({room_id: messages[0] ? messages[0].room_id : ""})
                         this.props.changeRoomIdState(this.state.room_id);

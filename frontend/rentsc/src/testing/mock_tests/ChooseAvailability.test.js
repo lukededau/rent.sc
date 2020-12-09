@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow, configure } from 'enzyme';
-import ChooseAvailability from '../Components/ChooseAvailability';
+import ChooseAvailability from '../../Components/ChooseAvailability';
 import Adapter from 'enzyme-adapter-react-16';
-import firebase from '../firebase.js';
+import firebase from '../../firebase.js';
 
 configure({adapter: new Adapter()});
 

@@ -31,7 +31,9 @@ class MessageObject extends React.Component {
             time_stamp: "00:00",
             room_id: 0,
             user_id: 0,
-            inputMsg: ""
+            inputMsg: "",
+            firstname: "",
+            lastname: ""
         }
     }
     handleSubmit(event) {
@@ -49,6 +51,8 @@ class MessageObject extends React.Component {
                 } else {
                     this.setState({ user_id: user.uid })
                     this.setState({ room_id: this.props.room_id })
+                    this.setState({ firstname: this.props.firstname})
+                    this.setState({ lastname: this.props.lastname})
                     this.getMessages(this.state.room_id).then((messages) => {
                         if(messages){
                             this.setState({ messages: messages });
@@ -73,7 +77,7 @@ class MessageObject extends React.Component {
         var res = []
         var res1 = []
         const db = firebase.firestore();
-        if(this.props.room_id == ""){
+        if(this.props.room_id === ""){
             return;
         }
         const room_a_ref = db.collection('rooms').doc(this.props.room_id)
@@ -90,7 +94,6 @@ class MessageObject extends React.Component {
         this.setState({ messages: res1 })
     }
     async sendMessage(inputM) {
-        debugger
         const db = firebase.firestore();
         var data = {
             'sender': this.state.user_id,

@@ -46,8 +46,8 @@ class NavigationBar extends React.Component {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/#Nearby">Nearby <FaLocationArrow /></Nav.Link>
-                            <Nav.Link href="myfavorites#Micheal_lil_Wang">Favorites <RiStarFill /></Nav.Link>
-                            <Nav.Link href="myListings#myPham">My Listings  <HiViewList /></Nav.Link>
+                            {checkFunction() ? <Nav.Link href="myfavorites">Favorites <RiStarFill /></Nav.Link> : ''}
+                            {checkFunction() ? <Nav.Link href="myListings">My Listings  <HiViewList /></Nav.Link> : ''}
 
 
                         </Nav>

@@ -19,7 +19,6 @@ class ViewAppointments extends React.Component {
                     login = false
                 }
             })
-            //console.log(login)
             return login
         }
         return (

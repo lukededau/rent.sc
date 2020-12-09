@@ -15,7 +15,9 @@ class Message extends React.Component{
         super(props);
         this.state = {
             user_id: "0",
-            room_id: this.props.room_id
+            room_id: this.props.room_id,
+            firstname: "",
+            lastname: ""
         }
     }
     componentDidMount() {
@@ -26,6 +28,8 @@ class Message extends React.Component{
             } else {
                 this.setState({user_id: user.uid})    
                 this.setState({room_id: this.props.room_id})
+                this.setState({firstname: this.props.firstname})
+                this.setState({lastname: this.props.lastname})
             }
         })   
     }
@@ -34,6 +38,10 @@ class Message extends React.Component{
     }
     componentWillUnmount() {
         this.listener();
+    }
+    renderFullName(){
+        var fullname = this.state.firstname + " " + this.state.lastname;
+        return fullname
     }
     render(){
         return(
@@ -44,7 +52,7 @@ class Message extends React.Component{
                             <Image src={defaultProfileImage} style={{height:"50px"}} roundedCircle />
                         </Col>
                         <Col md={8}>
-                            {this.props.user_id}
+                            {this.renderFullName()}
                         </Col>
                     </Row>
             </Container>

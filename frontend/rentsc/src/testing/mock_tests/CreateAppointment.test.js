@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, configure } from 'enzyme';
-import CreateAppointment from '../Components/CreateAppointment';
-import { uploadAppointment } from '../Components/uploadAppointment.js';
+import CreateAppointment from '../../Components/CreateAppointment';
+import { uploadAppointment } from '../../Components/uploadAppointment.js';
 import Adapter from 'enzyme-adapter-react-16';
-import firebase from '../firebase.js';
+import firebase from '../../firebase.js';
 
 configure({adapter: new Adapter()});
 

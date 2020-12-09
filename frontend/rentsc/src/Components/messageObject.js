@@ -51,7 +51,6 @@ class MessageObject extends React.Component {
                 } else {
                     this.setState({ user_id: user.uid })
                     this.setState({ room_id: this.props.room_id })
-                    console.log(this.props)
                     this.setState({ firstname: this.props.firstname})
                     this.setState({ lastname: this.props.lastname})
                     this.getMessages(this.state.room_id).then((messages) => {
@@ -97,7 +96,7 @@ class MessageObject extends React.Component {
     async sendMessage(inputM) {
         const db = firebase.firestore();
         var data = {
-            'sender': this.props.user_id,
+            'sender': this.state.user_id,
             'room_id': this.props.room_id,
             'msg': inputM,
             'time': (new Date()).toString()

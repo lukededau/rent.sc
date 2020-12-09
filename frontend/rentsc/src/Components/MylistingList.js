@@ -41,8 +41,7 @@ class MyListingList extends React.Component {
     render() {
         return (
             <div>
-                <h2 style={{ paddingTop: "10px", paddingLeft: "18px" }}>My Listings</h2>
-
+                <h4 style={{ paddingTop: "10px", paddingLeft: "18px" }}>My Listings</h4>
                 {this.renderListing()}
             </div >
         );

@@ -21,16 +21,6 @@ import { RiStarFill } from "react-icons/ri";
 class NavigationBar extends React.Component {
     constructor(props) {
         super(props)
-        this.logout = this.logout.bind(this)
-        this.handleLogout = this.handleLogout.bind(this)
-    }
-
-    logout() {
-        console.log('logout successful')
-    }
-
-    async handleLogout() {
-        await this.logout()
     }
 
     render() {
@@ -75,8 +65,7 @@ class NavigationBar extends React.Component {
                                 flip="true"
                             >
 
-                                <NavDropdown.Item href="#user/Messages">Messages <TiMessages /></NavDropdown.Item>
-                                <NavDropdown.Item href="myfavorites">Favorites </NavDropdown.Item>
+                                <NavDropdown.Item href="messages">Messages</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="userprofile">{u} </NavDropdown.Item>
                                 <NavDropdown.Item href='#logout'>Logout </NavDropdown.Item>

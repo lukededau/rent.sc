@@ -189,14 +189,14 @@ class ListingObject extends React.Component {
 
                 <Container id="listingObjectContainer" fluid style={{ paddingTop: "18px" }}>
                     <Row>
-                        <Col>
-                            <Carousel id="listingObjectImages" style={{ maxWidth: "100%", maxHeight: "100%", margin: "auto" }}>
+                        <Col xs={6}>
+                            <Carousel style={{ maxWidth: "100%", maxHeight: "100%", margin: "auto" }}>
                                 {this.props.imageURL ? this.props.imageURL.map((image, idx) => {
                                     return (
                                         <Carousel.Item interval={5000}>
                                             <img
                                                 src={image}
-                                                style={{ height: '100%', width: "100%" }}
+                                                style={{ height: '200px', width: "250px" }}
                                                 className="d-block w-100"
                                                 alt={idx}
                                                 fluid="true" />
@@ -207,7 +207,7 @@ class ListingObject extends React.Component {
                                         <Carousel.Item interval={5000}>
                                             <img
                                                 src={sampleHouse}
-                                                style={{ height: '400px', width: "100%" }}
+                                                style={{ height: '200px', width: "250px" }}
                                                 className="d-block w-100"
                                                 fluid="true"
                                                 alt="sampleHouse"
@@ -218,7 +218,7 @@ class ListingObject extends React.Component {
                                             <Carousel.Item interval={5000}>
                                                 <img
                                                     src={townhouse1}
-                                                    style={{ height: '100%', width: "100%" }}
+                                                    style={{ height: '200px', width: "250px" }}
                                                     className="d-block w-100"
                                                     fluid="true"
                                                     alt="sample townhouse"
@@ -229,7 +229,7 @@ class ListingObject extends React.Component {
                                                 <Carousel.Item interval={5000}>
                                                     <img
                                                         src={apartment}
-                                                        style={{ height: '100%', width: "100%" }}
+                                                        style={{ height: '200px', width: "250px" }}
                                                         className="d-block w-100"
                                                         fluid="true"
                                                         alt="sample apartment"
@@ -242,7 +242,7 @@ class ListingObject extends React.Component {
                                     <Carousel.Item interval={5000}>
                                         <img
                                             src={house2}
-                                            style={{ height: '80%', width: "80%" }}
+                                            style={{ height: '200px', width: "250px" }}
                                             className="d-block w-100"
                                             fluid="true"
                                             alt="sample house 2"
@@ -253,7 +253,7 @@ class ListingObject extends React.Component {
                                     <Carousel.Item interval={5000}>
                                         <img
                                             src={house1}
-                                            style={{ height: '100%', width: "100%" }}
+                                            style={{ height: '200px', width: "250px" }}
                                             className="d-block w-100"
                                             fluid="true"
                                             alt="sample house 2"
@@ -265,35 +265,23 @@ class ListingObject extends React.Component {
                                     <Carousel.Item interval={5000}>
                                         <img
                                             src={apartment2}
-                                            style={{ height: '80%', width: "80%" }}
+                                            style={{ height: '200px', width: "250px" }}
                                             className="d-block w-100"
                                             fluid="true"
                                             alt="sample apartment 2"
                                         />
                                     </Carousel.Item>
                                     : ''}
-
-                                {/* <Carousel.Item interval={100000} style={{ maxWidth: "100%", maxHeight: "100%" }}>
-                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={this.props.imageURL ? this.props.imageURL : homeland} />
-                                </Carousel.Item>
-                                <Carousel.Item interval={100000}>
-                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={this.props.imageURL ? this.props.imageURL : homeland_master} />
-                                </Carousel.Item>
-                                <Carousel.Item interval={100000}>
-                                    <Image rounded style={{ maxWidth: "100%", maxHeight: "100%" }} src={this.props.imageURL ? this.props.imageURL : homeland_ceiling} />
-                                </Carousel.Item> */}
                             </Carousel>
                         </Col>
-                        <Col id="listingObjectData" style={{ fontFamily: "sans-serif", position: "relative" }}>
+                        <Col xs={6} style={{ fontFamily: "sans-serif", position: "relative" }}>
                             <ListGroup variant="flush">
-                                <ListGroup.Item id="listingObjDes" style={{ fontSize: "18px" }}>{this.props.description}</ListGroup.Item>
-                                <ListGroup.Item id="listingObjRooms" style={{ fontSize: "14px", fontWeight: "200" }}>{this.props.numBedrooms} bedrooms {this.props.numBaths} baths</ListGroup.Item>
-                                <ListGroup.Item id="listingObjTags" style={{ fontSize: "14px", fontWeight: "200" }}>{this.renderTags()}</ListGroup.Item>
-                                <ListGroup.Item id="listingObjPrice" style={{ fontWeight: "bold", fontSize: "18px", textAlign: "right", position: "absolute", bottom: 0, right: 0 }}>${this.props.price} / month</ListGroup.Item>
+                                <ListGroup.Item style={{ fontSize: "18px" }}>{this.props.description}</ListGroup.Item>
+                                <ListGroup.Item style={{ fontSize: "14px", fontWeight: "200" }}>{this.props.numBedrooms} bedrooms {this.props.numBaths} baths</ListGroup.Item>
+                                <ListGroup.Item style={{ fontSize: "14px", fontWeight: "200" }}>{this.renderTags()}</ListGroup.Item>
+                                <ListGroup.Item style={{ fontWeight:'bold', textAlign: 'right', fontSize: '18px'}}>${this.props.price} / month</ListGroup.Item>
                             </ListGroup>
-
                         </Col>
-
                     </Row>
                     <br></br>
 

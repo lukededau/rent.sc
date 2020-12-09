@@ -12,7 +12,7 @@ export default function UserProfile() {
     const { currentUser, logout } = useAuth()
     const history = useHistory()
     const [name, setName] = useState("")
-    
+
     async function handleLogout() {
         setError("")
 
@@ -31,7 +31,7 @@ export default function UserProfile() {
 
         await userRef.get().then((snapshot) => {
             snapshot.forEach((doc) => {
-                if(doc.exists) {
+                if (doc.exists) {
                     const data = doc.data()
                     fName = data.firstname
                 }
@@ -46,25 +46,25 @@ export default function UserProfile() {
 
     return (
         <>
-        <NavigationBar></NavigationBar>
-        <Container style={{paddingTop:'100px'}}>
-            <Row>
-                <Col sm={4}>
-                    <Card className='text-center'>
-                        <Card.Img variant='top'></Card.Img>
-                        <Card.Body>
-                            {error && <Alert variant="danger">{error}</Alert>}
-                            {renderName()}
-                            <strong> Hi, I'm {name} </strong>
-                            <div></div>
-                            {/*<strong> {currentUser.email} </strong>*/}
-                        </Card.Body>
-                    </Card>
-                    <br></br>
-                    <Card className='text-center'>
-                        <Card.Body>
-                            <Button variant="link" onClick={handleLogout}>
-                                Logout
+            <NavigationBar></NavigationBar>
+            <Container style={{ paddingTop: '100px' }}>
+                <Row>
+                    <Col sm={4}>
+                        <Card className='text-center'>
+                            <Card.Img variant='top'></Card.Img>
+                            <Card.Body>
+                                {error && <Alert variant="danger">{error}</Alert>}
+                                {renderName()}
+                                <strong> Hi, I'm {name} </strong>
+                                <div></div>
+                                {/*<strong> {currentUser.email} </strong>*/}
+                            </Card.Body>
+                        </Card>
+                        <br></br>
+                        <Card className='text-center'>
+                            <Card.Body>
+                                <Button variant="link" onClick={handleLogout}>
+                                    Logout
                             </Button>
                         </Card.Body>
                     </Card>

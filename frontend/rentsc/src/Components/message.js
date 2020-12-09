@@ -29,7 +29,9 @@ class Message extends React.Component{
             }
         })   
     }
-
+    onClick(){
+        this.props.onClick(this.props.room_id);
+    }
     componentWillUnmount() {
         this.listener();
     }
@@ -37,7 +39,7 @@ class Message extends React.Component{
         return(
             <div>
             <Container>
-                    <Row onClick={() => console.log(this.props.room_id)}>
+                    <Row onClick={() => this.onClick()}>
                         <Col md={2}>
                             <Image src={defaultProfileImage} style={{height:"50px"}} roundedCircle />
                         </Col>

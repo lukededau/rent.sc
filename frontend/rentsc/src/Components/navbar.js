@@ -2,18 +2,20 @@ import React from 'react'
 import { Nav, Navbar, NavDropdown, Image } from 'react-bootstrap'
 import defaultProfileImage from '../Images/Default_profile_image.jpg'
 import { BsHouseDoor } from "react-icons/bs";
-import { BsPersonPlus } from "react-icons/bs";
-import { FaBullseye, FaLocationArrow } from "react-icons/fa";
-import { AiOutlinePlus } from "react-icons/ai";
+// import { BsPersonPlus } from "react-icons/bs";
+import { FaLocationArrow } from "react-icons/fa";
+// import { FiLogOut } from "react-icons/fi";
 import { HiViewList } from "react-icons/hi";
 import { TiMessages } from "react-icons/ti";
-import { GrFavorite } from "react-icons/gr";
-import { CgProfile } from "react-icons/cg";
-import { RiUserAddLine } from "react-icons/ri";
-import { RiMenuAddFill } from "react-icons/ri";
-import { GoSignOut } from "react-icons/go";
+// import { GrLogout } from "react-icons/gr";
+// import { CgProfile } from "react-icons/cg";
+// import { RiUserAddLine } from "react-icons/ri";
+// import { RiMenuAddFill } from "react-icons/ri";
+// import { GoSignOut } from "react-icons/go";
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
+import { RiStarFill } from "react-icons/ri";
+
 
 
 class NavigationBar extends React.Component {
@@ -38,14 +40,13 @@ class NavigationBar extends React.Component {
         return (
             <div>
                 <Navbar bg="dark" fixed="top" variant="dark">
+
                     <Navbar.Brand href="listings">rent.sc <BsHouseDoor /></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"></Navbar.Toggle>
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/#Nearby">Nearby <FaLocationArrow /></Nav.Link>
-                            <Nav.Link href="#AddGuests">Add Guests <BsPersonPlus /></Nav.Link>
-                            <Nav.Link href="#Rooms">Add Rooms <AiOutlinePlus /></Nav.Link>
-
+                            <Nav.Link href="myfavorites#Micheal_lil_Wang">Favorites <RiStarFill /></Nav.Link>
                             <Nav.Link href="myListings#myPham">My Listings  <HiViewList /></Nav.Link>
 
 
@@ -66,8 +67,8 @@ class NavigationBar extends React.Component {
 
                                 <NavDropdown.Item href="messages">Messages</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="userprofile">{u}</NavDropdown.Item>
-                                <NavDropdown.Item href='#logout'>Logout</NavDropdown.Item>
+                                <NavDropdown.Item href="userprofile">{u} </NavDropdown.Item>
+                                <NavDropdown.Item href='#logout'>Logout </NavDropdown.Item>
                             </NavDropdown> : ''}
                         </Nav>
                     </Navbar.Collapse>

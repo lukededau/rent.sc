@@ -14,6 +14,7 @@ import Signup from './views/Signup';
 import UserProfile from './views/UserProfile';
 import listing from './views/listing';
 import myListing from './views/myListing';
+import myFavListing from './views/myFavListing';
 import Messages from './views/Messages'
 import propertyReview from './views/propertyReview';
 import Review_Owner from './views/ownerReview';
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/create-listing" component={createListing} />
           <Route exact path="/listings" component={listing} />
           <Route exact path="/myListings" component={myListing} />
+          <Route exact path="/myfavorites" component={myFavListing} />
           <Route exact path="/main-listing" component={MainListing} />
           <Route exact path="/select-appointment-times" component={SelectAppointmentTimes} />
           <Route exact path="/schedule-appointment" component={ScheduleAppointment} />

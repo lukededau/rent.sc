@@ -1,5 +1,5 @@
 import React from 'react'
-import 'firebase/auth';
+import 'firebase/compat/auth';
 import { ChatFeed, Message } from 'react-chat-ui'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'

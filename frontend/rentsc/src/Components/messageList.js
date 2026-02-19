@@ -1,5 +1,5 @@
 import React from 'react'
-import 'firebase/auth';
+import 'firebase/compat/auth';
 import  { Redirect } from 'react-router-dom'
 import firebase from '../firebase.js';
 import Message from './message.js'

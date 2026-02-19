@@ -1,5 +1,5 @@
 import React from 'react'
-import 'firebase/auth';
+import 'firebase/compat/auth';
 import ListingObject from './listingObject.js'
 import axios from 'axios'
 import Dropdown from 'react-bootstrap/Dropdown';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from '../firebase.js';
-import 'firebase/auth';
+import 'firebase/compat/auth';
 import { MdRateReview } from "react-icons/md";
 
 class PropertyReview extends React.Component {

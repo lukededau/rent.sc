@@ -1,5 +1,5 @@
 import React from 'react'
-import 'firebase/auth';
+import 'firebase/compat/auth';
 import firebase from '../firebase.js';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
